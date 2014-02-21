@@ -35,6 +35,7 @@ public class questionServlet extends HttpServlet {
 		// grade the previous question (session attribute previousQuestion, previousAnswer)
 		// score += answerScore(request)
 		// TODO get question key from session data
+		// if no question forward to results page
 		// build up question
 		// display question 
 		// set this as response 
