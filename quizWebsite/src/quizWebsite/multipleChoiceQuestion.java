@@ -2,8 +2,14 @@ package quizWebsite;
 
 import java.util.ArrayList;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 public class multipleChoiceQuestion extends Question {
-	public multipleChoiceQuestion(ArrayList<String> choices, String question, int correctChoice) {
+	public multipleChoiceQuestion(HttpServletRequest request, ArrayList<String> choices, String question, int correctChoice) {
+		context=request.getServletContext();
+		pKey = (Integer) context.getAttribute("maxQuestionKey");
+		context.setAttribute("maxQuestionKey",pKey+1);
 		// TODO Auto-generated method stub
 	}
 
@@ -23,13 +29,19 @@ public class multipleChoiceQuestion extends Question {
 	}
 
 	@Override
-	String buildData() {
+	void parseData(String data) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	void parseData(String data) {
+	int scoreAnswer(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	void storeData() {
 		// TODO Auto-generated method stub
 		
 	}
