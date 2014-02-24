@@ -38,7 +38,7 @@ CREATE TABLE Quizzes (
 
 CREATE TABLE Questions(
 	pKey INT primary key,
-	name text,
+	quizKey INT,
 	type text, 
 	questionData text # encrypted and interpreted by question subclass
 );

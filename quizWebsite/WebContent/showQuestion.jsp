@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
- String id = request.getParameter("id");
-out.println("Welcome to quiz "  + id);
 
 </body>
 </html>

@@ -47,6 +47,8 @@ public class listener implements HttpSessionListener, ServletContextListener {
         	e.printStackTrace();
         }
        context.setAttribute("maxQuestionKey",0); 
+       context.setAttribute("maxQuizKey",0); 
+
        // increment this each time you add a new question, so that it can be unique for each question.
     }
 

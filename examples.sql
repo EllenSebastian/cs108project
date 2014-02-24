@@ -4,8 +4,8 @@
 insert into Users values ("Molly","4181eecbd7a755d19fdf73887c54837cbecf63fd","a1,a2,a3,a4,a5");
 insert into Users values ("Patrick","b0d81bdef8abef9245c9aebd82b7818b838791df","a1");
 insert into Friends values("Molly","Patrick");
-insert into Questions values(1,"add","multipleChoice"," (encoded) 2+3 = (a)1 (b)5 (c) 7 (d) -1");
-insert into Questions values(2,"add blank","fillInTheBlank","(encoded) 2+3 = ?");
+insert into Questions values(1,1,"multipleChoiceQuestion"," (encoded) 2+3 = (a)1 (b)5 (c) 7 (d) -1");
+insert into Questions values(2,1,"fillInTheBlankQuestion","(encoded) 2+3 = ?");
 	# note datetime format below
 insert into Quizzes values(1,"adding","xyz.com","Molly",FALSE,FALSE,FALSE,FALSE,"2003:12:30 02:03:04");
 insert into Messages values("Molly","Patrick","Message","sup",null);
