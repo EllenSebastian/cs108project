@@ -9,7 +9,7 @@ public class Message{
 	String toUser;
 	
 	public Message(Boolean read, String type, String body, 
-			String quizId, String fromUser, String toSser){
+			String quizId, String fromUser, String toUser){
 		this.read = read;
 		this.type = type;
 		this.body = body;

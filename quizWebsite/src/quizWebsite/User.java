@@ -57,8 +57,15 @@ public class User {
 		
 	}
 	
-	public Messages getMessages(){
-		
+	public ArrayList<Message> getMessages(){
+		Messages messages = new Messages();
+		return messages.getUserMessages(name);
+	}
+	
+	public void sendMessage(String type, String body, String quizId, String toUser){
+		Message msg = new Message(false, type, body, quizId, name, toUser);
+		Messages messages = new Messages();
+		messages.sendMessage(msg);
 	}
 	
 }
