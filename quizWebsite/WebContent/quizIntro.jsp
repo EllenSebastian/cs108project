@@ -11,12 +11,13 @@
 <body>
 hello
 <%
+quizWebsite.mysqlManager manager = new quizWebsite.mysqlManager(application);
  String id = request.getParameter("id");
 out.println("Welcome to quiz "  + id);
 // set the current quiz
-session.setAttribute("currentQuiz", new quizWebsite.Quiz(Integer.parseInt(id),application));
+session.setAttribute("currentQuiz", quizWebsite.mysqlManager.retreiveQuiz(Integer.parseInt(id)));
 // set the list of questions
-session.setAttribute("quizQuestions",((quizWebsite.Quiz) session.getAttribute("currentQuiz")).getQuestions());
+session.setAttribute("quizQuestions",quizWebsite.mysqlManager.getQuizQuestions(Integer.parseInt(id)));
 session.setAttribute("previousAnswer",null);
 session.setAttribute("previousQuestionIndex",-1);
 session.setAttribute("currentScore",0);
@@ -24,7 +25,6 @@ session.setAttribute("currentScore",0);
 out.println("<form action=\"questionServlet\" method=\"post\">"); // call doPost in questionServlet
 out.print("<input type=\"submit\" value = \"Go to Question 0\"/> </form>");
 
-//out.println("<input name=\"productID\" type=\"hidden\" value=\"" + pageItem.getID() + "\"/>"); 
 %>
 </body>
 </html>

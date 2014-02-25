@@ -12,50 +12,36 @@ import com.mysql.jdbc.Statement;
 public abstract class Question {
 		// subclass constructors must set these private global vars: 
 		
-		protected int pKey; 
-		protected ServletContext context;
-		protected String type;
-		
+		public int pKey; 
+		public String type;
+		public int quizKey; 
+		public String data; 
 		// subclasses must implement these abstract methods:
-		abstract String displayQuestionForm();
 		abstract String displayQuestion();
 		abstract int scoreAnswer (HttpServletRequest request);
-		abstract void parseData(String data);
+		abstract int parseData(String data);
 		abstract String className(); 
 		abstract String compressData(); 
-		
-		
-		
-		void storeData(String data, int quizKey, int pKey, String className){
-			  java.sql.Connection connection= (Connection) this.context.getAttribute("Connection");
-				try {
-					java.sql.Statement st = connection.createStatement();
-					int rs= st.executeUpdate("insert into Questions values(" + pKey + "," + quizKey + ",\"" + className + "\",\"" + data + "\"");
-					} catch (SQLException e) {
-					e.printStackTrace();
-				} 
+		abstract  String newQuestionForm();
+		abstract int parseNewQuestion(HttpServletRequest request);
+		static int getNextQuestionpKey(HttpServletRequest request){
+			
+			Integer pKey = (Integer) request.getServletContext().getAttribute("maxQuestionKey");
+			request.getServletContext().setAttribute("maxQuestionKey",pKey+1);
+			return pKey; 
 		}
 		
+	
+		
 		// this is for retreiving questions that are ALREADY in the db. 
-
+		// TODO change column numbers to names 
 		
 		// this method is common to all subclasses.
 		
 		// I don't know where you're going to get this request from, but you need it
 		// retrieve the RAW string of data from mysql corresponding to this Question's pKey.
-		String retreiveData(){
-			  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
-			try {
-				java.sql.Statement st = connection.createStatement();
-				ResultSet rs= st.executeQuery("select questionData from Questions where pKey = " + pKey + ";");
-				rs.next();
-				String data = rs.getString(1);
-				return data; 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} 
-			return ""; 
-		}
+		
 		
 		public String getType(){ return type; }
+		
 }

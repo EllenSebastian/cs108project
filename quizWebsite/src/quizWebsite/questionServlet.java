@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.servlet.ServletContext;
@@ -29,38 +30,14 @@ public class questionServlet extends HttpServlet {
      * Default constructor. 
      */
     public questionServlet() {
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
-	private Question getQuestion(HttpServletRequest request, HttpSession session, Integer currentQuestionIndex){
-		
-		@SuppressWarnings("unchecked")
-		Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute("quizQuestions"); // need to initialize this
-		Integer currentQuestionpKey = quizQuestions.get(currentQuestionIndex);
 
-		java.sql.Connection connection= (Connection) request.getServletContext().getAttribute("Connection");
-		try {
-			java.sql.Statement st = connection.createStatement();
-			String query = "select type from Questions where pKey = " + currentQuestionpKey + ";";
-			System.out.println("questionServlet.getQuestion query: " + "select type from Questions where pKey = " + currentQuestionpKey + ";");
-			ResultSet rs= st.executeQuery(query);
-			rs.next();
-			String 	questionClassName = "quizWebsite." + rs.getString(1); 
-			Class<?> clazz = Class.forName(questionClassName);
-			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor(Integer.class,ServletContext.class);
-			System.out.println(" returning question with pkey " + currentQuestionpKey);
-			return (Question) ctor.newInstance(new Object[] {currentQuestionpKey,request.getServletContext()});
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		return null; 
-	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -80,15 +57,18 @@ public class questionServlet extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// TODO figure out how to get score to work, since I don't know exactly which subclass it is. 
-			//score += prevQuestion.score(request);
+			score += prevQuestion.scoreAnswer(request);
 		}
 		Integer currentQuestionIndex = previousQuestionIndex + 1; 
 		session.setAttribute("previousQuestionIndex",currentQuestionIndex);
-		Question question = getQuestion(request,session,currentQuestionIndex);
+		ArrayList<Integer> quizQuestions = (ArrayList<Integer>) session.getAttribute("quizQuestions"); // need to initialize this
+
+		Integer currentQuestionpKey = quizQuestions.get(currentQuestionIndex);
+
+		Question question = mysqlManager.getQuestion(request,session,currentQuestionpKey);
 		PrintWriter out = response.getWriter();
 
-		out.println(question.displayQuestionForm());
+		out.println(question.displayQuestion());
 		
 		// grade the previous question (session attribute previousQuestion, previousAnswer)
 		// score += answerScore(request)
