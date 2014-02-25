@@ -49,12 +49,30 @@ public class User {
 		
 	}
 	
-	public Activity getActivity(){
+	public void addAchievement(){
 		
 	}
 	
-	public Friends getFriends(){
-		
+	public ArrayList<HistoryItem> getActivity(){
+		Activity activity = new Activity();
+		return activity.getUserActivity(name);
+	}
+	
+	public void addActivity(String user,String date, String type, 
+			double score, String quizId){
+		HistoryItem hi = new HistoryItem(user, date, type, score, quizId);
+		Activity activity = new Activity();
+		activity.addHistory(hi);
+	}
+	
+	public ArrayList<String> getFriends(){
+		Friends friends = new Friends();
+		return friends.friendsOf(name);
+	}
+	
+	public void addFriend(String name, String friend){
+		Friends friends = new Friends();
+		friends.addFriend(name, friend);
 	}
 	
 	public ArrayList<Message> getMessages(){
