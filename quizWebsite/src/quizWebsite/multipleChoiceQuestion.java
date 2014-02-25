@@ -26,7 +26,7 @@ public class multipleChoiceQuestion extends Question {
 	// when creating new quiz, must set quizKey attribute.
 	public int parseNewQuestion(HttpServletRequest request) {
 		String choices = request.getParameter("choices");
-		Integer quizKey = (Integer) request.getSession().getAttribute("quizKey"); 
+		Integer quizKey = (Integer) request.getSession().getAttribute(constants.session_quizKey); 
 		String correctChoice = request.getParameter("correctChoice"); 
 		String question = request.getParameter("question"); 
 		// set ivars 
