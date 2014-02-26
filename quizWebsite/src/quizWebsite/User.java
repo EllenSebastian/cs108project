@@ -45,12 +45,14 @@ public class User {
 		}
 	}
 	
-	public Achievements getAchievements(){
-		
+	public ArrayList<String> getAchievements(){
+		Achievements achievement = new Achievements();
+		return achievement.getAchievements(name);
 	}
 	
-	public void addAchievement(){
-		
+	public void addAchievement(String ach){
+		Achievements achievement = new Achievements();
+		achievement.addAchievement(name, ach);
 	}
 	
 	public ArrayList<HistoryItem> getActivity(){
