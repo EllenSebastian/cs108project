@@ -7,8 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
- String id = request.getParameter("id");
-out.println("Welcome to quiz "  + id);
-
+What question type would you like to create?<br>
+<form action ="CreateQuestionServlet" method = "post">
+<input type="radio" name="questionType" value="multipleChoiceQuestion">Multiple Choice<br>
+</form><br>
 </body>
 </html>

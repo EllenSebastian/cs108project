@@ -1,8 +1,6 @@
 package quizWebsite;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class myDBinfo {
@@ -11,6 +9,7 @@ public class myDBinfo {
 		public static final String MYSQL_PASSWORD = "eekohgoo";
 		public static final String MYSQL_DATABASE_SERVER = "mysql-user.stanford.edu";
 		public static final String MYSQL_DATABASE_NAME = "c_cs108_ellens2";
+	
 		
 		private static Connection con;
 		
