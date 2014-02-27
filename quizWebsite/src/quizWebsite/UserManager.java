@@ -40,7 +40,7 @@ public class UserManager {
 		password = hashPassword(password);
 		
 		try {			
-			PreparedStatement p = db.prepareStatement("SELECT * FROM user WHERE name = ?");
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name = ?");
 			p.setString(1, name);
 			
 			ResultSet result = p.executeQuery();
@@ -58,7 +58,7 @@ public class UserManager {
 		password = hashPassword(password);
 		
 		try {
-			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO user (name, password, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO User (name, password, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			p.setString(1, name);
 			p.setString(2, password);
 			p.setInt(3, isAdmin ? 1 : 0);
@@ -77,7 +77,7 @@ public class UserManager {
 	
 	public static int numAllUsers() {
 		try {
-			ResultSet result = db.prepareStatement("SELECT COUNT(*) FROM user").executeQuery();	
+			ResultSet result = db.prepareStatement("SELECT COUNT(*) FROM User").executeQuery();	
 			int numUsers = 0;			
 			if (result.next()) {
 				numUsers += result.getInt(1);
@@ -91,7 +91,7 @@ public class UserManager {
 	// make a user admin 
 	public static void promoteUser(int id) {
 		try {
-			db.prepareStatement("UPDATE user SET isAdmin = 1 WHERE user_id = " + id).executeUpdate();
+			db.prepareStatement("UPDATE User SET isAdmin = 1 WHERE user_id = " + id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,7 @@ public class UserManager {
 	// make a user non-admin	
 	public static void demoteUser(int id){
 		try {
-			db.prepareStatement("UPDATE user SET isAdmin = 0 WHERE user_id = " + id).executeUpdate();
+			db.prepareStatement("UPDATE User SET isAdmin = 0 WHERE user_id = " + id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -109,7 +109,7 @@ public class UserManager {
 	public static ArrayList<User> getAdmins() {
 		try {
 			ArrayList<User> results = new ArrayList<User>();
-			PreparedStatement p = db.prepareStatement("SELECT * FROM user WHERE is_admin =1 ");
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE is_admin =1 ");
 			
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
@@ -126,7 +126,7 @@ public class UserManager {
 	public static ArrayList<User> search(String name) {
 		try {
 			ArrayList<User> results = new ArrayList<User>();
-			PreparedStatement p = db.prepareStatement("SELECT * FROM user WHERE name LIKE ? ORDER BY user_id");
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name LIKE ? ORDER BY user_id");
 			p.setString(1, "%" + name + "%");
 			
 			ResultSet result = p.executeQuery();
@@ -142,7 +142,7 @@ public class UserManager {
 	
 	public static void removeUser(User user) {
 		try {
-			db.prepareStatement("DELETE FROM user WHERE user_id = " + user.id).executeUpdate();
+			db.prepareStatement("DELETE FROM User WHERE user_id = " + user.user_id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

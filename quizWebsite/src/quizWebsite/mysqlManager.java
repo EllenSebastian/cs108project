@@ -18,6 +18,7 @@ public class mysqlManager {
 	public static final String MYSQL_DATABASE_SERVER = "mysql-user.stanford.edu";
 	public static final String MYSQL_DATABASE_NAME = "c_cs108_ellens2";
 	private static ServletContext context; 
+	
 	public mysqlManager(ServletContext context){
 		this.context = context; 
 	}
