@@ -1,6 +1,7 @@
 package quizWebsite;
 // listens for BOTH context AND session. 
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -47,8 +48,6 @@ public class Listener implements HttpSessionListener, ServletContextListener {
     	}catch (Exception e){
         	e.printStackTrace();
         }
-       context.setAttribute("maxQuestionKey",0); 
-       context.setAttribute("maxQuizKey",0); 
        // increment this each time you add a new question, so that it can be unique for each question.
     }
 
@@ -70,8 +69,12 @@ public class Listener implements HttpSessionListener, ServletContextListener {
 	/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
-    public void contextDestroyed(ServletContextEvent arg0) {
-        // TODO Auto-generated method stub
+    public void contextDestroyed(ServletContextEvent event) {
+    	try {
+			((Connection) event.getServletContext().getAttribute("Connection")).close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 	
 }

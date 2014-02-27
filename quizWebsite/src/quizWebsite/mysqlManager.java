@@ -21,23 +21,63 @@ public class mysqlManager {
 	public static void addToDatabase(Question q, java.sql.Connection connection){
 			try {
 				java.sql.Statement st = connection.createStatement();
-				int rs= st.executeUpdate("insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.type + "\",\"" + q.data + "\"");
-				} catch (SQLException e) {
+				String query = "insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.type + "\",\"" + q.data + "\");";
+				int rs= st.executeUpdate(query);
+
+			} catch (SQLException e) {
 				e.printStackTrace();
 			} 
 	}
 	
-	public static void addToDatabase(Quiz q, java.sql.Connection connection){
+	public static int addToDatabase(Quiz q, java.sql.Connection connection){
 		try {
 			java.sql.Statement st = connection.createStatement();
 			String query = "insert into Quizzes values(" + q.pKey + ",\"name\",\"quizIntro.jsp?id=" + q.pKey + "\",\""
 					+ q.creator + "\"," + q.immediateFeedbackString + "," +q.multiplePagesString + "," + q.practiceModeString+
 					"," + q.randomOrderString + ",\"" + q.whenCreated + "\");";
-			int rs= st.executeUpdate(query ); 
+			return st.executeUpdate(query ); 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} 
+		return 0 ; 
 	}
+	
+	// TODO figure out why these return the same thing twice. need to "refresh" the db??
+	public static Integer getNextQuizKey(java.sql.Connection connection){
+		java.sql.Statement st;
+		String query = "select max(pKey) from Quizzes;";
+
+		try {
+			st = connection.createStatement();
+			ResultSet rs= st.executeQuery(query);
+			rs.next();
+			return 1+ rs.getInt("max(pKey)"); 
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null; 
+	}
+	
+	public static Integer getNextQuestionKey(java.sql.Connection connection){
+		java.sql.Statement st;
+		String query = "select max(pKey) from Questions;";
+
+		try {
+			st = connection.createStatement();
+			ResultSet rs= st.executeQuery(query);
+			rs.next();
+			return 1+ rs.getInt("max(pKey)"); 
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null; 
+	}
+	
+	
 	public static Question getQuestion(HttpServletRequest request, HttpSession session, Integer pKey, java.sql.Connection connection){
 		
 		try {
@@ -72,14 +112,14 @@ public class mysqlManager {
 					System.out.println("Query : " + query);
 					ResultSet rs= st.executeQuery(query);
 					rs.next();
-					q.name = rs.getString(2);
-					q.url = rs.getString(3);
-					q.creator = rs.getString(4);
-					q.immediateFeedback = rs.getBoolean(5);
-					q.multiplePages = rs.getBoolean(6);
-					q.practiceMode = rs.getBoolean(7);
-					q.randomOrder = rs.getBoolean(8);
-					q.whenCreated = rs.getTime(9).toString();
+					q.name = rs.getString("name");
+					q.url = rs.getString("url");
+					q.creator = rs.getString("creator");
+					q.immediateFeedback = rs.getBoolean("immediateFeedback");
+					q.multiplePages = rs.getBoolean("multiplePages");
+					q.practiceMode = rs.getBoolean("practiceMode");
+					q.randomOrder = rs.getBoolean("randomOrder");
+					q.whenCreated = rs.getTime("whenCreated").toString();
 					return q; 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -103,20 +143,15 @@ public class mysqlManager {
 	}
 	public static Vector<Integer> getQuestions(Integer pKey, java.sql.Connection connection){
 		Vector<Integer> vec = new Vector<Integer>(); 
-		System.out.println("1");
 		try {
 			java.sql.Statement 		st = connection.createStatement();
-			System.out.println("2");
 
 			String query = "select * from Questions where quizKey = " + pKey + ";";
-			System.out.println("3");
 
 			System.out.println("Quiz.getQuestions query : " + query);
 			ResultSet rs= st.executeQuery(query);
-			System.out.println("4");
 
 			while (rs.next()) {
-				System.out.println("5");
 
 				vec.add(rs.getInt(1));
 			}

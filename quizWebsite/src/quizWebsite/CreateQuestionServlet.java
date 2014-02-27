@@ -1,11 +1,15 @@
 package quizWebsite;
 
 import java.io.IOException;
+import java.sql.Connection;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class CreateQuestionServlet
@@ -34,8 +38,13 @@ public class CreateQuestionServlet extends HttpServlet {
 	 */
 	// from QuestionSubclasses.newQuestionForm
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// create new question based on type
-		// out.print(question.newQuestionForm())
+		HttpSession session = request.getSession();
+		Connection con = (Connection) request.getServletContext().getAttribute("Connection");
+		quizWebsite.multipleChoiceQuestion newQuestion = (quizWebsite.multipleChoiceQuestion) session.getAttribute("newQuestion");
+		newQuestion.parseNewQuestion(request);
+		mysqlManager.addToDatabase(newQuestion,con);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("askForQuestion.jsp");
+		dispatcher.forward(request, response);
 	}
 
 }

@@ -26,8 +26,7 @@ public class Quiz {
 	public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
 			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
 		// insert into db
-		pKey = (Integer) context.getAttribute("maxQuizKey");
-		context.setAttribute("maxQuizKey", pKey+1);
+		pKey = mysqlManager.getNextQuizKey((Connection)context.getAttribute("Connection"));
 		this.name = name;
 		this.url = url;
 		this.creator = creator;

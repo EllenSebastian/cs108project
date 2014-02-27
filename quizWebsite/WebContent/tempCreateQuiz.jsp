@@ -14,8 +14,7 @@
 <!--  scriplet -->
 
 <%
-	out.println("<ul><li><a href=\"quizIntro.jsp?id=0\"> take quiz 0: no immediatefeedback, one page pages, no practicemode,no random</a></li>");
-	out.println("<li>\n\n<a href=\"quizIntro.jsp?id=1\"> take quiz 1: immediatefeedback, multiple page, practice mode, random</a></li></ul>");
+	out.println("<ul><li><a href=\"newQuiz.jsp?creator=Molly\"> create a quiz</a></li><ul>");
 
 %>  
 </ul>
