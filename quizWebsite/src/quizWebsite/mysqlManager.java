@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 
 public class mysqlManager {
 	
@@ -17,13 +17,8 @@ public class mysqlManager {
 	public static final String MYSQL_PASSWORD = "eekohgoo";
 	public static final String MYSQL_DATABASE_SERVER = "mysql-user.stanford.edu";
 	public static final String MYSQL_DATABASE_NAME = "c_cs108_ellens2";
-	private static ServletContext context; 
-	public mysqlManager(ServletContext context){
-		this.context = context; 
-	}
 	
-	public static void addToDatabase(Question q){
-		  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
+	public static void addToDatabase(Question q, java.sql.Connection connection){
 			try {
 				java.sql.Statement st = connection.createStatement();
 				int rs= st.executeUpdate("insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.type + "\",\"" + q.data + "\"");
@@ -32,8 +27,7 @@ public class mysqlManager {
 			} 
 	}
 	
-	public static void addToDatabase(Quiz q){
-		  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
+	public static void addToDatabase(Quiz q, java.sql.Connection connection){
 		try {
 			java.sql.Statement st = connection.createStatement();
 			String query = "insert into Quizzes values(" + q.pKey + ",\"name\",\"quizIntro.jsp?id=" + q.pKey + "\",\""
@@ -44,29 +38,33 @@ public class mysqlManager {
 				e.printStackTrace();
 			} 
 	}
-	public static Question getQuestion(HttpServletRequest request, HttpSession session, Integer pKey){
+	public static Question getQuestion(HttpServletRequest request, HttpSession session, Integer pKey, java.sql.Connection connection){
 		
-		java.sql.Connection connection= (Connection) request.getServletContext().getAttribute("Connection");
 		try {
 			java.sql.Statement st = connection.createStatement();
 			String query = "select type from Questions where pKey = " + pKey + ";";
 			System.out.println("questionServlet.getQuestion query: " + "select type from Questions where pKey = " + pKey + ";");
 			ResultSet rs= st.executeQuery(query);
 			rs.next();
-			String questionClassName = "quizWebsite." + rs.getString(1); 
-			Class<?> clazz = Class.forName(questionClassName);
-			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor(String.class);
+			
+			String questionClassName = rs.getString("type"); 
+			Class<?> clazz = Class.forName("quizWebsite." + questionClassName);
+			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
 			System.out.println(" returning question with pkey" + pKey);
-			String data = retreiveQuestionData(pKey);
-			return (Question) ctor.newInstance(new Object[] {data});
+			String data = retreiveQuestionData(pKey, connection);
+			Question q = (Question) ctor.newInstance ();
+			int ok = q.parseData(data);
+			if (ok == 1)	return q; 
+			else{
+				throw new Exception("invalid " + questionClassName);
+			}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 		return null; 
 	}
 	
-	public static Quiz retreiveQuiz(int pKey){
-		  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
+	public static Quiz retreiveQuiz(int pKey, java.sql.Connection connection){
 		  Quiz q = new Quiz(); 
 		  try {
 					java.sql.Statement st = connection.createStatement();
@@ -91,8 +89,7 @@ public class mysqlManager {
 
 	
 	
-	public static String retreiveQuestionData(int pKey){
-		  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
+	public static String retreiveQuestionData(int pKey, java.sql.Connection connection){
 		try {
 			java.sql.Statement st = connection.createStatement();
 			ResultSet rs= st.executeQuery("select questionData from Questions where pKey = " + pKey + ";");
@@ -104,18 +101,24 @@ public class mysqlManager {
 		} 
 		return ""; 
 	}
-	
-	public static ArrayList<Integer> getQuizQuestions(int pKey){
-		  java.sql.Connection connection= (Connection) context.getAttribute("Connection");
-		  ArrayList<Integer> vec = new ArrayList<Integer>(); 
+	public static Vector<Integer> getQuestions(Integer pKey, java.sql.Connection connection){
+		Vector<Integer> vec = new Vector<Integer>(); 
+		System.out.println("1");
 		try {
-			java.sql.Statement st = connection.createStatement();
+			java.sql.Statement 		st = connection.createStatement();
+			System.out.println("2");
+
 			String query = "select * from Questions where quizKey = " + pKey + ";";
+			System.out.println("3");
+
 			System.out.println("Quiz.getQuestions query : " + query);
 			ResultSet rs= st.executeQuery(query);
-			
+			System.out.println("4");
+
 			while (rs.next()) {
-			    vec.add(rs.getInt(1));
+				System.out.println("5");
+
+				vec.add(rs.getInt(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

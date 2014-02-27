@@ -23,6 +23,7 @@ public abstract class Question {
 		abstract String className(); 
 		abstract String compressData(); 
 		abstract  String newQuestionForm();
+		abstract String getFeedback(HttpServletRequest request);
 		abstract int parseNewQuestion(HttpServletRequest request);
 		static int getNextQuestionpKey(HttpServletRequest request){
 			

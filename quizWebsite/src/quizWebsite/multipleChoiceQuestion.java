@@ -13,6 +13,7 @@ import com.mysql.jdbc.Connection;
 public class multipleChoiceQuestion extends Question {
 	ArrayList<String> choices;
 	Integer correctChoice; 
+	String data; 
 	public multipleChoiceQuestion(){	}
 
 
@@ -26,7 +27,7 @@ public class multipleChoiceQuestion extends Question {
 	// when creating new quiz, must set quizKey attribute.
 	public int parseNewQuestion(HttpServletRequest request) {
 		String choices = request.getParameter("choices");
-		Integer quizKey = (Integer) request.getSession().getAttribute(constants.session_quizKey); 
+		Integer quizKey = (Integer) request.getSession().getAttribute(Constants.session_quizKey); 
 		String correctChoice = request.getParameter("correctChoice"); 
 		String question = request.getParameter("question"); 
 		// set ivars 
@@ -41,11 +42,12 @@ public class multipleChoiceQuestion extends Question {
 	int parseData(String data) {
 		this.type = "multipleChoiceQuestion";
 		// TODO Auto-generated method stub
+		this.data = data;
 		return 1; 
 	}
 	public String displayQuestion() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.data;
 	}
 
 	public int scoreAnswer() {
@@ -55,14 +57,14 @@ public class multipleChoiceQuestion extends Question {
 
 	public String displayQuestionForm() {
 		// TODO Auto-generated method stub
-		return "question form here";
+		return this.data;
 	}
 
 
 	@Override
 	int scoreAnswer(HttpServletRequest request) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 	@Override
 	String className() {
@@ -76,6 +78,8 @@ public class multipleChoiceQuestion extends Question {
 	}
 
 
-
-
+	@Override
+	String getFeedback(HttpServletRequest request) {
+		return "<br> Feedback: your score is" + scoreAnswer(request);
+	}
 }

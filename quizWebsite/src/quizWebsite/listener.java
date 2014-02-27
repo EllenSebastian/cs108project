@@ -17,13 +17,12 @@ import com.mysql.jdbc.Statement;
  *
  */
 @WebListener
-public class listener implements HttpSessionListener, ServletContextListener {
+public class Listener implements HttpSessionListener, ServletContextListener {
 
     /**
      * Default constructor. 
      */
-    public listener() {
-        // TODO Auto-generated constructor stub
+    public Listener() {
     }
 
 	/**
@@ -31,6 +30,7 @@ public class listener implements HttpSessionListener, ServletContextListener {
      * setup global data for all users
      */
     public void contextInitialized(ServletContextEvent event) {
+    	System.out.println("context initialized");
         // set up a connection to the mysql database. 
     	// deposit in context attribute Connection. 
    	 ServletContext context=event.getServletContext();
@@ -43,12 +43,12 @@ public class listener implements HttpSessionListener, ServletContextListener {
         	java.sql.Statement stmt = con.createStatement();
         	stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
              context.setAttribute("Connection", con);
-        }catch (Exception e){
+            
+    	}catch (Exception e){
         	e.printStackTrace();
         }
        context.setAttribute("maxQuestionKey",0); 
        context.setAttribute("maxQuizKey",0); 
-
        // increment this each time you add a new question, so that it can be unique for each question.
     }
 
