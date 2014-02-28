@@ -43,7 +43,7 @@ public class Listener implements HttpSessionListener, ServletContextListener {
         		myDBinfo.MYSQL_USERNAME, myDBinfo.MYSQL_PASSWORD);
         	java.sql.Statement stmt = con.createStatement();
         	stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
-             context.setAttribute("Connection", con);
+             context.setAttribute(Constants.context_Connection, con);
             
     	}catch (Exception e){
         	e.printStackTrace();
@@ -71,7 +71,7 @@ public class Listener implements HttpSessionListener, ServletContextListener {
      */
     public void contextDestroyed(ServletContextEvent event) {
     	try {
-			((Connection) event.getServletContext().getAttribute("Connection")).close();
+			((Connection) event.getServletContext().getAttribute(Constants.context_Connection)).close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

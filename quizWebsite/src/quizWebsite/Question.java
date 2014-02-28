@@ -57,7 +57,7 @@ public abstract class Question {
 	/* Gets the next question pKey. To be used in parseNewQuestion() in subclasses.
 	 */
 	static int getNextQuestionpKey(HttpServletRequest request){
-		return mysqlManager.getNextQuestionKey((Connection) request.getServletContext().getAttribute("Connection"));
+		return mysqlManager.getNextQuestionKey((Connection) request.getServletContext().getAttribute(Constants.context_Connection));
 	}
 	// this is for retreiving questions that are ALREADY in the db. 
 	// TODO change column numbers to names 
@@ -69,21 +69,24 @@ public abstract class Question {
 	public String getType() {
 		return type;
 	}
-	
-	static int extractField(String data, String field, String remaining) {
-		int dLength = data.length();
+	// remainingData is the string that has everything left now. remaining will be filled with what is left after this iteration. 
+	static int extractField(StringBuilder remainingData, StringBuilder field) {
+		int dLength = remainingData.length();
 		int foundAt = -1;
 		for(int i = 0; i < dLength-1; i++) {
-			if(data.substring(i, i+2) == "__") {
+			if(remainingData.substring(i, i+2).equals( "__")) {
 				foundAt = i;
 				break;
 			}
 		}
 		if(foundAt == -1)
 			return 1;
-		field = data.substring(0,foundAt);
-		remaining = data.substring(foundAt+2);
-		if(field.length() == 0 || remaining.length() == 0)
+	
+		field.append(remainingData.substring(0,foundAt));
+		String temp = remainingData.substring(foundAt+2); 
+		remainingData.setLength(0);
+		remainingData.append(temp);
+		if(field.length() == 0 || remainingData.length() == 0)
 			return 1;
 		return 0;
 	}

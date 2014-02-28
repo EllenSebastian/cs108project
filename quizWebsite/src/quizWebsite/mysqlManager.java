@@ -23,7 +23,7 @@ public class mysqlManager {
 	public static void addToDatabase(Question q, java.sql.Connection connection){
 			try {
 				java.sql.Statement st = connection.createStatement();
-				String query = "insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.getType() + "\",\"" + q.compressData() + "\");";
+				String query = "insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.className() + "\",\"" + q.compressData() + "\");";
 				int rs= st.executeUpdate(query);
 
 			} catch (SQLException e) {
@@ -96,6 +96,7 @@ public class mysqlManager {
 			String data = retreiveQuestionData(pKey, connection);
 			Question q = (Question) ctor.newInstance ();
 			int ok = q.parseData(data);
+			q.pKey = pKey;
 			if (ok == 1)	return q; 
 			else{
 				throw new Exception("invalid " + questionClassName);

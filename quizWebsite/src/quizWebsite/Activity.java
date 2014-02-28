@@ -47,7 +47,7 @@ public class Activity {
 		Collections.sort(act, new activityComparator());
 	}
 	
-	public void addAcitivity() {
+	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
 			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);

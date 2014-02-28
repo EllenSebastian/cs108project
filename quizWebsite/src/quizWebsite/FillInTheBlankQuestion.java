@@ -10,20 +10,20 @@ public class FillInTheBlankQuestion extends Question {
 	
 	@Override
 	public String className() {
-		return "FillInBlankQuestion";
+		return "FillInTheBlankQuestion";
 	}
 
 	@Override
 	public String displayQuestion() {
 		String result = "<p>" + questionP1 + " ";
-		result += "<input=type=\"text\" name=\"" + pKey + "answer\" />";
+		result += "<input type=\"text\" name=\"" + pKey + "answer\" >";
 		result += " " + questionP2 + "</p>";
 		return result;
 	}
 
 	@Override
 	public int scoreAnswer(HttpServletRequest request) {
-		String userAnswer = (String) request.getAttribute("" + pKey + "answer");
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
 		userAnswer = userAnswer.toLowerCase();
 		String questionAnswer = answer.toLowerCase();
 		if(Question.match(userAnswer,questionAnswer))
@@ -33,8 +33,16 @@ public class FillInTheBlankQuestion extends Question {
 
 	@Override
 	public String getFeedback(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		userAnswer = userAnswer.toLowerCase();
+		String questionAnswer = answer.toLowerCase();
+		if(Question.match(userAnswer,questionAnswer)){
+			return "For question: <br> " + questionP1 + "___" + questionP2 + ", your answer of \"" + 
+					userAnswer + "\"was correct. You earned 1 point.";
+		}
+		return "For question: <br> " + questionP1 + "___" + questionP2 + ", your answer was incorrect. The correct answer was \"" 
+		+ answer + "\".   You earned 1 point.";
+
 	}
 
 	@Override
@@ -44,12 +52,27 @@ public class FillInTheBlankQuestion extends Question {
 
 	@Override
 	public int parseData(String data) {
-		String remainingData = "";
-		if(extractField(data,questionP1,remainingData) != 0)
-			return 1;
-		if(extractField(remainingData,answer,questionP2) != 0)
-			return 1;
-		return 0;
+		int delim = data.indexOf("__");
+		if (delim == -1 ) return 0; 
+		questionP1 = data.substring(0,delim);
+		System.out.println("Questionp1; " + questionP1);
+		
+		data = data.substring(delim+2);
+		
+		System.out.println("data now; " + data);
+		
+		delim = data.indexOf("__");
+		if (delim == -1 ) return 0; 
+		answer = data.substring(0,delim);
+		System.out.println("answer; " + answer);
+		
+		data = data.substring(delim+2);
+		if (data.length() == 0) return 0; 
+		questionP2 = data;
+		System.out.println("questionp2; " + questionP2);
+		
+		
+		return 1;
 	}
 
 	@Override

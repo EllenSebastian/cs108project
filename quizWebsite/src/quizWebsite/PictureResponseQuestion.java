@@ -1,5 +1,7 @@
 package quizWebsite;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,14 +18,15 @@ public class PictureResponseQuestion extends Question {
 	@Override
 	public String displayQuestion() {
 		String result = "<img src=\"" + imageURL + "\">";
-		result += "<p>" + question + "</p>";
-		result += "<input=type=\"text\" name \"" + pKey + "answer\" />";
+		result += "<p>" + question + "</p><br><br>";
+		result += "<input type=\"text\" name=\"" + pKey + "answer\" >";
 		return result;
 	}
 
 	@Override
 	public int scoreAnswer(HttpServletRequest request) {
-		String userAnswer = (String) request.getAttribute("" + pKey + "answer");
+		
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
 		userAnswer = userAnswer.toLowerCase();
 		String questionAnswer = answer.toLowerCase();
 		if(Question.match(userAnswer,questionAnswer))
@@ -33,8 +36,15 @@ public class PictureResponseQuestion extends Question {
 
 	@Override
 	public String getFeedback(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		userAnswer = userAnswer.toLowerCase();
+		String questionAnswer = answer.toLowerCase();
+		if(Question.match(userAnswer,questionAnswer))
+			return "For question \"" + question + "\", your answer \"" + userAnswer + "\" was correct. You earned 1 point.";
+		return "For question \"" + question + "\", your answer \"" + userAnswer + 
+				"\" was incorrect. The correct answer is \"" + answer + "\". You earned 0 points.";
+
 	}
 
 	@Override
@@ -43,13 +53,23 @@ public class PictureResponseQuestion extends Question {
 	}
 
 	@Override
+	// return 1 if ok, 0 if not ok
 	public int parseData(String data) {
-		String remainingData = "";
-		if(extractField(data,imageURL,remainingData) != 0)
-			return 1;
-		if(extractField(remainingData,question,answer) != 0)
-			return 1;
-		return 0;
+		System.out.println("data : " + data);
+		int delim = data.indexOf("__");
+		if (delim == -1) return 0 ; 
+		imageURL = data.substring(0,delim);
+		System.out.println("image: " + imageURL);
+		data = data.substring(delim+2);
+		delim = data.indexOf("__");
+		if (delim == -1) return 0 ; 
+		question = data.substring(0,delim);
+		data = data.substring(delim+2);
+		answer = data;
+		System.out.println(" Question:" + question);
+		System.out.println("answer : " + answer);
+		
+		return 1;
 	}
 
 	@Override

@@ -15,13 +15,13 @@ public class QuestionResponseQuestion extends Question {
 	@Override
 	public String displayQuestion() {
 		String result = "<p>" + question + "<p>";
-		result += "<p><input type=\"text\" name=\"" + pKey + "answer\" /></p>";
+		result += "<p><input type=\"text\" name=\"" + pKey + "answer\" ></p>";
 		return result;
 	}
 	
 	@Override
 	public int scoreAnswer(HttpServletRequest request) {
-		String userAnswer = (String) request.getAttribute("" + pKey + "answer");
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
 		userAnswer = userAnswer.toLowerCase();
 		String questionAnswer = answer.toLowerCase();
 		if(Question.match(userAnswer,questionAnswer))
@@ -31,8 +31,14 @@ public class QuestionResponseQuestion extends Question {
 	
 	@Override
 	public String getFeedback(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		userAnswer = userAnswer.toLowerCase();
+		String questionAnswer = answer.toLowerCase();
+		if(Question.match(userAnswer,questionAnswer))
+			return "For question \"" + question + "\", your answer \"" + userAnswer + "\" was correct. You earned 1 point.";
+		return "For question \"" + question + "\", your answer \"" + userAnswer + 
+				"\" was incorrect. The correct answer is \"" + answer + "\". You earned 0 points.";
+
 	}
 	
 	@Override
@@ -42,7 +48,18 @@ public class QuestionResponseQuestion extends Question {
 	
 	@Override
 	public int parseData(String data) {
-		return extractField(data,question,answer);
+		System.out.println(data);
+		int delim = data.indexOf("__");
+		if (delim == -1 ) return 0; 
+
+		question = data.substring(0,delim);
+
+		data = data.substring(delim+2);
+		if (data.length() == 0) return 0; 
+		answer = data;
+		System.out.println("question: " + question + "  answer: " + answer);
+		return 1; 
+//		return extractField(data,question,answer);
 	}
 	
 	@Override

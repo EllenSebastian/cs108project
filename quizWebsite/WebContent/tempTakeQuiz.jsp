@@ -13,7 +13,8 @@
 <ul> 
 <%
 	out.println("<ul><li><a href=\"quizIntro.jsp?id=0\"> take quiz 0: no immediatefeedback, one page pages, no practicemode,no random</a></li>");
-	out.println("<li>\n\n<a href=\"quizIntro.jsp?id=1\"> take quiz 1: immediatefeedback, multiple page, practice mode, random</a></li></ul>");
+	out.println("<li>\n\n<a href=\"quizIntro.jsp?id=1\"> take quiz 1: immediatefeedback, multiple page, practice mode, random</a></li>");
+	out.println("<li>\n\n<a href=\"quizIntro.jsp?id=29\"> take quiz 29: all question types. THIS DOES NOT WORK YET</a></li></ul>");
 
 %>  
 </ul>

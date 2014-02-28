@@ -1,6 +1,7 @@
 package quizWebsite;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,23 +21,40 @@ public class multipleChoiceQuestion extends Question {
 	public String displayQuestion() {
 		String result = "<p>" + question + "<p>";
 		for(String choice : choices) {
-			result += "<p><input type=\"radio\" name=\"answer\" value=\"" + pKey + choice + "\">" + choice + "</p>";
+			result += "<p><input type=\"radio\" name=\"" + pKey + "answer\" value=\"" + pKey +"_"+  choice + "\">" + choice + "</p>";
 		}
 		return result;
 	}
 	
 	@Override
 	public int scoreAnswer(HttpServletRequest request) {
-		String userAnswer = (String) request.getAttribute("" + pKey + "answer");
-		if(Question.match(userAnswer,answer))
+		/*Enumeration<String> attrs =  request.getAttributeNames();
+		while(attrs.hasMoreElements()) {
+		    System.out.println(attrs.nextElement());
+		}
+		Enumeration<String> params =  request.getParameterNames();
+		while(params.hasMoreElements()) {
+			String elem = params.nextElement();
+			String a = (String) request.getParameter(elem);
+			System.out.println(elem + " "  + a);
+		}*/	
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		System.out.println("User answer : " + userAnswer);
+		userAnswer = userAnswer.substring(userAnswer.indexOf("_")+1);
+		if (userAnswer.equals(answer))
 			return 1;
+	
 		return 0;
 	}
 	
 	@Override
 	public String getFeedback(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		if (scoreAnswer(request) == 1){
+			return "Your answer of " + userAnswer + " was correct. You received 1 point.";
+		}
+		return "Your answer of " + userAnswer + " was not correct. The correct answer was "
+			+ answer + ". You received 0 points";
 	}
 	
 	@Override
@@ -49,18 +67,43 @@ public class multipleChoiceQuestion extends Question {
 	}
 	
 	@Override
+	// return 1 for ok, 0 for error. 
 	public int parseData(String data) {
 		choices = new ArrayList<String>();
-		String remainingData = "";
-		if(extractField(data,question,remainingData) != 0)
-			return 1;
-		if(extractField(remainingData,answer,remainingData) != 0)
-			return 1;
-		String choice = "";
-		while(extractField(remainingData,choice,remainingData) == 0) {
+		System.out.println("data : "  + data);
+		
+		int delim = data.indexOf("__");
+		if (delim == -1 || delim >=  data.length() -2) return 0; 
+		question = data.substring(0,delim);
+		System.out.println("Question; " + question);
+		
+		data = data.substring(delim+2);
+		System.out.println("data now; " + data);
+		
+		delim = data.indexOf("__");
+		if (delim == -1 || delim >= data.length() -2) return 0; 
+		
+		answer = data.substring(0,delim);
+		System.out.println("answer : " + answer);
+		
+		data = data.substring(delim+2);
+		System.out.println("data now; " + data);
+
+		String choice; 
+		while(data.contains("__")){
+			delim = data.indexOf("__");
+			choice = data.substring(0,delim);
 			choices.add(choice);
+			System.out.println("Choice : " + choice );
+			data = data.substring(delim+2);
+			System.out.println("data now; " + data);
 		}
-		return 0;
+		System.out.println("last choice : " + data);
+		choices.add(data);
+		if (!choices.contains(answer)){
+			return 0; 
+		}
+		return 1;
 	}
 	
 	@Override

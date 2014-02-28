@@ -12,7 +12,8 @@
 <%
 // get the new question html form. 
 
-String questionType = (String) session.getAttribute("newQuestionType");
+String questionType = (String) session.getAttribute(quizWebsite.Constants.session_newQuestionType);
+System.out.println("found new question type" + questionType);
 Class<?> clazz = Class.forName("quizWebsite." + questionType);
 java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
 quizWebsite.Question q = (quizWebsite.Question) ctor.newInstance ();

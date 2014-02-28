@@ -76,7 +76,7 @@ public class Friends {
 	}
 
 	
-	public static boolean checkFriend(int user_id1, int user_id2) {
+	public static boolean checkFriend1(int user_id1, int user_id2) {
 		try {
 			PreparedStatement p = connection.prepareStatement("SELECT * FROM Friend WHERE user1 =" + user_id1 + " AND user2 =" + user_id2);
 			ResultSet r = p.executeQuery();
@@ -88,7 +88,7 @@ public class Friends {
 		return true;
 	}
 	
-	public static void removeFriend(int user1, int user2) {
+	public static void removeFriend1(int user1, int user2) {
 		try {
 			connection.prepareStatement("DELETE FROM Friend WHERE (user1 =" + user1 + " AND user2 =" + user2).executeUpdate();
 		} catch (SQLException e) {
@@ -96,7 +96,7 @@ public class Friends {
 	}
 	
 	// accompanied by the request message 
-	public static void addFriendRequest(int requestor_id, int requestee_id) {
+	public static void addFriendRequest1(int requestor_id, int requestee_id) {
 		try {
 			PreparedStatement p = connection.prepareStatement("INSERT IGNORE INTO Friend_request (requestor_id,requestee_id) VALUES (?, ?)");
 			p.setInt(1, requestor_id);

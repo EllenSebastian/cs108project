@@ -2,6 +2,7 @@ package quizWebsite;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,8 +40,21 @@ public class CreateQuestionServlet extends HttpServlet {
 	// from QuestionSubclasses.newQuestionForm
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Connection con = (Connection) request.getServletContext().getAttribute("Connection");
-		String questionType = (String)  session.getAttribute("newQuestionType");
+		Enumeration<String> attrs =  request.getAttributeNames();
+		while(attrs.hasMoreElements()) {
+		    System.out.println(attrs.nextElement());
+		}
+		Enumeration<String> params =  request.getParameterNames();
+		while(params.hasMoreElements()) {
+			String elem = params.nextElement();
+			String a = (String) request.getParameter(elem);
+			System.out.println(elem + " "  + a);
+		}
+		Connection con = (Connection) request.getServletContext().getAttribute(Constants.context_Connection);
+	//String questionType = (String)  session.getAttribute(Constants.session_newQuestionType);
+		String questionType = (String) session.getAttribute(quizWebsite.Constants.session_newQuestionType);
+
+		System.out.println("got question type " + questionType);
 		Class<?> clazz;
 		try {
 			clazz = Class.forName("quizWebsite." + questionType);
@@ -55,5 +69,4 @@ public class CreateQuestionServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("askForQuestion.jsp");
 		dispatcher.forward(request, response);
 	}
-
-}
+	}
