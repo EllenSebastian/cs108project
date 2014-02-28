@@ -10,11 +10,11 @@ public class Messages {
 	private static Statement stmt;
 
 	private static Connection connection = myDBinfo.getConnection();
-
+	
 
 	public static ArrayList<Message> getMessages(int user_id) {
 		ArrayList<Message> list = new ArrayList<Message>();
-
+		
 		ResultSet rs;
 		try {
 			stmt = connection.createStatement();

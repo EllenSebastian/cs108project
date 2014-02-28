@@ -16,14 +16,13 @@ import java.util.ArrayList;
 public class Achievement{
 
 	private static Connection connection = myDBinfo.getConnection();
-
+	
 	public static final int AMATEUR_AUTHOR = 1;
 	public static final int PROLIFIC_AUTHOR = 2;
 	public static final int PRODIGIOUS_AUTHOR = 3;
 	public static final int QUIZ_MACHINE = 4;
 	public static final int GREATEST = 5;
 	public static final int PRACTICE_MODE = 6;
-
 	public final int user_id;
 	public final int achievement_id;
 	public final String description;
@@ -64,7 +63,6 @@ public class Achievement{
 				title = "";
 		}
 	}
-
 	public void addAchievement(int user_id, int achievement_id) {
 		try {
 			Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -74,7 +72,6 @@ public class Achievement{
 		} catch (SQLException ignored) {  
 		}
 	}
-
 	public static ArrayList<Achievement> getAchievement(int user_id) {
 		ResultSet r;
 		ArrayList<Achievement> list = new ArrayList<Achievement>();
@@ -89,6 +86,6 @@ public class Achievement{
 			return null;
 		}
 	}
-
-
+	
+	
 }

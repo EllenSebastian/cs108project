@@ -111,7 +111,6 @@ public class UserManager {
 		try {
 			ArrayList<User> results = new ArrayList<User>();
 			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE is_admin =1 ");
-
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
 				User user = User.getUser(result.getInt("user_id"));

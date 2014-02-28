@@ -20,7 +20,7 @@ public class User {
 	private boolean isAdmin;
 
 	private static Connection connection = myDBinfo.getConnection();
-
+		
     
 	// id refer to the key of this particular user in database
 	public User(int user_id,String name,String password,boolean isAdmin){
@@ -48,19 +48,20 @@ public class User {
 		}
 	}
 
+	
 	public ArrayList<Achievement> getUserAchievement() {
 		return Achievement.getAchievement(user_id);
 	}
-
-
+	
+	
 	public ArrayList<Activity> getUserActivity() {
 		return Activity.getActivity(user_id);
 	}
-
+	
 	public ArrayList<String> getUserFriends(){
 		return Friends.friendsOf(user_id);
 	}
-
+	
 	public ArrayList<Message> getUserMessages(){
 		return Messages.getMessages(user_id);
 	}

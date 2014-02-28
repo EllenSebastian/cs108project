@@ -26,9 +26,10 @@ public class Message{
 	int fromUser;
 	int toUser;
 
+	
 	public Message(int message_id,int type,Boolean read,String body, 
 			int quizID, int fromUser,int toUser,Timestamp time){
-
+		
 		this.message_id = message_id;
 		this.type = type;
 		this.read = read;
@@ -51,7 +52,6 @@ public class Message{
 			alert =" ";
 	}
 }
-
 	public void markasRead() {
 		try {
 			PreparedStatement ps = connection.prepareStatement("UPDATE `message` SET `unread`= ? WHERE `message_id` = ?");

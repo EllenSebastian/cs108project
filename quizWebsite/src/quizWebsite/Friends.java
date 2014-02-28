@@ -75,6 +75,40 @@ public class Friends {
 		}
 	}
 
+	
+	public static boolean checkFriend(int user_id1, int user_id2) {
+		try {
+			PreparedStatement p = connection.prepareStatement("SELECT * FROM Friend WHERE user1 =" + user_id1 + " AND user2 =" + user_id2);
+			ResultSet r = p.executeQuery();
+			if(!r.next()) return false;
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public static void removeFriend(int user1, int user2) {
+		try {
+			connection.prepareStatement("DELETE FROM Friend WHERE (user1 =" + user1 + " AND user2 =" + user2).executeUpdate();
+		} catch (SQLException e) {
+		}
+	}
+	
+	// accompanied by the request message 
+	public static void addFriendRequest(int requestor_id, int requestee_id) {
+		try {
+			PreparedStatement p = connection.prepareStatement("INSERT IGNORE INTO Friend_request (requestor_id,requestee_id) VALUES (?, ?)");
+			p.setInt(1, requestor_id);
+			p.setInt(2, requestee_id);					
+			int changed = p.executeUpdate();
+			//if(changed == 0) return false;
+			//return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// accept or remove the request
 	public static void removeFriendRequest(int requestor_id, int requestee_id) {
 		try {

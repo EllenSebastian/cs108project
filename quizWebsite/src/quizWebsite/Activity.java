@@ -24,7 +24,7 @@ public class Activity {
 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
-
+			
 	// type: "created a quiz" and "took a quiz"
 	public Activity(String name,Timestamp time, String type, 
 			double score, int quizId){
@@ -42,10 +42,11 @@ public class Activity {
 	    }
 	}
 
+		
 	public static void sortByTime(List<Activity> act) {
 		Collections.sort(act, new activityComparator());
 	}
-
+	
 	public void addAcitivity() {
 		try {
 			stmt = connection.createStatement();

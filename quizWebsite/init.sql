@@ -13,9 +13,10 @@ drop table if exists QuizzesTaken;
 
 
 CREATE TABLE Users (
-    name CHAR(64) primary key, 
+	user_id int primary key,
+    name CHAR(64),
     passwordHash CHAR(64), 
-    achievements text  
+    isAdmin BOOLEAN
 );
 
 CREATE TABLE Friends (
@@ -59,3 +60,45 @@ CREATE TABLE QuizzesTaken(
 	duration FLOAT
 );
 
+CREATE TABLE Activity(
+	name text,
+	time DATETIME,
+	type text,
+	score float,
+    pKey INT
+);
+
+Create TABLE Achievment (
+	user_id int,
+	achievement_id int,
+	time DATETIME
+)
+
+Create TABLE Announcement (
+	announcement_id int  primary key,
+	user_id int,
+	time DATETIME,
+	subject text,
+	body text
+)
+
+Create TABLE Message (
+	message_id int primary key,
+	type int,
+	read Boolean,
+	body text,
+	pKey int,
+	fromUser int,
+	toUser int,
+	time DATETIME;
+)
+
+Create TABLE Friend (
+    user1 int,
+    user2 int
+)
+
+Create TABLE Friend_request(
+    requestor_id int,
+    requestee_id int
+)
