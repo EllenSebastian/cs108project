@@ -16,7 +16,7 @@ CREATE TABLE Users (
 	user_id int primary key,
     name CHAR(64),
     passwordHash CHAR(64), 
-    isAdmin BOOLEAN, 
+    isAdmin BOOLEAN
 );
 
 CREATE TABLE Friends (
