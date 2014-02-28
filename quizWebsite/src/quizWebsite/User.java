@@ -9,32 +9,35 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
+
 
 public class User {
-	
+
+	int user_id;
 	private String name;
-	public int id;
 	private String password;
 	private boolean isAdmin;
-		
-	// need to implement the connection to Database
-	private static Connection db = myDBinfo.getConnection();
+
+	private static Connection connection = myDBinfo.getConnection();
+
     
 	// id refer to the key of this particular user in database
-	public User(int id,String name,String password,boolean isAdmin){
+	public User(int user_id,String name,String password,boolean isAdmin){
+		this.user_id = user_id;
 		this.name = name;
 		this.password = password;
-		this.id = id;
 		this.isAdmin = isAdmin;
 	}
-	
+
 	// retrieve the user information from db and create a user object
 	public static User getUser(int id){
 		ResultSet r;
 		try {
-			r = db.prepareStatement("SELECT * FROM user WHERE user_id = " + id).executeQuery();
+			r = connection.prepareStatement("SELECT * FROM User WHERE user_id = " + id).executeQuery();
 			if(!r.next()) return null;
-			User user = new User(r.getInt("user_id"),
+			User user = new User(
+					          r.getInt("user_id"),
 					          r.getString("name"), 					           	
 					          r.getString("password"),
 							  r.getInt("isAdmin") == 1 ? true : false
@@ -44,48 +47,22 @@ public class User {
 			return null;
 		}
 	}
-	
-	public ArrayList<String> getAchievements(){
-		Achievements achievement = new Achievements();
-		return achievement.getAchievements(name);
+
+	public ArrayList<Achievement> getUserAchievement() {
+		return Achievement.getAchievement(user_id);
 	}
-	
-	public void addAchievement(String ach){
-		Achievements achievement = new Achievements();
-		achievement.addAchievement(name, ach);
+
+
+	public ArrayList<Activity> getUserActivity() {
+		return Activity.getActivity(user_id);
 	}
-	
-	public ArrayList<HistoryItem> getActivity(){
-		Activity activity = new Activity();
-		return activity.getUserActivity(name);
+
+	public ArrayList<String> getUserFriends(){
+		return Friends.friendsOf(user_id);
 	}
-	
-	public void addActivity(String user,String date, String type, 
-			double score, String quizId){
-		HistoryItem hi = new HistoryItem(user, date, type, score, quizId);
-		Activity activity = new Activity();
-		activity.addHistory(hi);
+
+	public ArrayList<Message> getUserMessages(){
+		return Messages.getMessages(user_id);
 	}
-	
-	public ArrayList<String> getFriends(){
-		Friends friends = new Friends();
-		return friends.friendsOf(name);
-	}
-	
-	public void addFriend(String name, String friend){
-		Friends friends = new Friends();
-		friends.addFriend(name, friend);
-	}
-	
-	public ArrayList<Message> getMessages(){
-		Messages messages = new Messages();
-		return messages.getUserMessages(name);
-	}
-	
-	public void sendMessage(String type, String body, String quizId, String toUser){
-		Message msg = new Message(false, type, body, quizId, name, toUser);
-		Messages messages = new Messages();
-		messages.sendMessage(msg);
-	}
-	
+
 }

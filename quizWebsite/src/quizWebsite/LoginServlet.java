@@ -1,7 +1,6 @@
 package quizWebsite;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class CreateQuestionServlet
+ * Servlet implementation class LoginServlet
  */
-@WebServlet("/CreateQuestionServlet")
-public class CreateQuestionServlet extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateQuestionServlet() {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,24 +35,19 @@ public class CreateQuestionServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	// from QuestionSubclasses.newQuestionForm
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Connection con = (Connection) request.getServletContext().getAttribute("Connection");
-		String questionType = (String)  session.getAttribute("newQuestionType");
-		Class<?> clazz;
-		try {
-			clazz = Class.forName("quizWebsite." + questionType);
-			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
-			Question q = (Question) ctor.newInstance ();
-			q.parseNewQuestion(request);
-			mysqlManager.addToDatabase(q,con);
-		} catch (Exception e){
-			e.printStackTrace();
-		}		
-	
-		RequestDispatcher dispatcher = request.getRequestDispatcher("askForQuestion.jsp");
-		dispatcher.forward(request, response);
+		HttpSession session = request.getSession(); 
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		User u = UserManager.checkUser(username,password);
+		if (u != null){
+			session.setAttribute("currentUser",u);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("welcomePage.jsp");
+			dispatcher.forward(request, response);
+		}else{
+			RequestDispatcher dispatcher = request.getRequestDispatcher("loginPage.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 
 }

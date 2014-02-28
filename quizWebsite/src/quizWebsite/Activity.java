@@ -4,35 +4,78 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Timestamp;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 
 public class Activity {
 
-	private static Statement stmt;
-	protected ServletContext context;
+	Timestamp time;
+	String type;
+	double score;
+	int quizId;
+	String name;
 
-	public ArrayList<HistoryItem> getUserActivity(String user) {
-		ArrayList<HistoryItem> list = new ArrayList<HistoryItem>();
-		java.sql.Connection connection = (Connection) context
-				.getAttribute("Connection");
-		ResultSet rs;
+	private static Statement stmt;
+	private static Connection connection = myDBinfo.getConnection();
+
+	// type: "created a quiz" and "took a quiz"
+	public Activity(String name,Timestamp time, String type, 
+			double score, int quizId){
+		this.time = time;
+		this.type = type;
+		this.score = score;
+		this.quizId = quizId;
+		this.name = name;
+	}
+
+	public static class activityComparator implements Comparator<Activity> {
+	    @Override
+	    public int compare(Activity o1, Activity o2) {
+	        return o1.time.compareTo(o2.time);
+	    }
+	}
+
+	public static void sortByTime(List<Activity> act) {
+		Collections.sort(act, new activityComparator());
+	}
+
+	public void addAcitivity() {
 		try {
 			stmt = connection.createStatement();
 			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
-			rs = stmt.executeQuery("SELECT * FROM activity where user = "
-					+ (char) 34 + user + (char) 34);
+			stmt.executeQuery("INSERT into Activity VALUES (" 
+					+ (char) 34 + name + (char) 34 + "," + (char) 34
+					+ time + (char) 34 + "," + (char) 34 + type
+					+ (char) 34 + "," + score + "," + 
+					(char) 34 + quizId + (char) 34 + ")");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<Activity> getActivity(int user_id) {
+		ArrayList<Activity> list = new ArrayList<Activity>();
+		ResultSet rs;
+		try {
+			Statement stmt = connection.createStatement();
+			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
+			rs = stmt.executeQuery("SELECT * FROM Activity where user_id = "
+					+ (char) 34 + user_id + (char) 34);
 
 			while (rs.next()) {
-				String date = rs.getString("date");
-				String type = rs.getString("date");
-				;
+				String name = rs.getString("name");
+				Timestamp time = rs.getTimestamp("time");
+				String type = rs.getString("type");
 				double score = rs.getDouble("score");
-				String quizId = rs.getString("date");
-				;
-				HistoryItem temp = new HistoryItem(user, date, type, score,
+				int quizId = rs.getInt("quizID");
+				Activity temp = new Activity(name, time, type, score,
 						quizId);
 				list.add(temp);
 			}
@@ -40,22 +83,5 @@ public class Activity {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	public void addHistory(HistoryItem hi) {
-		java.sql.Connection connection = (Connection) context
-				.getAttribute("Connection");
-		ResultSet rs;
-		try {
-			stmt = connection.createStatement();
-			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
-			stmt.executeQuery("INSERT into activity VALUES (" 
-					+ (char) 34 + hi.user + (char) 34 + "," + (char) 34
-					+ hi.date + (char) 34 + "," + (char) 34 + hi.type
-					+ (char) 34 + "," + hi.score + "," + 
-					(char) 34 + hi.quizId + (char) 34 + ")");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 }

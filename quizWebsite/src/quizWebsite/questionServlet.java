@@ -68,13 +68,15 @@ public class questionServlet extends HttpServlet {
 	void onePageQuiz(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session = request.getSession();
 		Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute("quizQuestions"); // need to initialize this
-		String allHTML = "" ; 
+		String allHTML = "<form action=\"questionServlet\" type=\"post\">" ; 
 		for (Integer quizI : quizQuestions){
 			Question question = mysqlManager.getQuestion(request,session,quizI,
 					(java.sql.Connection)(request.getServletContext().getAttribute("Connection")));
 			allHTML += question.displayQuestion();
 			allHTML += "<br><br>";
 		}
+		allHTML += "<input type=\"submit\" value=\"submit\"";
+		allHTML += "</form>";
 		session.setAttribute("lastQuestion", true);
 		session.setAttribute("currentQuestionHTML",allHTML);
 	}
@@ -102,7 +104,11 @@ public class questionServlet extends HttpServlet {
 		Question question = mysqlManager.getQuestion(request,session,currentQuestionpKey,
 				(java.sql.Connection)(request.getServletContext().getAttribute("Connection")));
 		session.setAttribute("currentQuestion", question);
-		session.setAttribute("currentQuestionHTML", question.displayQuestion());			
+		String form = "<form action=\"questionServlet\" type=\"post\">";
+		form += question.displayQuestion();
+		form += "<input type=\"submit\" value=\"submit\"";
+		form += "</form>";
+		session.setAttribute("currentQuestionHTML",form);			
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
