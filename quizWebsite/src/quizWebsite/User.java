@@ -57,12 +57,22 @@ public class User {
 		return Activity.getActivity(user_id);
 	}
 	
-	public ArrayList<String> getUserFriends(){
-		return Friends.friendsOf(user_id);
+	public ArrayList<Integer> getUserFriends(){
+		return Friends.getFriends(user_id);
+	}
+	
+	public List<Activity> getFriendsActivity(int user_id) {
+		ArrayList<Activity> act = new ArrayList<Activity>();
+		ArrayList<Integer> friends = getUserFriends();
+		for (int i = 0; i < friends.size(); i++) {
+			act.addAll(Activity.getActivity(friends.get(i)));
+		}
+		Activity.sortByTime(act);
+		return act;
 	}
 	
 	public ArrayList<Message> getUserMessages(){
-		return Messages.getMessages(user_id);
+		return Message.getMessages(user_id);
 	}
 	
 }

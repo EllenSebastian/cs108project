@@ -25,16 +25,16 @@ public class Achievement{
 	public static final int PRACTICE_MODE = 6;
 	
 	public final int user_id;
-	public final int achievement_id;
+	public final int type;
 	public final String description;
 	public final String title;
 	public Timestamp time;
 
-	public Achievement(int user_id, int achievement_id, Timestamp time) {
+	public Achievement(int user_id, int type, Timestamp time) {
 		this.user_id = user_id;
-		this.achievement_id = achievement_id;
+		this.type = type;
 		this.time = time;
-		switch (achievement_id) {
+		switch (type) {
 			case 1:
 				description = " created one quiz.";
 				title = "Amateur Author";
@@ -65,10 +65,10 @@ public class Achievement{
 		}
 	}
 	
-	public void addAchievement(int user_id, int achievement_id) {
+	public void addAchievement() {
 		try {
 			Timestamp time = new Timestamp(System.currentTimeMillis());
-			String stmt = "INSERT INTO Achievement (user_id, achievement_id, timestamp) VALUES (" + user_id + ", " + achievement_id + ", '" + time + "')";
+			String stmt = "INSERT INTO Achievement (user_id, type, timestamp) VALUES (" + user_id + ", " + type + ", '" + time + "')";
 			PreparedStatement p = connection.prepareStatement(stmt);
 			p.executeUpdate();
 		} catch (SQLException ignored) {  
@@ -81,7 +81,7 @@ public class Achievement{
 		try {
 			r = connection.prepareStatement("SELECT * FROM Achievement WHERE user_id = " + user_id).executeQuery();
 			while (r.next()) {
-				Achievement a = new Achievement(r.getInt("user_id"), r.getInt("achievement_id"), r.getTimestamp("timestamp"));
+				Achievement a = new Achievement(r.getInt("user_id"), r.getInt("type"), r.getTimestamp("timestamp"));
 				list.add(a);
 			}
 			return list;
