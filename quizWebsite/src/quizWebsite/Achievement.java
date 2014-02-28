@@ -3,13 +3,18 @@ package quizWebsite;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.sql.Connection;
+
 import javax.servlet.ServletContext;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
@@ -63,8 +68,12 @@ public class Achievement{
 				title = "";
 		}
 	}
-	public void addAchievement(int user_id, int achievement_id) {
+	public static void addAchievement(int user_id, int achievement_id) {
 		try {
+			/*DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss"); 
+			Calendar cal = Calendar.getInstance();
+			String datetime = dateFormat.format(cal.getTime());*/
+			
 			Timestamp time = new Timestamp(System.currentTimeMillis());
 			String stmt = "INSERT INTO Achievement (user_id, achievement_id, timestamp) VALUES (" + user_id + ", " + achievement_id + ", '" + time + "')";
 			PreparedStatement p = connection.prepareStatement(stmt);
