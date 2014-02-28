@@ -12,13 +12,16 @@
 <%
 // get the new question html form. 
 
-quizWebsite.multipleChoiceQuestion newQuestion = (quizWebsite.multipleChoiceQuestion) session.getAttribute("newQuestion");
-String questionType = (String) session.getAttribute("newQuestionType");
-//Class clazz = Class.forName("quizWebsite." + questionType);
-//java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
-//quizWebsite.multipleChoiceQuestion q = (quizWebsite.multipleChoiceQuestion) ctor.newInstance ();
- out.println(newQuestion.displayQuestionForm()); // TODO this doesn't work if not cast as multipleChoiceQuestion THIS DOESN'T WORK TODO 
+String questionType = (String) session.getAttribute(quizWebsite.Constants.session_newQuestionType);
+System.out.println("found new question type" + questionType);
+Class<?> clazz = Class.forName("quizWebsite." + questionType);
+java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
+quizWebsite.Question q = (quizWebsite.Question) ctor.newInstance ();
+q.newQuestionForm(); 
 
+out.println("<form action = \"CreateQuestionServlet\" method = \"post\">");
+out.println(q.newQuestionForm()); // TODO this doesn't work if not cast as multipleChoiceQuestion THIS DOESN'T WORK TODO 
+out.println("</form>");
 %>
 
 

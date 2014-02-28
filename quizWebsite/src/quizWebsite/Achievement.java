@@ -3,18 +3,23 @@ package quizWebsite;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.sql.Connection;
+
 import javax.servlet.ServletContext;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
 public class Achievement{
-	
+
 	private static Connection connection = myDBinfo.getConnection();
 	
 	public static final int AMATEUR_AUTHOR = 1;
@@ -23,7 +28,6 @@ public class Achievement{
 	public static final int QUIZ_MACHINE = 4;
 	public static final int GREATEST = 5;
 	public static final int PRACTICE_MODE = 6;
-	
 	public final int user_id;
 	public final int type;
 	public final String description;
@@ -64,9 +68,14 @@ public class Achievement{
 				title = "";
 		}
 	}
+
 	
 	public void addAchievement() {
 		try {
+			/*DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss"); 
+			Calendar cal = Calendar.getInstance();
+			String datetime = dateFormat.format(cal.getTime());*/
+			
 			Timestamp time = new Timestamp(System.currentTimeMillis());
 			String stmt = "INSERT INTO Achievement (user_id, type, timestamp) VALUES (" + user_id + ", " + type + ", '" + time + "')";
 			PreparedStatement p = connection.prepareStatement(stmt);
@@ -74,7 +83,8 @@ public class Achievement{
 		} catch (SQLException ignored) {  
 		}
 	}
-	
+
+
 	public static ArrayList<Achievement> getAchievement(int user_id) {
 		ResultSet r;
 		ArrayList<Achievement> list = new ArrayList<Achievement>();

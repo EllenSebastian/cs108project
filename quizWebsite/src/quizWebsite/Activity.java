@@ -15,17 +15,19 @@ import javax.servlet.ServletContext;
 import java.sql.Connection;
 
 public class Activity {
+
 	
 	public static final int quiz_Created = 1;
 	public static final int quiz_Taken = 2;
 	
+
 	Timestamp time;
 	int type;
 	double score;
 	int quizId;
 	int user_id;
 	String description;
-	
+
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
 			
@@ -48,19 +50,20 @@ public class Activity {
 				description = "";	
 		}
 	}
-		
+
 	public static class activityComparator implements Comparator<Activity> {
 	    @Override
 	    public int compare(Activity o1, Activity o2) {
 	        return o1.time.compareTo(o2.time);
 	    }
 	}
+
 		
 	public static void sortByTime(List<Activity> act) {
 		Collections.sort(act, new activityComparator());
 	}
 	
-	public void addAcitivity() {
+	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
 			stmt.executeQuery("INSERT into Activity VALUES (" 
@@ -72,7 +75,7 @@ public class Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static ArrayList<Activity> getActivity(int user_id) {
 		ArrayList<Activity> list = new ArrayList<Activity>();
 		ResultSet rs;

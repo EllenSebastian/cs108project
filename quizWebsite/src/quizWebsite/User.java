@@ -13,12 +13,12 @@ import java.sql.Statement;
 
 
 public class User {
-	
+
 	int user_id;
 	private String name;
 	private String password;
 	private boolean isAdmin;
-	
+
 	private static Connection connection = myDBinfo.getConnection();
 		
     
@@ -29,7 +29,7 @@ public class User {
 		this.password = password;
 		this.isAdmin = isAdmin;
 	}
-	
+
 	// retrieve the user information from db and create a user object
 	public static User getUser(int id){
 		ResultSet r;
@@ -47,6 +47,7 @@ public class User {
 			return null;
 		}
 	}
+
 	
 	public ArrayList<Achievement> getUserAchievement() {
 		return Achievement.getAchievement(user_id);
@@ -74,5 +75,5 @@ public class User {
 	public ArrayList<Message> getUserMessages(){
 		return Message.getMessages(user_id);
 	}
-	
+
 }

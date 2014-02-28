@@ -23,7 +23,7 @@ public class mysqlManager {
 	public static void addToDatabase(Question q, java.sql.Connection connection){
 			try {
 				java.sql.Statement st = connection.createStatement();
-				String query = "insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.type + "\",\"" + q.data + "\");";
+				String query = "insert into Questions values(" + q.pKey + "," + q.quizKey + ",\"" + q.className() + "\",\"" + q.compressData() + "\");";
 				int rs= st.executeUpdate(query);
 
 			} catch (SQLException e) {
@@ -34,7 +34,7 @@ public class mysqlManager {
 	public static int addToDatabase(Quiz q, java.sql.Connection connection){
 		try {
 			java.sql.Statement st = connection.createStatement();
-			String query = "insert into Quizzes values(" + q.pKey + ",\"name\",\"quizIntro.jsp?id=" + q.pKey + "\",\""
+			String query = "insert into Quizzes values(" + q.pKey + ",\"" + q.name + "\",\"quizIntro.jsp?id=" + q.pKey + "\",\""
 					+ q.creator + "\"," + q.immediateFeedbackString + "," +q.multiplePagesString + "," + q.practiceModeString+
 					"," + q.randomOrderString + ",\"" + q.whenCreated + "\");";
 			return st.executeUpdate(query ); 
@@ -96,6 +96,7 @@ public class mysqlManager {
 			String data = retreiveQuestionData(pKey, connection);
 			Question q = (Question) ctor.newInstance ();
 			int ok = q.parseData(data);
+			q.pKey = pKey;
 			if (ok == 1)	return q; 
 			else{
 				throw new Exception("invalid " + questionClassName);
@@ -143,13 +144,12 @@ public class mysqlManager {
 		} 
 		return ""; 
 	}
+	
 	public static Vector<Integer> getQuestions(Integer pKey, java.sql.Connection connection){
 		Vector<Integer> vec = new Vector<Integer>(); 
 		try {
 			java.sql.Statement 		st = connection.createStatement();
-
 			String query = "select * from Questions where quizKey = " + pKey + ";";
-
 			System.out.println("Quiz.getQuestions query : " + query);
 			ResultSet rs= st.executeQuery(query);
 

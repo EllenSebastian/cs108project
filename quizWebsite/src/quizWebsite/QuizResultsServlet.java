@@ -37,15 +37,15 @@ public class QuizResultsServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		PrintWriter out = response.getWriter();
 
-		Quiz currentQuiz = (Quiz) session.getAttribute("currentQuiz");
+		Quiz currentQuiz = (Quiz) session.getAttribute(Constants.session_currentQuiz);
 		
-		String feedback = (String) session.getAttribute("allFeedback");
+		String feedback = (String) session.getAttribute(Constants.session_allFeedback);
 
 		if (!currentQuiz.multiplePages){
 			// TODO score all the questions....
 			// build up feedback for all questions....
 			}
-		Integer score = (Integer) session.getAttribute("currentScore");
+		Integer score = (Integer) session.getAttribute(Constants.session_currentScore);
 		out.println("score : " + score);
 		out.println(feedback);
 	}

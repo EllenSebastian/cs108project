@@ -9,11 +9,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Message{
-	
+
+
+	private static Connection connection = myDBinfo.getConnection();
+
+
 	public static final int Friend_Request = 1;
 	public static final int Challenge = 2;
 	public static final int GeneralNote = 3;
-	
+
 	int message_id;
 	Timestamp time;
 	boolean read;
@@ -23,6 +27,7 @@ public class Message{
 	int quizID;
 	int fromUser;
 	int toUser;
+
 	
     private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
@@ -52,7 +57,6 @@ public class Message{
 			alert =" ";
 	}
 }
-	
 	public void markasRead() {
 		try {
 			PreparedStatement ps = connection.prepareStatement("UPDATE `message` SET `unread`= ? WHERE `message_id` = ?");

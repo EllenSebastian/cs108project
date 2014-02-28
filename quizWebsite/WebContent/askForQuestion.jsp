@@ -11,7 +11,11 @@
 <input type="submit" value = "Done"/> </form>
 <form action="ChooseQuestionTypeServlet" method="post">
 <input type="radio" name="questionType" value="multipleChoiceQuestion">Multiple Choice<br>
+<input type="radio" name="questionType" value="PictureResponseQuestion">Picture response <br>
+<input type="radio" name="questionType" value="FillInTheBlankQuestion">Fill-In-The-Blank<br>
+<input type="radio" name="questionType" value="QuestionResponseQuestion">Single response<br>
 <input type="submit" value = "Create a new question"/> </form>
+
 
 
 </body>

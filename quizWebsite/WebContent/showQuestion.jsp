@@ -10,12 +10,12 @@
 </head>
 <body>
 	<%
-String questionHTML =(String) session.getAttribute("currentQuestionHTML");
-Integer questionIndex = (Integer) session.getAttribute("currentQuestionIndex");
+String questionHTML =(String) session.getAttribute(quizWebsite.Constants.session_questionHTML);
+Integer questionIndex = (Integer) session.getAttribute(quizWebsite.Constants.session_currentQuestionIndex);
 
-Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute("quizQuestions"); // need to initialize this
-Boolean lastQuestion = (Boolean) session.getAttribute("lastQuestion");
-String previousFeedback = (String) session.getAttribute("previousFeedback");
+Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute(quizWebsite.Constants.session_quizQuestions); // need to initialize this
+Boolean lastQuestion = (Boolean) session.getAttribute(quizWebsite.Constants.session_lastQuestionBool);
+String previousFeedback = (String) session.getAttribute(quizWebsite.Constants.session_previousFeedback);
 
 
 if (previousFeedback != null){
@@ -23,10 +23,8 @@ if (previousFeedback != null){
 }
 
 out.println(questionHTML);
-
-
-
-if (lastQuestion){
+System.out.println(questionHTML);
+/*if (lastQuestion){
 	// forward to showQuestion.jsp
 	out.println("<form action=\"QuizResultsServlet\" method=\"post\">"); // call doPost in questionServlet
 	out.print("<input type=\"submit\" value = \"Finish Quiz\"/> </form>");
@@ -34,7 +32,7 @@ if (lastQuestion){
 else{ // last question
 	out.println("<form action=\"questionServlet\" method=\"post\">");// go to QuizResults
 	out.print("<input type=\"submit\" value = \"Go to next question\"/> </form>");
-}
+}*/
 
 %>
 </body>

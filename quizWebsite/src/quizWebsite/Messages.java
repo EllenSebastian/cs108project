@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 
 public class Messages {
 	private static Statement stmt;
-	
+
 	private static Connection connection = myDBinfo.getConnection();
 	
 
@@ -53,5 +53,5 @@ public class Messages {
 			ps.executeUpdate();
 		} catch (SQLException e) { }
   }
-	
+
 }

@@ -42,20 +42,22 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 	protected void createNewQuiz(HttpServletRequest request){
 //		public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
 	//			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
-		String name = (String) request.getParameter("name");
-		String creator = (String) request.getSession().getAttribute("newQuizCreator");
+		String[] names =  request.getParameterValues("name");
+		String creator = (String) request.getSession().getAttribute(Constants.session_currentUser);
 		String immediateFeedback = (String) request.getParameter("immediateFeedback");
 		String practiceMode =  (String) request.getParameter("practiceMode");
 		String randomOrder = (String)  request.getParameter("randomOrder");
 		String multiplePages =  (String) request.getParameter("pages");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss"); 
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.dateFormat); 
 		Calendar cal = Calendar.getInstance();
 		String datetime = dateFormat.format(cal.getTime());
-		Quiz q = new Quiz(name,"",creator,immediateFeedback != null, multiplePages.equals("multiplePages"), practiceMode != null, randomOrder != null, datetime, request.getServletContext()); 
+		
+		Quiz q = new Quiz(names[0],"",creator,immediateFeedback != null, multiplePages.equals("multiplePages"), practiceMode != null, randomOrder != null, datetime, request.getServletContext()); 
 		String url = "quizIntro.jsp?id=" + q.pKey;
 		q.url = url; 
-		int success = mysqlManager.addToDatabase(q, (Connection) request.getServletContext().getAttribute("Connection"));
-		request.getSession().setAttribute("newQuizKey",q.pKey);
+		int success = mysqlManager.addToDatabase(q, (Connection) request.getServletContext().getAttribute(Constants.context_Connection));
+		request.getSession().setAttribute(Constants.session_newQuizKey,q.pKey);
 		System.out.println(success);
 	}
 	/**
@@ -63,11 +65,11 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(); 
-		Boolean newQuiz = (Boolean) session.getAttribute("newQuiz"); 
+		Boolean newQuiz = (Boolean) session.getAttribute(Constants.session_isNewQuizBool); 
 		PrintWriter out = response.getWriter();
 		if (newQuiz){
 			createNewQuiz(request);
-			session.setAttribute("newQuiz", false);
+			session.setAttribute(Constants.session_isNewQuizBool, false);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("askForQuestion.jsp");
 			dispatcher.forward(request, response);
 		}
@@ -76,11 +78,10 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 			Class<?> clazz;
 			try {
 				clazz = Class.forName("quizWebsite." + questionType);
-				session.setAttribute("newQuestionType", questionType);
+				session.setAttribute(Constants.session_newQuestionType, questionType);
 				java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
 				Question q = (Question) ctor.newInstance ();
-				multipleChoiceQuestion question = new multipleChoiceQuestion(); 
-				session.setAttribute("newQuestion", question);
+				session.setAttribute(Constants.session_newQuestion, q);
 				// TODO figure out how to subclass it
 				RequestDispatcher dispatcher = request.getRequestDispatcher("CreateQuestion.jsp");
 				dispatcher.forward(request, response);

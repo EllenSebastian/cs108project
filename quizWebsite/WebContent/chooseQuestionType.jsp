@@ -10,6 +10,10 @@
 What question type would you like to create?<br>
 <form action ="CreateQuestionServlet" method = "post">
 <input type="radio" name="questionType" value="multipleChoiceQuestion">Multiple Choice<br>
+<input type="radio" name="questionType" value="PictureResponseQuestion">Picture response <br>
+<input type="radio" name="questionType" value="FillInTheBlankQuestion">Fill-In-The-Blank<br>
+<input type="radio" name="questionType" value="QuestionResponseQuestion">Single response<br>
+
 </form><br>
 </body>
 </html>

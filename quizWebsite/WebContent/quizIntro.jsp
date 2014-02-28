@@ -18,18 +18,19 @@ String id = request.getParameter("id");
 out.println("Welcome to quiz "  + id);
 // set the current quiz
 quizWebsite.Quiz quiz =  quizWebsite.mysqlManager.retreiveQuiz(Integer.parseInt(id),con);
-session.setAttribute("currentQuiz", quiz);
+session.setAttribute(quizWebsite.Constants.session_currentQuiz, quiz);
 // set the list of questions
 Vector<Integer> quizQuestions = (Vector<Integer>) quizWebsite.mysqlManager.getQuestions(Integer.parseInt(id),con);
 if (quiz.randomOrder)
 	Collections.shuffle(quizQuestions);
-session.setAttribute("quizQuestions", quizQuestions);
-session.setAttribute("previousAnswer",null);
-session.setAttribute("currentQuestionIndex",-1);
-session.setAttribute("currentScore",0);
-session.setAttribute("currentQuestion",null);
-session.setAttribute("previousFeedback",null);
-session.setAttribute("allFeedback",null);
+session.setAttribute(quizWebsite.Constants.session_quizQuestions , quizQuestions);
+session.setAttribute(quizWebsite.Constants.session_previousAnswer,null);
+session.setAttribute(quizWebsite.Constants.session_currentQuestionIndex,-1);
+session.setAttribute(quizWebsite.Constants.session_currentScore,0);
+session.setAttribute(quizWebsite.Constants.session_currentQuestion,null);
+session.setAttribute(quizWebsite.Constants.session_previousFeedback,null);
+session.setAttribute(quizWebsite.Constants.session_allFeedback,null);
+session.setAttribute(quizWebsite.Constants.session_lastQuestionBool,false);
 // link to the first question
 out.println("<form action=\"questionServlet\" method=\"post\">"); // call doPost in questionServlet
 out.print("<input type=\"submit\" value = \"Go to Question 0\"/> </form>");
