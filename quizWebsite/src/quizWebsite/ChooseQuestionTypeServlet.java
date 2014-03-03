@@ -43,7 +43,7 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 //		public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
 	//			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
 		String[] names =  request.getParameterValues("name");
-		String creator = (String) request.getSession().getAttribute(Constants.session_currentUser);
+		Integer creator = (Integer) request.getSession().getAttribute(Constants.session_currentUser);
 		String immediateFeedback = (String) request.getParameter("immediateFeedback");
 		String practiceMode =  (String) request.getParameter("practiceMode");
 		String randomOrder = (String)  request.getParameter("randomOrder");
@@ -57,7 +57,7 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 		String url = "quizIntro.jsp?id=" + q.pKey;
 		q.url = url; 
 		int success = mysqlManager.addToDatabase(q, (Connection) request.getServletContext().getAttribute(Constants.context_Connection));
-		request.getSession().setAttribute(Constants.session_newQuizKey,q.pKey);
+		request.getSession().setAttribute(Constants.session_newQuiz,q);
 		System.out.println(success);
 	}
 	/**

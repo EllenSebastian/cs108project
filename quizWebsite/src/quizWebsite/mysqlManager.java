@@ -117,7 +117,7 @@ public class mysqlManager {
 					rs.next();
 					q.name = rs.getString("name");
 					q.url = rs.getString("url");
-					q.creator = rs.getString("creator");
+					q.creator = rs.getInt("creator");
 					q.immediateFeedback = rs.getBoolean("immediateFeedback");
 					q.multiplePages = rs.getBoolean("multiplePages");
 					q.practiceMode = rs.getBoolean("practiceMode");

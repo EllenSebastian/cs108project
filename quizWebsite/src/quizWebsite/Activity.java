@@ -16,23 +16,39 @@ import java.sql.Connection;
 
 public class Activity {
 
+
+	public static final int quiz_Created = 1;
+	public static final int quiz_Taken = 2;
+
+
 	Timestamp time;
-	String type;
+	int type;
 	double score;
 	int quizId;
-	String name;
+	int user_id;
+	String description;
 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
-			
-	// type: "created a quiz" and "took a quiz"
-	public Activity(String name,Timestamp time, String type, 
+
+	// type can be 1 or 2
+	public Activity(int user_id,Timestamp time, int type, 
 			double score, int quizId){
 		this.time = time;
 		this.type = type;
 		this.score = score;
 		this.quizId = quizId;
-		this.name = name;
+		this.user_id = user_id;
+		switch (type) {
+			case 1:
+				description = "created a quiz";
+				break;
+			case 2:
+				description = "took a quizz";
+				break;
+			default:
+				description = "";	
+		}
 	}
 
 	public static class activityComparator implements Comparator<Activity> {
@@ -42,17 +58,16 @@ public class Activity {
 	    }
 	}
 
-		
+
 	public static void sortByTime(List<Activity> act) {
 		Collections.sort(act, new activityComparator());
 	}
-	
+
 	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
-			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
-			stmt.executeQuery("INSERT into Activity VALUES (" 
-					+ (char) 34 + name + (char) 34 + "," + (char) 34
+			stmt.executeUpdate("INSERT into Activity VALUES (" 
+					+ (char) 34 + user_id + (char) 34 + "," + (char) 34
 					+ time + (char) 34 + "," + (char) 34 + type
 					+ (char) 34 + "," + score + "," + 
 					(char) 34 + quizId + (char) 34 + ")");
@@ -71,12 +86,11 @@ public class Activity {
 					+ (char) 34 + user_id + (char) 34);
 
 			while (rs.next()) {
-				String name = rs.getString("name");
 				Timestamp time = rs.getTimestamp("time");
-				String type = rs.getString("type");
+				int type = rs.getInt("type");
 				double score = rs.getDouble("score");
 				int quizId = rs.getInt("quizID");
-				Activity temp = new Activity(name, time, type, score,
+				Activity temp = new Activity(user_id, time, type, score,
 						quizId);
 				list.add(temp);
 			}
@@ -85,4 +99,6 @@ public class Activity {
 		}
 		return list;
 	}
+
+
 }

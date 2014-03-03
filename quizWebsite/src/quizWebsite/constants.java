@@ -18,13 +18,13 @@ public class Constants {
 	
 	
 	// quiz creation stuff	
-	public static final String session_newQuizKey = "session.newQuizKey"; // Integer
+	public static final String session_newQuiz = "session.newQuiz"; // Quiz
 	public static final String session_isNewQuizBool = "newQuiz"; // false or true
 	public static final String session_newQuestionType = "session.newQuestionType"; // type: String
 	public static final String session_newQuestion= "session.newQuestion";  // type: Question subclass
 
 
-	
+	// acheivements, activities
 	public static final String dateFormat = "yyyy:MM:dd HH:mm:ss";
 	public static final String context_Connection = "Connection";
 
