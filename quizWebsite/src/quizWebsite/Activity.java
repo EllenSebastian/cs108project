@@ -16,10 +16,10 @@ import java.sql.Connection;
 
 public class Activity {
 
-
+	
 	public static final int quiz_Created = 1;
 	public static final int quiz_Taken = 2;
-
+	
 
 	Timestamp time;
 	int type;

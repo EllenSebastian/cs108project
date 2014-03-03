@@ -10,17 +10,16 @@ import java.sql.PreparedStatement;
 public class Friends {
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
-
-	public static ArrayList<String> friendsOf(int user_id){	
+	
+	public static ArrayList<Integer> getFriends(int user_id){	
 		ResultSet rs;
-		ArrayList<String> friends = new ArrayList<String>();
+		ArrayList<Integer> friends = new ArrayList<Integer>();
 		try {
 			stmt = connection.createStatement();
-			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
 			rs = stmt.executeQuery("SELECT * FROM Friend where user1 = "
 					+ (char) 34 + user_id + (char) 34);
 			while (rs.next()) {
-				String friend = rs.getString("user2");
+				Integer friend = rs.getInt("user2");
 				friends.add(friend);
 			}
 		}catch (SQLException e) {

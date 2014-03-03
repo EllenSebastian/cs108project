@@ -13,7 +13,7 @@ drop table if exists QuizzesTaken;
 
 
 CREATE TABLE Users (
-	user_id int primary key,
+	user_id int AUTO_INCREMENT primary key,
     name CHAR(64),
     passwordHash CHAR(64), 
     isAdmin BOOLEAN
@@ -61,16 +61,16 @@ CREATE TABLE QuizzesTaken(
 );
 
 CREATE TABLE Activity(
-	name text,
+	user_id int,
 	time DATETIME,
-	type text,
+	type int,
 	score float,
     pKey INT
 );
 
 Create TABLE Achievment (
 	user_id int,
-	achievement_id int,
+	type int,
 	time DATETIME
 )
 
