@@ -4,9 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.sql.Connection;
 
 import javax.servlet.ServletContext;
+
+import quizWebsite.Activity.activityComparator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,16 +33,16 @@ public class Achievement{
 	public static final int QUIZ_MACHINE = 4;
 	public static final int GREATEST = 5;
 	public static final int PRACTICE_MODE = 6;
+	
 	public final int user_id;
 	public final int type;
 	public final String description;
 	public final String title;
 	public Timestamp time;
 
-	public Achievement(int user_id, int type, Timestamp time) {
+	public Achievement(int user_id, int type) {
 		this.user_id = user_id;
 		this.type = type;
-		this.time = time;
 		switch (type) {
 			case 1:
 				description = " created one quiz.";
@@ -77,7 +82,7 @@ public class Achievement{
 			String datetime = dateFormat.format(cal.getTime());*/
 			
 			Timestamp time = new Timestamp(System.currentTimeMillis());
-			String stmt = "INSERT INTO Achievement (user_id, type, timestamp) VALUES (" + user_id + ", " + type + ", '" + time + "')";
+			String stmt = "INSERT INTO Achievement (user_id, type, time) VALUES (" + user_id + ", " + type + ", '" + time + "')";
 			PreparedStatement p = connection.prepareStatement(stmt);
 			p.executeUpdate();
 		} catch (SQLException ignored) {  
@@ -89,9 +94,12 @@ public class Achievement{
 		ResultSet r;
 		ArrayList<Achievement> list = new ArrayList<Achievement>();
 		try {
-			r = connection.prepareStatement("SELECT * FROM Achievement WHERE user_id = " + user_id).executeQuery();
+			System.out.println("i came here");
+			r = connection.prepareStatement("SELECT * FROM Achievement WHERE user_id = " + user_id + " ORDER BY time DESC").executeQuery();				
 			while (r.next()) {
-				Achievement a = new Achievement(r.getInt("user_id"), r.getInt("type"), r.getTimestamp("timestamp"));
+				Achievement a = new Achievement(r.getInt("user_id"), r.getInt("type"));
+				System.out.println(a.user_id);
+				System.out.println(a.type);
 				list.add(a);
 			}
 			return list;

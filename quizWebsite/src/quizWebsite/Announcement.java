@@ -17,10 +17,10 @@ public class Announcement {
 	
 	private static Connection connection = myDBinfo.getConnection();
 	
-	public static void newAnnouncement(User u, String subject, String body) {
+	public static void newAnnouncement(int user_id, String subject, String body) {
 		try {
 			PreparedStatement p = connection.prepareStatement("INSERT INTO Announcement (user_id, time, subject,body) VALUES (?, ?, ?, ?)");
-			p.setInt(1, u.user_id);
+			p.setInt(1, user_id);
 			p.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
 			p.setString(3, subject);
 			p.setString(4, body);
@@ -60,6 +60,7 @@ public class Announcement {
 			for(int i = 0; i < size; i++) {
 				r.next();
 				result[i] = new Announcement(r.getInt("announcement_id"));
+				//System.out.println(r.getInt("announcement_id"));
 			}
 			
 			return result;

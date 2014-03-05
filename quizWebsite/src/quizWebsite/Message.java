@@ -10,34 +10,28 @@ import java.util.ArrayList;
 
 public class Message{
 
-
-	private static Connection connection = myDBinfo.getConnection();
-
-
 	public static final int Friend_Request = 1;
 	public static final int Challenge = 2;
 	public static final int GeneralNote = 3;
 
 	int message_id;
 	Timestamp time;
-	boolean read;
+	boolean checked;
 	int type;
 	String alert;
 	String body;
 	int quizID;
 	int fromUser;
 	int toUser;
-
 	
     private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
 	
 	// type can be 1,2 or 3
-	public Message(int message_id,int type,Boolean read,String body, 
+	public Message(int type,Boolean checked,String body, 
 			int quizID, int fromUser,int toUser,Timestamp time){	
-		this.message_id = message_id;
 		this.type = type;
-		this.read = read;
+		this.checked = checked;
 		this.body = body;
 		this.quizID = quizID;
 		this.fromUser = fromUser;
@@ -57,32 +51,42 @@ public class Message{
 			alert =" ";
 	}
 }
+	
 	public void markasRead() {
 		try {
-			PreparedStatement ps = connection.prepareStatement("UPDATE `message` SET `unread`= ? WHERE `message_id` = ?");
-			ps.setInt(1, 0);
-			ps.setInt(2, this.message_id);
+			PreparedStatement ps = connection.prepareStatement("UPDATE Message SET checked = ? WHERE fromUser = ? and toUser = ? and time = ?");
+			System.out.println("I came here");
+			ps.setBoolean(1,true);
+			ps.setInt(2, this.fromUser);
+			ps.setInt(3, this.toUser);
+			ps.setTimestamp(4, this.time);
 			ps.executeUpdate();
+			System.out.println("I came here");
 		} catch (SQLException e) { }
 	}
 	
+	
+	// get messages and order the result by time. the latest comes first.
 	public static ArrayList<Message> getMessages(int user_id) {
 		ArrayList<Message> list = new ArrayList<Message>();		
 		ResultSet rs;
 		try {
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM Message where toUser = "
-					+ (char) 34 + user_id + (char) 34);
+					+ (char) 34 + user_id + (char) 34 + " ORDER BY time DESC");
 			while (rs.next()) {
-				int message_id = rs.getInt("message_id");
 				int type = rs.getInt("type");
-				boolean read = rs.getBoolean("read");
+				boolean checked = rs.getBoolean("checked");
 				String body = rs.getString("body");
-				int quizID = rs.getInt("quizID");
+				int quizid = rs.getInt("quizid");
 				int fromUser = rs.getInt("fromUser");
 				Timestamp time = rs.getTimestamp("time");
-				Message temp = new Message(message_id,type,read,body, 
-						quizID,fromUser,user_id,time);
+				System.out.println(type);
+				System.out.println(body);
+				System.out.println(quizid);
+				System.out.println(fromUser);
+				Message temp = new Message(type,checked,body, 
+						quizid,fromUser,user_id,time);
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -94,15 +98,14 @@ public class Message{
 
 	public void sendMessage() {
 		try {
-			PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO Message (message_id,type,read,body,quizID,fromUser,toUser,time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-			ps.setInt(1, message_id);
-			ps.setInt(2, type);
-			ps.setBoolean(3, read);
-			ps.setString(4,body);
-			ps.setInt(5,quizID);
-			ps.setInt(6,fromUser);
-			ps.setInt(7,toUser);
-			ps.setTimestamp(8,time);
+			PreparedStatement ps = connection.prepareStatement("INSERT IGNORE INTO Message (type,checked,body,quizID,fromUser,toUser,time) VALUES (?, ?, ?, ?, ?, ?, ?)");
+			ps.setInt(1, type);
+			ps.setBoolean(2, checked);
+			ps.setString(3,body);
+			ps.setInt(4,quizID);
+			ps.setInt(5,fromUser);
+			ps.setInt(6,toUser);
+			ps.setTimestamp(7,time);
 			ps.executeUpdate();
 		} catch (SQLException e) { }
   }

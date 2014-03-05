@@ -4,25 +4,19 @@
 # Datetime format is entered in format "YYYY-MM-DD HH:MM:SS".
 # another note: Friends should be symmetric, so if you insert ("Patrick","Molly"), you should also insert ("Molly","Patrick").
 
-drop table if exists Users; 
-drop table if exists Friends; 
+drop table if exists User; 
+drop table if exists Friend; 
 drop table if exists Quizzes;
 drop table if exists Questions; 
-drop table if exists Messages; 
+drop table if exists Message; 
 drop table if exists QuizzesTaken; 
 
 
-CREATE TABLE Users (
+CREATE TABLE User (
 	user_id int AUTO_INCREMENT primary key,
     name CHAR(64),
     passwordHash CHAR(64), 
     isAdmin BOOLEAN
-);
-
-CREATE TABLE Friends (
-	name1 CHAR(64) ,
-	name2 CHAR(64) , 
-	primary key (name1,name2)
 );
 
 CREATE TABLE Quizzes (
@@ -44,7 +38,7 @@ CREATE TABLE Questions(
 	questionData text # encrypted and interpreted by question subclass
 );
 
-CREATE TABLE Messages (
+CREATE TABLE Message (
 	fromUser text,
 	toUser text,
 	type text,
@@ -95,7 +89,8 @@ Create TABLE Message (
 
 Create TABLE Friend (
     user1 int,
-    user2 int
+    user2 int,
+    primary key (user1,user2)
 )
 
 Create TABLE Friend_request(

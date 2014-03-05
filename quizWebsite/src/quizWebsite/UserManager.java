@@ -13,6 +13,31 @@ public class UserManager {
 
 	private static Connection db = myDBinfo.getConnection();
 
+	  
+	
+	// retrieve the user information from db and create a user object
+	public static User getUser(int id){
+		ResultSet r;
+		try {
+			r = db.prepareStatement("SELECT * FROM User WHERE user_id = " + id).executeQuery();
+			
+			if(!r.next()) return null;
+			User user = new User(
+					          r.getInt("user_id"),
+					          r.getString("name"), 					           	
+					          r.getString("passwordHash"),
+							  r.getInt("isAdmin") == 1 ? true : false
+							 );
+			//System.out.println(user.user_id);
+			//System.out.println(user.name);
+			//System.out.println(user.password);
+			//System.out.println(user.isAdmin);
+			return user;
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+
 	private static String hashPassword(String text) {
 		byte[] hash = new byte[40];
 		try {
@@ -44,10 +69,13 @@ public class UserManager {
 			p.setString(1, name);
 
 			ResultSet result = p.executeQuery();
+			//System.out.println(result.next());
+			//System.out.println(result.getString("passwordHash").equals(password));
+			//System.out.println(result.getInt("user_id"));
 			if(!result.next()) return null;
 			if(!result.getString("passwordHash").equals(password)) return null;
 			
-			return User.getUser(result.getInt("user_id"));
+			return getUser(result.getInt("user_id"));
 		} catch (SQLException e) {
 			return null;
 		}
@@ -58,7 +86,7 @@ public class UserManager {
 		password = hashPassword(password);
 
 		try {
-			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO Users (name, passwordHash, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO User (name, passwordHash, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			p.setString(1, name);
 			p.setString(2, password);
 			p.setInt(3, isAdmin ? 1 : 0);
@@ -69,7 +97,7 @@ public class UserManager {
 			// return the latest inserted user
 			ResultSet s = p.getGeneratedKeys();
 			s.next();
-			return User.getUser(s.getInt(1));
+			return getUser(s.getInt(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -83,6 +111,7 @@ public class UserManager {
 			if (result.next()) {
 				numUsers += result.getInt(1);
 			}
+			//System.out.println(numUsers);
 			return numUsers;
 		} catch (SQLException e) {
 			return 0;
@@ -110,10 +139,10 @@ public class UserManager {
 	public static ArrayList<User> getAdmins() {
 		try {
 			ArrayList<User> results = new ArrayList<User>();
-			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE is_admin =1 ");
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE isAdmin =1 ");
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
-				User user = User.getUser(result.getInt("user_id"));
+				User user = getUser(result.getInt("user_id"));
 				results.add(user);
 			}
 			return results;
@@ -131,7 +160,8 @@ public class UserManager {
 
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
-				User u = User.getUser(result.getInt("user_id"));
+				User u = getUser(result.getInt("user_id"));
+				//System.out.println(result.getInt("user_id"));
 				results.add(u);
 			}
 			return results;
@@ -140,11 +170,13 @@ public class UserManager {
 		}		
 	}
 
-	public static void removeUser(User user) {
+	public static void removeUser(int id) {
 		try {
-			db.prepareStatement("DELETE FROM User WHERE user_id = " + user.user_id).executeUpdate();
+			db.prepareStatement("DELETE FROM User WHERE user_id = " +id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}	
+	
+
 }

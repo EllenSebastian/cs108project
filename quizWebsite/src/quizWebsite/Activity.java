@@ -32,7 +32,7 @@ public class Activity {
 	private static Connection connection = myDBinfo.getConnection();
 			
 	// type can be 1 or 2
-	public Activity(int user_id,Timestamp time, int type, 
+	public Activity(int user_id,Timestamp time,int type, 
 			double score, int quizId){
 		this.time = time;
 		this.type = type;
@@ -57,7 +57,6 @@ public class Activity {
 	        return o1.time.compareTo(o2.time);
 	    }
 	}
-
 		
 	public static void sortByTime(List<Activity> act) {
 		Collections.sort(act, new activityComparator());
@@ -66,7 +65,7 @@ public class Activity {
 	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
-			stmt.executeQuery("INSERT into Activity VALUES (" 
+			stmt.executeUpdate("INSERT into Activity VALUES (" 
 					+ (char) 34 + user_id + (char) 34 + "," + (char) 34
 					+ time + (char) 34 + "," + (char) 34 + type
 					+ (char) 34 + "," + score + "," + 
@@ -75,22 +74,23 @@ public class Activity {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void main(String args[]){
+		getActivity(3);
+	}
+    
+	// get activity and order the result by time. the latest activity will be the first entry.
 	public static ArrayList<Activity> getActivity(int user_id) {
 		ArrayList<Activity> list = new ArrayList<Activity>();
 		ResultSet rs;
 		try {
-			Statement stmt = connection.createStatement();
-			stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
-			rs = stmt.executeQuery("SELECT * FROM Activity where user_id = "
-					+ (char) 34 + user_id + (char) 34);
-
+			rs = connection.prepareStatement("SELECT * FROM Activity WHERE user_id = " + user_id + " ORDER BY time DESC").executeQuery();	
 			while (rs.next()) {
 				Timestamp time = rs.getTimestamp("time");
 				int type = rs.getInt("type");
 				double score = rs.getDouble("score");
-				int quizId = rs.getInt("quizID");
-				Activity temp = new Activity(user_id, time, type, score,
+				int quizId = rs.getInt("pKey");
+				Activity temp = new Activity(user_id,time,type,score,
 						quizId);
 				list.add(temp);
 			}

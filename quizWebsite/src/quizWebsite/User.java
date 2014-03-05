@@ -30,31 +30,13 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 
-	// retrieve the user information from db and create a user object
-	public static User getUser(int id){
-		ResultSet r;
-		try {
-			r = connection.prepareStatement("SELECT * FROM User WHERE user_id = " + id).executeQuery();
-			if(!r.next()) return null;
-			User user = new User(
-					          r.getInt("user_id"),
-					          r.getString("name"), 					           	
-					          r.getString("password"),
-							  r.getInt("isAdmin") == 1 ? true : false
-							 );
-			return user;
-		} catch (SQLException e) {
-			return null;
-		}
-	}
-
 	
-	public ArrayList<Achievement> getUserAchievement() {
+	public ArrayList<Achievement> getUserAchievements() {
 		return Achievement.getAchievement(user_id);
 	}
 	
 	
-	public ArrayList<Activity> getUserActivity() {
+	public ArrayList<Activity> getUserActivities() {
 		return Activity.getActivity(user_id);
 	}
 	
