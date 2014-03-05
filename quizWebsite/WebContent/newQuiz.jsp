@@ -12,10 +12,6 @@
 <body>
 
 <%
-
-Connection con = (Connection) application.getAttribute(quizWebsite.Constants.context_Connection); 
-String creator = request.getParameter("creator");
-session.setAttribute(quizWebsite.Constants.session_currentUser, creator); // TODO in the future this should already be stored. 
 session.setAttribute("newQuiz",true);
 %>
 <h1>Choose your quiz options </h1>

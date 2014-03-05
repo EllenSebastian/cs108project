@@ -14,7 +14,7 @@ public class multipleChoiceQuestion extends Question {
 	
 	@Override
 	public String className() {
-		return "MultipleChoiceQuestion";
+		return "multipleChoiceQuestion";
 	}
 	
 	@Override
@@ -160,7 +160,7 @@ public class multipleChoiceQuestion extends Question {
 			}
 		}
 		HttpSession session = request.getSession();
-		quizKey = (Integer) session.getAttribute(Constants.session_newQuizKey);
+		quizKey =( (Quiz) session.getAttribute(Constants.session_newQuiz)).pKey;
 		pKey = Question.getNextQuestionpKey(request);
 		return 0;
 	}

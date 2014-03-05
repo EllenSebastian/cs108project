@@ -101,7 +101,7 @@ public class PictureResponseQuestion extends Question {
 		if(imageURL.contains("__") || imageURL.length() == 0 || question.contains("__") || question.length() == 0 || answer.contains("__") || answer.length() == 0)
 			return 1;
 		HttpSession session = request.getSession();
-		quizKey = (Integer) session.getAttribute(Constants.session_newQuizKey);
+		quizKey =( (Quiz) session.getAttribute(Constants.session_newQuiz)).pKey;
 		pKey = Question.getNextQuestionpKey(request);
 		return 0;
 	}

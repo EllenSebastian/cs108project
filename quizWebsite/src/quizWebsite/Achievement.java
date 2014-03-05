@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class Achievement{
 
 	private static Connection connection = myDBinfo.getConnection();
-	
+
 	public static final int AMATEUR_AUTHOR = 1;
 	public static final int PROLIFIC_AUTHOR = 2;
 	public static final int PRODIGIOUS_AUTHOR = 3;
@@ -74,13 +74,13 @@ public class Achievement{
 		}
 	}
 
-	
+
 	public void addAchievement() {
 		try {
 			/*DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss"); 
 			Calendar cal = Calendar.getInstance();
 			String datetime = dateFormat.format(cal.getTime());*/
-			
+
 			Timestamp time = new Timestamp(System.currentTimeMillis());
 			String stmt = "INSERT INTO Achievement (user_id, type, time) VALUES (" + user_id + ", " + type + ", '" + time + "')";
 			PreparedStatement p = connection.prepareStatement(stmt);
@@ -107,6 +107,6 @@ public class Achievement{
 			return null;
 		}
 	}
-	
-	
+
+
 }

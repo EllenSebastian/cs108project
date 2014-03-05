@@ -15,7 +15,9 @@
 
 <%
 	out.println("<ul><li><a href=\"newQuiz.jsp?creator=Molly\"> create a quiz</a></li><ul>");
-
+session.setAttribute(quizWebsite.Constants.session_currentUser, 1); // TODO get loginServlet to set current user 
+Integer currentUser = (Integer) session.getAttribute(quizWebsite.Constants.session_currentUser);
+out.println("current user " + currentUser);
 %>  
 </ul>
 </body>

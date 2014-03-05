@@ -41,7 +41,7 @@ public class FillInTheBlankQuestion extends Question {
 					userAnswer + "\"was correct. You earned 1 point.";
 		}
 		return "For question: <br> " + questionP1 + "___" + questionP2 + ", your answer was incorrect. The correct answer was \"" 
-		+ answer + "\".   You earned 1 point.";
+		+ answer + "\".   You earned 0 points.";
 
 	}
 
@@ -106,7 +106,7 @@ public class FillInTheBlankQuestion extends Question {
 		if(questionP1.length() == 0 || answer.length() == 0 || questionP2.length() == 0)
 			return 1;
 		HttpSession session = request.getSession();
-		quizKey = (Integer) session.getAttribute(Constants.session_newQuizKey);
+		quizKey =( (Quiz) session.getAttribute(Constants.session_newQuiz)).pKey;
 		pKey = getNextQuestionpKey(request);
 		return 0;
 	}

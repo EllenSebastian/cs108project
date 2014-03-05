@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Choose a question type</title>
 </head>
 <body>
-<form action="tempCreateQuiz.jsp" method="post">
+<form action="quizCreatedSummary.jsp" method="post">
 <input type="submit" value = "Done"/> </form>
 <form action="ChooseQuestionTypeServlet" method="post">
 <input type="radio" name="questionType" value="multipleChoiceQuestion">Multiple Choice<br>

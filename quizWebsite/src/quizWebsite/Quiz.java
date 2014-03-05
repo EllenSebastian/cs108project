@@ -15,7 +15,7 @@ public class Quiz {
 	public int pKey; 
 	public String name; 
 	public String url; 
-	public String creator; 
+	public Integer creator; 
 	public boolean immediateFeedback;
 	public boolean multiplePages; 
 	public boolean practiceMode;
@@ -23,7 +23,7 @@ public class Quiz {
 	public String whenCreated; 
 	public String immediateFeedbackString, multiplePagesString, practiceModeString, randomOrderString; 
 	public Quiz() {}
-	public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
+	public Quiz(String name, String url, Integer creator, boolean immediateFeedback,boolean multiplePages,
 			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
 		// insert into db
 		pKey = mysqlManager.getNextQuizKey((Connection)context.getAttribute(Constants.context_Connection));

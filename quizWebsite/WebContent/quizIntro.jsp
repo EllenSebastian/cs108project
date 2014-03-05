@@ -6,19 +6,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Welcome to quiz!
-</title>
-</head>
-<body>
-hello
+
 <%
 
 Connection con = (Connection) application.getAttribute("Connection"); 
 String id = request.getParameter("id");
-out.println("Welcome to quiz "  + id);
-// set the current quiz
+
 quizWebsite.Quiz quiz =  quizWebsite.mysqlManager.retreiveQuiz(Integer.parseInt(id),con);
 session.setAttribute(quizWebsite.Constants.session_currentQuiz, quiz);
+
+out.println("<title>"+  quiz.name + "	</title> </head>		<body>");
+out.println("Welcome to \"" + quiz.name + "\".");
+// set the current quiz
 // set the list of questions
 Vector<Integer> quizQuestions = (Vector<Integer>) quizWebsite.mysqlManager.getQuestions(Integer.parseInt(id),con);
 if (quiz.randomOrder)

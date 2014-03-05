@@ -30,7 +30,7 @@ public class Activity {
 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
-			
+
 	// type can be 1 or 2
 	public Activity(int user_id,Timestamp time,int type, 
 			double score, int quizId){
@@ -57,11 +57,11 @@ public class Activity {
 	        return o1.time.compareTo(o2.time);
 	    }
 	}
-		
+
 	public static void sortByTime(List<Activity> act) {
 		Collections.sort(act, new activityComparator());
 	}
-	
+
 	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
@@ -74,10 +74,7 @@ public class Activity {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String args[]){
-		getActivity(3);
-	}
+
     
 	// get activity and order the result by time. the latest activity will be the first entry.
 	public static ArrayList<Activity> getActivity(int user_id) {
@@ -99,6 +96,6 @@ public class Activity {
 		}
 		return list;
 	}
-	
+
 
 }
