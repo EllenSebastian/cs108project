@@ -9,14 +9,17 @@
 </head>
 <body>
 <h1>All Friends</h1>
+<ul>
 <%
-	String searchName = session.getAttribute("userSearch");
-	ArrayList<User> users = UserManager.search(searchName);
-	for (User u : users) {
-		String userName = u.name();
-		out.println("<h4>"+userName+"</h4>");
-		out.println("<a href=messageSend.jsp?id="+userName+">Add Friend</a>");
+	User user = session.getAttribute(Constants.session_currentUser);
+	String name = user.name();
+	ArrayList<Integer> friends = user.getUserFriends();
+	for (Integer f : friends) {
+		User temp = UserManager.getUser(f);
+		String friendName = temp.name();
+		out.println("<li><a href=friendPage.jsp?id="+f+">"+friendName+"</a></li>");
 	}
 %>
+</ul>
 </body>
 </html>

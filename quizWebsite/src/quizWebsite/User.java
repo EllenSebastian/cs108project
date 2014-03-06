@@ -29,6 +29,18 @@ public class User {
 		this.password = password;
 		this.isAdmin = isAdmin;
 	}
+	
+	public String name(){
+		return name;
+	}
+	
+	public Boolean isAdmin(){
+		return isAdmin;
+	}
+	
+	public Announcement[] getAnnouncements(){
+		return Announcement.getAnnouncements();
+	}
 
 	
 	public ArrayList<Achievement> getUserAchievements() {
@@ -42,9 +54,9 @@ public class User {
 	
 	public ArrayList<Integer> getUserFriends(){
 		return Friends.getFriends(user_id);
-	}
+	}w
 	
-	public List<Activity> getFriendsActivity(int user_id) {
+	public List<Activity> getFriendsActivity() {
 		ArrayList<Activity> act = new ArrayList<Activity>();
 		ArrayList<Integer> friends = getUserFriends();
 		for (int i = 0; i < friends.size(); i++) {

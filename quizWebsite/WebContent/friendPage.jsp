@@ -6,7 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
-	User user = session.getAttribute(Constants.session_currentUser);
+	int id = request.getParameter("id");
+	User user = UserManager.getUser(id);
 	String name = user.name();
 	Announcement[] announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();
@@ -23,12 +24,7 @@
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
 		out.println("<p>" + a.body + "</p>");
 	}
-	
-	out.println("<form action='SearchUsersServlet' method='get'>");
-	out.println("<p>User: <input type='text' name='user' />");
-	out.println("<input type='submit' value = 'Search'/></p>");
-	out.println("</form>");
-	
+
 	out.println("<h2>Recently Taken Quizzes:</h2>");
 	for (Activity a : userActivity) {
 		int i = 0;
@@ -59,7 +55,7 @@
 		int i = 0;
 		if (i >= 5)
 			break;
-		out.println("<h3>" + a.time + " " + a.title+":</h3>");
+		out.println("<h3>" + a.time + " " + a.title + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
 		i++;
 	}
@@ -70,7 +66,8 @@
 		if (i >= 5)
 			break;
 		if (!m.checked) {
-			out.println("<h3>From " + m.fromUser + " at " +m.time+":</h3>");
+			out.println("<h3>From " + m.fromUser + " at " + m.time
+					+ ":</h3>");
 			out.println("<p>" + m.alert + "</p>");
 			i++;
 		}

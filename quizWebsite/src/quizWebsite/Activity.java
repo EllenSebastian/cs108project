@@ -21,12 +21,12 @@ public class Activity {
 	public static final int quiz_Taken = 2;
 	
 
-	Timestamp time;
-	int type;
-	double score;
+	public Timestamp time;
+	public int type;
+	public double score;
 	int quizId;
 	int user_id;
-	String description;
+	public String description;
 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
@@ -44,7 +44,7 @@ public class Activity {
 				description = "created a quiz";
 				break;
 			case 2:
-				description = "took a quizz";
+				description = "took a quiz";
 				break;
 			default:
 				description = "";	
