@@ -11,7 +11,7 @@
 <h1>All Friends</h1>
 <ul>
 <%
-	User user = session.getAttribute(Constants.session_currentUser);
+	User user = (User)session.getAttribute(Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Integer> friends = user.getUserFriends();
 	for (Integer f : friends) {

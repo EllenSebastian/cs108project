@@ -39,8 +39,12 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		System.out.println(username);
+		System.out.println(password);
 		User u = UserManager.checkUser(username,password);
+		System.out.println("test");
 		if (u != null){
+			System.out.println("test");
 			session.setAttribute(Constants.session_currentUser,u);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
 			dispatcher.forward(request, response);

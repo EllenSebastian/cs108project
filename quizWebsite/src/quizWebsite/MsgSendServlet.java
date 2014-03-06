@@ -3,6 +3,7 @@ package quizWebsite;
 import java.io.IOException;
 import java.sql.Timestamp;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,11 +35,11 @@ public class MsgSendServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = request.getSession().getAttribute(Constants.session_currentUser);
-		int type = request.getParameterValues("Type");
+		User user = (User)request.getSession().getAttribute(Constants.session_currentUser);
+		int type = Integer.parseInt(request.getParameter("Type"));
 		String body = request.getParameter("Body");
-		int quizId = request.getParameterValues("quizID");
-		String toUser = request.getParameterValues("toUser");
+		int quizId = Integer.parseInt(request.getParameter("quizID"));
+		String toUser = request.getParameter("toUser");
 		Message msg = new Message(type, false, body, quizId, 
 				user.name(), toUser, new Timestamp(System.currentTimeMillis()));
 		

@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
-	User user = session.getAttribute(Constants.session_currentUser);
+	User user = (User)session.getAttribute(Constants.session_currentUser);
 	String name = user.name();
 	Announcement[] announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();

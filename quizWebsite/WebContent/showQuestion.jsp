@@ -13,7 +13,7 @@
 String questionHTML =(String) session.getAttribute(quizWebsite.Constants.session_questionHTML);
 Integer questionIndex = (Integer) session.getAttribute(quizWebsite.Constants.session_currentQuestionIndex);
 
-Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute(quizWebsite.Constants.session_quizQuestions); // need to initialize this
+Vector<Integer> quizQuestions = (Vector<Integer>)session.getAttribute(quizWebsite.Constants.session_quizQuestions); // need to initialize this
 Boolean lastQuestion = (Boolean) session.getAttribute(quizWebsite.Constants.session_lastQuestionBool);
 String previousFeedback = (String) session.getAttribute(quizWebsite.Constants.session_previousFeedback);
 

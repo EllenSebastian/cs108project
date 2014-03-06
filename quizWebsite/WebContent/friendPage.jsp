@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
-	int id = request.getParameter("id");
+	int id = Integer.parseInt(request.getParameter("id"));
 	User user = UserManager.getUser(id);
 	String name = user.name();
 	Announcement[] announcements = user.getAnnouncements();

@@ -10,7 +10,7 @@
 <body>
 <h1>All Friends</h1>
 <%
-	String searchName = session.getAttribute("userSearch");
+	String searchName = (String)session.getAttribute("userSearch");
 	ArrayList<User> users = UserManager.search(searchName);
 	for (User u : users) {
 		String userName = u.name();

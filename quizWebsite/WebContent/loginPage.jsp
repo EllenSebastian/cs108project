@@ -4,12 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Login</title>
 </head>
 <body>
 <form action=LoginServlet method="post">
-username: <input type="text" value ="username">
-password: <input type="text" value="password">
+username: <input type="text" name ="username">
+password: <input type="text" name="password">
 <input type="submit" value="login"><br><br></form>
 
 <form action=NewUserServlet method="post">

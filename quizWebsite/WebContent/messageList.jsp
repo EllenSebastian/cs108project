@@ -10,7 +10,7 @@
 <body>
 <h1>All Messages</h1>
 <%
-	User user = session.getAttribute(Constants.session_currentUser);
+	User user = (User)session.getAttribute(Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Message> messages = user.getUserMessages();
 	for (Message m : messages) {
