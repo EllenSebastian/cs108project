@@ -8,6 +8,7 @@
 <title>Friends List</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 <h1>All Friends</h1>
 <%
 	String searchName = (String)session.getAttribute("userSearch");

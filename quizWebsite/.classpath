@@ -10,8 +10,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.52/lib/tomcat7-websocket.jar"/>
-	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.52/lib/mysql-connector-java-5.1.29-bin.jar"/>
-	<classpathentry kind="lib" path="C:/apache-tomcat-7.0.52/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-7.0.50/lib/mysql-connector-java-5.1.29-bin.jar"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-7.0.50/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-7.0.50/lib/tomcat7-websocket.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

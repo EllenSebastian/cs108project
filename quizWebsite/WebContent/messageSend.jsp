@@ -8,6 +8,7 @@
 <title>Send Message</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 
 <form action='MsgSendServlet' method='post'>
 <p>To User: <input type="text" name="toUser"/>

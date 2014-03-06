@@ -8,6 +8,7 @@
 <title>Your Achievements</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 <h1>All Achievements</h1>
 <%
 	User user = (User)session.getAttribute(Constants.session_currentUser);

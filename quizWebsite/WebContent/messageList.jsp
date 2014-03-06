@@ -8,11 +8,13 @@
 <title>Message List</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 <h1>All Messages</h1>
 <%
 	User user = (User)session.getAttribute(Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Message> messages = user.getUserMessages();
+	out.println("<a href=messageSend.jsp?id=>Send Message</a>");
 	for (Message m : messages) {
 		out.println("<h3>From " + m.fromUser + " at " + m.time
 				+ ":</h3>");

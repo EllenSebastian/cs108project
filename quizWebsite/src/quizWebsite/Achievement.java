@@ -40,9 +40,10 @@ public class Achievement{
 	public final String title;
 	public Timestamp time;
 
-	public Achievement(int user_id, int type) {
+	public Achievement(int user_id, int type, Timestamp time) {
 		this.user_id = user_id;
 		this.type = type;
+		this.time = time;
 		switch (type) {
 			case 1:
 				description = " created one quiz.";
@@ -97,7 +98,8 @@ public class Achievement{
 			System.out.println("i came here");
 			r = connection.prepareStatement("SELECT * FROM Achievement WHERE user_id = " + user_id + " ORDER BY time DESC").executeQuery();				
 			while (r.next()) {
-				Achievement a = new Achievement(r.getInt("user_id"), r.getInt("type"));
+				Achievement a = new Achievement(r.getInt("user_id"), 
+						r.getInt("type"), r.getTimestamp("time"));
 				System.out.println(a.user_id);
 				System.out.println(a.type);
 				list.add(a);

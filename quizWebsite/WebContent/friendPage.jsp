@@ -18,7 +18,8 @@
 
 	out.println("</head>");
 	out.println("<body>");
-	out.println("<h1>Welcome " + name + "!</h1>");
+	out.println("<a href=userPage.jsp>Home</a>");
+	out.println("<h1>" + name + "'s page</h1>");
 	out.println("<h2>Announcements</h2>");
 	for (Announcement a : announcements) {
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");

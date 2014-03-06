@@ -18,18 +18,28 @@
 	out.println("</head>");
 	out.println("<body>");
 	out.println("<h1>Welcome " + name + "!</h1>");
+	
+	out.println("<form action='SearchUsersServlet' method='get'>");
+	out.println("<p>User Search: <input type='text' name='user' />");
+	out.println("<input type='submit' value = 'Search'/></p>");
+	out.println("</form>");
+	
+	out.println("<a href=messageSend.jsp?id=>Send Message</a>");
+	out.println("<a href=friendsList.jsp?id=>Friends List</a>");
+	out.println("<a href=newQuiz.jsp>Take a quiz</a>");
+	out.println("<a href=newQuiz.jsp>Create a quiz</a>");
+	
 	out.println("<h2>Announcements</h2>");
+	
+	
 	for (Announcement a : announcements) {
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
 		out.println("<p>" + a.body + "</p>");
 	}
 	
-	out.println("<form action='SearchUsersServlet' method='get'>");
-	out.println("<p>User: <input type='text' name='user' />");
-	out.println("<input type='submit' value = 'Search'/></p>");
-	out.println("</form>");
 	
-	out.println("<h2>Recently Taken Quizzes:</h2>");
+	
+	out.println("<h2>Your Recently Taken Quizzes:</h2>");
 	for (Activity a : userActivity) {
 		int i = 0;
 		if (i >= 5)
@@ -42,7 +52,7 @@
 		}
 	}
 
-	out.println("<h2>Recently Created Quizzes:</h2>");
+	out.println("<h2>Your Recently Created Quizzes:</h2>");
 	for (Activity a : userActivity) {
 		int i = 0;
 		if (i >= 5)
@@ -54,7 +64,7 @@
 		}
 	}
 
-	out.println("<h2>Recently Achievements:</h2>");
+	out.println("<h2>Achievements:</h2>");
 	for (Achievement a : achievements) {
 		int i = 0;
 		if (i >= 5)
@@ -63,6 +73,7 @@
 		out.println("<p>" + a.description + "</p>");
 		i++;
 	}
+	out.println("<a href=achievementsList.jsp>see more achievements...</a>");
 
 	out.println("<h2>Recently Received Messages:</h2>");
 	for (Message m : messages) {
@@ -75,6 +86,7 @@
 			i++;
 		}
 	}
+	out.println("<a href=messageList.jsp>see all messages</a>");
 
 	out.println("<h2>Recent Friend Activity:</h2>");
 	for (Activity a : friendsActivity) {
