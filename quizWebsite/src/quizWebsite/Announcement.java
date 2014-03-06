@@ -28,6 +28,10 @@ public class Announcement {
 		} catch (SQLException e) { }
 	}
 	
+	public static void main(String args[]){
+		newAnnouncement(21,"cs108","project is done");
+	}
+	
 	public Announcement(int announcement_id) {
 		this.announcement_id = announcement_id;
 		

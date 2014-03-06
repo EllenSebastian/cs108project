@@ -18,12 +18,12 @@ import com.mysql.jdbc.Statement;
  *
  */
 @WebListener
-public class Listener implements HttpSessionListener, ServletContextListener {
+public class listener implements HttpSessionListener, ServletContextListener {
 
     /**
      * Default constructor. 
      */
-    public Listener() {
+    public listener() {
     }
 
 	/**

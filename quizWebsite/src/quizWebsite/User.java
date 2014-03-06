@@ -54,7 +54,7 @@ public class User {
 	
 	public ArrayList<Integer> getUserFriends(){
 		return Friends.getFriends(user_id);
-	}w
+	}
 	
 	public List<Activity> getFriendsActivity() {
 		ArrayList<Activity> act = new ArrayList<Activity>();

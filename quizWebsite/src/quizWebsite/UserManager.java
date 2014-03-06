@@ -14,6 +14,11 @@ public class UserManager {
 	private static Connection db = myDBinfo.getConnection();
 
 	  
+	public static void main(String args[]){
+		if(checkUser("hai","1234") != null){
+			System.out.println("it's working");
+		}
+	}
 	
 	// retrieve the user information from db and create a user object
 	public static User getUser(int id){
@@ -63,7 +68,6 @@ public class UserManager {
 	// in login, check whether the user exists and return the user or null(user not existed)
 	public static User checkUser(String name,String password){	
 		password = hashPassword(password);
-
 		try {			
 			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name = ?");
 			p.setString(1, name);
@@ -168,6 +172,20 @@ public class UserManager {
 		} catch (SQLException e) {
 			return null;
 		}		
+	}
+	
+	// return a User object with exact match for the name
+	public static User searchExact(String name) {
+		try {
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name = ?");
+			p.setString(1,name);
+			ResultSet result = p.executeQuery();		
+			User u = getUser(result.getInt("user_id"));			
+			return u;
+		} catch (SQLException e) {
+			return null;
+		}
+		
 	}
 
 	public static void removeUser(int id) {
