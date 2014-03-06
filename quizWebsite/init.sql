@@ -62,29 +62,29 @@ CREATE TABLE Activity(
     pKey INT
 );
 
-Create TABLE Achievment (
+Create TABLE Achievement (
 	user_id int,
 	type int,
 	time DATETIME
 )
 
 Create TABLE Announcement (
-	announcement_id int  primary key,
+	announcement_id int AUTO_INCREMENT primary key,
 	user_id int,
 	time DATETIME,
 	subject text,
 	body text
 )
 
-Create TABLE Message (
-	message_id int primary key,
-	type int,
-	read Boolean,
-	body text,
-	pKey int,
-	fromUser int,
-	toUser int,
-	time DATETIME;
+Create Table Message (
+    type int,
+    checked BOOLEAN,
+    body text,
+    quizid int,
+    fromUser int,
+    toUser int, 
+    time Datetime,  
+    primary key (fromUser,toUser,time)  
 )
 
 Create TABLE Friend (
