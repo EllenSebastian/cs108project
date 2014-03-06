@@ -10,15 +10,17 @@
 <body>
 <a href=userPage.jsp>Home</a>
 
+<h1>Send a Message</h1>
 <form action='MsgSendServlet' method='post'>
 <p>To User: <input type="text" name="toUser"/>
-<p>Type: <select name = "Type">
+<p>Select Message Type: <select name = "Type">
 	<option value = 1>Friend Request</option>
 	<option value = 2>Challenge</option>
 	<option value = 3>Note</option>
 </select>
 
 <p>QuizID(if applicable): <select name = "quizID">
+<option value = "-1">None</option>
 	<%
 		//get Quiz Id
 		//for(quizId q:quizIDs){

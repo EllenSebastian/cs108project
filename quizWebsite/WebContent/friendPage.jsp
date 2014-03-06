@@ -9,22 +9,17 @@
 	int id = Integer.parseInt(request.getParameter("id"));
 	User user = UserManager.getUser(id);
 	String name = user.name();
-	Announcement[] announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();
 	ArrayList<Achievement> achievements = user.getUserAchievements();
 	ArrayList<Activity> userActivity = user.getUserActivities();
 	List<Activity> friendsActivity = user.getFriendsActivity();
-	out.println("<title>Welcome " + name + "!</title>");
+	out.println("<title>" + name + "'s page</title>");
 
 	out.println("</head>");
 	out.println("<body>");
 	out.println("<a href=userPage.jsp>Home</a>");
+	out.println("<p><a href=removeFriend.jsp?id="+id+">Remove Friend</a></p>");
 	out.println("<h1>" + name + "'s page</h1>");
-	out.println("<h2>Announcements</h2>");
-	for (Announcement a : announcements) {
-		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
-		out.println("<p>" + a.body + "</p>");
-	}
 
 	out.println("<h2>Recently Taken Quizzes:</h2>");
 	for (Activity a : userActivity) {
@@ -51,7 +46,7 @@
 		}
 	}
 
-	out.println("<h2>Recently Achievements:</h2>");
+	out.println("<h2>Recent Achievements:</h2>");
 	for (Achievement a : achievements) {
 		int i = 0;
 		if (i >= 5)
@@ -61,31 +56,6 @@
 		i++;
 	}
 
-	out.println("<h2>Recently Received Messages:</h2>");
-	for (Message m : messages) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		if (!m.checked) {
-			out.println("<h3>From " + m.fromUser + " at " + m.time
-					+ ":</h3>");
-			out.println("<p>" + m.alert + "</p>");
-			i++;
-		}
-	}
-
-	out.println("<h2>Recent Friend Activity:</h2>");
-	for (Activity a : friendsActivity) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		out.println("<h3>" + a.time + ":</h3>");
-		out.println("<p>" + a.description + "</p>");
-		if (a.type == 2) {
-			out.println("<p>Score: " + a.score + "</p>");
-		}
-		i++;
-	}
 %>
 
 </body>

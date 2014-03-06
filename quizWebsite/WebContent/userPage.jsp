@@ -8,7 +8,7 @@
 <%
 	User user = (User)session.getAttribute(Constants.session_currentUser);
 	String name = user.name();
-	Announcement[] announcements = user.getAnnouncements();
+	ArrayList<Announcement> announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();
 	ArrayList<Achievement> achievements = user.getUserAchievements();
 	ArrayList<Activity> userActivity = user.getUserActivities();
@@ -73,26 +73,31 @@
 		out.println("<p>" + a.description + "</p>");
 		i++;
 	}
-	out.println("<a href=achievementsList.jsp>see more achievements...</a>");
+	out.println("<a href=achievementsList.jsp>see all achievements...</a>");
 
 	out.println("<h2>Recently Received Messages:</h2>");
 	for (Message m : messages) {
 		int i = 0;
 		if (i >= 5)
 			break;
+		User temp = UserManager.getUser(m.fromUser);
 		if (!m.checked) {
-			out.println("<h3>From " + m.fromUser + " at " +m.time+":</h3>");
+			out.println("<h3>From " + temp.name() + " at " +m.time+":</h3>");
 			out.println("<p>" + m.alert + "</p>");
 			i++;
 		}
 	}
-	out.println("<a href=messageList.jsp>see all messages</a>");
+	out.println("<a href=messageList.jsp>see all messages...</a>");
 
 	out.println("<h2>Recent Friend Activity:</h2>");
 	for (Activity a : friendsActivity) {
 		int i = 0;
 		if (i >= 5)
 			break;
+		User temp = UserManager.getUser(a.user_id);
+		String nm = temp.name();
+		out.println("<p><a href=friendPage.jsp?id="+a.user_id+">"+nm+":</a></p>");
+		out.println("<p><a href=friendPage.jsp?id="+a.user_id+">"+a.quizId+":</a></p>");
 		out.println("<h3>" + a.time + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
 		if (a.type == 2) {

@@ -17,7 +17,7 @@ public class Message{
 	int message_id;
 	public Timestamp time;
 	public boolean checked;
-	int type;
+	public int type;
 	public String alert;
 	public String body;
 	int quizID;

@@ -169,6 +169,25 @@ public class UserManager {
 			return null;
 		}		
 	}
+	
+	// return a User object with exact match for the name
+	// return a User object with exact match for the name
+	public static User searchExact(String name) {
+		try {
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name =?");
+			p.setString(1,name);
+			ResultSet result = p.executeQuery();	
+			if(result.next()) {
+				User u = getUser(result.getInt("user_id"));
+				System.out.println(u.name());
+				return u;
+			}		
+			else return null;
+		} catch (SQLException e) {
+			return null;
+		}
+		
+	}
 
 	public static void removeUser(int id) {
 		try {

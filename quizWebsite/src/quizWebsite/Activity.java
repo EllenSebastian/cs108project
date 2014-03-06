@@ -24,8 +24,8 @@ public class Activity {
 	public Timestamp time;
 	public int type;
 	public double score;
-	int quizId;
-	int user_id;
+	public int quizId;
+	public int user_id;
 	public String description;
 
 	private static Statement stmt;

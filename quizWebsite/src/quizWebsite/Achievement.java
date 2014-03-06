@@ -95,13 +95,10 @@ public class Achievement{
 		ResultSet r;
 		ArrayList<Achievement> list = new ArrayList<Achievement>();
 		try {
-			System.out.println("i came here");
 			r = connection.prepareStatement("SELECT * FROM Achievement WHERE user_id = " + user_id + " ORDER BY time DESC").executeQuery();				
 			while (r.next()) {
 				Achievement a = new Achievement(r.getInt("user_id"), 
 						r.getInt("type"), r.getTimestamp("time"));
-				System.out.println(a.user_id);
-				System.out.println(a.type);
 				list.add(a);
 			}
 			return list;
