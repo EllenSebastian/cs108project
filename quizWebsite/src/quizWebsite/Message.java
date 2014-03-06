@@ -15,13 +15,13 @@ public class Message{
 	public static final int GeneralNote = 3;
 
 	int message_id;
-	Timestamp time;
-	boolean checked;
+	public Timestamp time;
+	public boolean checked;
 	int type;
-	String alert;
-	String body;
+	public String alert;
+	public String body;
 	int quizID;
-	int fromUser;
+	public int fromUser;
 	int toUser;
 	
     private static Statement stmt;
