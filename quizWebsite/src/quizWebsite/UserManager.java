@@ -188,6 +188,10 @@ public class UserManager {
 		}
 		
 	}
+	
+	public static ArrayList<Activity> getActivityType(int type) {
+		return Activity.getActivityType(type);
+	}
 
 	public static void removeUser(int id) {
 		try {
