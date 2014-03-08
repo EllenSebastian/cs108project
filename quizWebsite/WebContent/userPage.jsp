@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
 	User user = (User)session.getAttribute("session.currentUser");//quizWebsite.Constants.session_currentUser);
+
 	String name = user.name();
 	ArrayList<Announcement> announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();
@@ -18,27 +19,49 @@
 	out.println("</head>");
 	out.println("<body>");
 	out.println("<h1>Welcome " + name + "!</h1>");
-	
+
 	out.println("<form action='SearchUsersServlet' method='get'>");
 	out.println("<p>User Search: <input type='text' name='user' />");
 	out.println("<input type='submit' value = 'Search'/></p>");
 	out.println("</form>");
-	
+
 	out.println("<a href=messageSend.jsp?id=>Send Message</a>");
 	out.println("<a href=friendsList.jsp?id=>Friends List</a>");
 	out.println("<a href=newQuiz.jsp>Take a quiz</a>");
 	out.println("<a href=newQuiz.jsp>Create a quiz</a>");
-	
+
 	out.println("<h2>Announcements</h2>");
-	
-	
+
 	for (Announcement a : announcements) {
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
 		out.println("<p>" + a.body + "</p>");
 	}
-	
-	
-	
+
+	out.println("<h2>Global Recently Taken Quizzes:</h2>");
+	ArrayList<Activity> takenQuizzes = UserManager.getActivityType(2);
+	for (Activity a : takenQuizzes) {
+		int i = 0;
+		if (i >= 5)
+			break;
+		User temp = UserManager.getUser(a.user_id);
+		out.println("<h3>"+temp.name()+" at " + a.time + ":</h3>");
+		out.println("<p>" + a.description + "</p>");
+		out.println("<p>Score: " + a.score + "</p>");
+		i++;
+	}
+
+	out.println("<h2>Global Recently Created Quizzes:</h2>");
+	ArrayList<Activity> createdQuizzes = UserManager.getActivityType(1);
+	for (Activity a : createdQuizzes) {
+		int i = 0;
+		if (i >= 5)
+			break;
+		User temp = UserManager.getUser(a.user_id);
+		out.println("<h3>"+temp.name()+" at " + a.time + ":</h3>");
+		out.println("<p>" + a.description + "</p>");
+		i++;
+	}
+
 	out.println("<h2>Your Recently Taken Quizzes:</h2>");
 	for (Activity a : userActivity) {
 		int i = 0;
@@ -69,7 +92,7 @@
 		int i = 0;
 		if (i >= 5)
 			break;
-		out.println("<h3>" + a.time + " " + a.title+":</h3>");
+		out.println("<h3>" + a.time + " " + a.title + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
 		i++;
 	}
@@ -82,7 +105,8 @@
 			break;
 		User temp = UserManager.getUser(m.fromUser);
 		if (!m.checked) {
-			out.println("<h3>From " + temp.name() + " at " +m.time+":</h3>");
+			out.println("<h3>From " + temp.name() + " at " + m.time
+					+ ":</h3>");
 			out.println("<p>" + m.alert + "</p>");
 			i++;
 		}
@@ -96,8 +120,10 @@
 			break;
 		User temp = UserManager.getUser(a.user_id);
 		String nm = temp.name();
-		out.println("<p><a href=friendPage.jsp?id="+a.user_id+">"+nm+":</a></p>");
-		out.println("<p><a href=friendPage.jsp?id="+a.user_id+">"+a.quizId+":</a></p>");
+		out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
+				+ nm + ":</a></p>");
+		out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
+				+ a.quizId + ":</a></p>");
 		out.println("<h3>" + a.time + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
 		if (a.type == 2) {

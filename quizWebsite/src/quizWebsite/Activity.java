@@ -97,6 +97,26 @@ public class Activity {
 		}
 		return list;
 	}
+	
+	public static ArrayList<Activity> getActivityType(int type) {
+		ArrayList<Activity> list = new ArrayList<Activity>();
+		ResultSet rs;
+		try {
+			rs = connection.prepareStatement("SELECT * FROM Activity WHERE type = " + type + " ORDER BY time DESC").executeQuery();	
+			while (rs.next()) {
+				Timestamp time = rs.getTimestamp("time");
+				int user_id = rs.getInt("user_id");
+				double score = rs.getDouble("score");
+				int quizId = rs.getInt("pKey");
+				Activity temp = new Activity(user_id,time,type,score,
+						quizId);
+				list.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 
 }
