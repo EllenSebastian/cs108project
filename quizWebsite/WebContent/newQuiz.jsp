@@ -10,6 +10,7 @@
 </title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 
 <%
 session.setAttribute("newQuiz",true);

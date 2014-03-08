@@ -19,5 +19,6 @@
 		out.println("<a href=userProfile.jsp?uid="+u.user_id+">" + userName + "</a>");
 	}
 %>
+
 </body>
 </html>

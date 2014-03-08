@@ -60,5 +60,7 @@ out.println("<form action=\"questionServlet\" method=\"post\">"); // call doPost
 out.print("<input type=\"submit\" value = \"Go to Question 1\"/> </form>");
 
 %>
+<a href=userPage.jsp>Home</a>
+
 </body>
 </html>

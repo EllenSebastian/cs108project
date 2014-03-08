@@ -1,5 +1,6 @@
 package quizWebsite;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +27,23 @@ public class mysqlManager {
 	public static ArrayList<String> quizList(){
 		return new ArrayList<String>(); 
 	}
-	
+	public static ArrayList<Quiz>  allQuizzes( Connection con){
+		try {
+			ArrayList<Quiz> results = new ArrayList<Quiz>();
+			PreparedStatement p = con.prepareStatement("SELECT * FROM Quizzes");
+
+			ResultSet result = p.executeQuery();
+			while(result.next()) {
+				Quiz q = retreiveQuiz(result.getInt("pKey"),con);
+				//System.out.println(result.getInt("user_id"));
+				results.add(q);
+			}
+			return results;
+		} catch (SQLException e) {
+			return null;
+		}	
+	}
+
 	public static void addToDatabase(Question q, java.sql.Connection connection){
 			try {
 				java.sql.Statement st = connection.createStatement();
@@ -123,6 +140,7 @@ public class mysqlManager {
 					System.out.println("Query : " + query);
 					ResultSet rs= st.executeQuery(query);
 					rs.next();
+					q.pKey = pKey; 
 					q.name = rs.getString("name");
 					q.url = rs.getString("url");
 					q.creator = rs.getInt("creator");

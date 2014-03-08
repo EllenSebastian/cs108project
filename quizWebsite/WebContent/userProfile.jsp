@@ -17,6 +17,7 @@
 
 	out.println("</head>");
 	out.println("<body>");
+	out.println("<a href=userPage.jsp>Home</a>");
 	out.println("<h1>" + user.name() + "</h1>");
 
 

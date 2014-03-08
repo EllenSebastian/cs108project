@@ -27,3 +27,4 @@ out.println("</form>");
 
 </body>
 </html>
+<a href=userPage.jsp>Home</a>

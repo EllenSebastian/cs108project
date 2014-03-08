@@ -25,5 +25,7 @@
 
 
 %>
+<a href=userPage.jsp>Home</a>
+
 </body>
 </html>

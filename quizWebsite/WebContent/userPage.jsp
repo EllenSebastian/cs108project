@@ -28,7 +28,7 @@
 
 	out.println("<a href=messageSend.jsp?id=>Send Message</a>");
 	out.println("<a href=friendsList.jsp?id=>Friends List</a>");
-	out.println("<a href=newQuiz.jsp>Take a quiz</a>");
+	out.println("<a href=searchQuiz.jsp>Take a quiz</a>");
 	out.println("<a href=newQuiz.jsp>Create a quiz</a>");
 
 	out.println("<h2>Announcements</h2>");
