@@ -25,7 +25,8 @@ java.util.Date date= new java.util.Date();
 java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
 System.out.println("currentUser" + currentUser);
 System.out.println("currentQuiz" + currentQuiz.pKey);
-quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser, time, quizWebsite.Activity.quiz_Taken,score,currentQuiz.pKey);
+// TODO measure time 
+quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser, time, quizWebsite.Activity.quiz_Taken,score,currentQuiz.pKey,0);
 newActivity.addActivity();
 out.println("Thanks for taking the quiz \"" + currentQuiz.name + "\".");
 out.println("Your score was " + score + "\"");

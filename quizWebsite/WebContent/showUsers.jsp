@@ -16,7 +16,7 @@
 	for (User u : users) {
 		String userName = u.name();
 		out.println("<h4>"+userName+"</h4>");
-		out.println("<a href=messageSend.jsp?id="+userName+">Add Friend</a>");
+		out.println("<a href=userProfile.jsp?uid="+u.user_id+">" + userName + "</a>");
 	}
 %>
 </body>

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MsgSendServlet
@@ -39,13 +40,19 @@ public class MsgSendServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession session = request.getSession(); 
 		User user = (User) request.getSession().getAttribute(
 				Constants.session_currentUser);
 		int type = Integer.parseInt(request.getParameter("Type"));
 		String body = request.getParameter("body");
 		int quizId = Integer.parseInt(request.getParameter("quizID"));
-		String toUser = request.getParameter("toUser");
+		
+		// from a user profile
+		String toUser = (String) session.getAttribute(Constants.session_sendMessageTo);
+		
+		// from messageSend.jsp
+		if (toUser == null)
+			toUser = request.getParameter("toUser");
 		User temp = UserManager.searchExact(toUser);
 		System.out.println(toUser);
 		if (temp != null) {

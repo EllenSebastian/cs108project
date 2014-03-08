@@ -12,7 +12,14 @@
 
 <h1>Send a Message</h1>
 <form action='MsgSendServlet' method='post'>
-<p>To User: <input type="text" name="toUser"/>
+<% // if we got here from a user profile, set session attr for who to send message to. 
+// else allow user to choose. 
+	String name = request.getParameter("name");
+	if (name == null)
+		out.println("<p>To User: <input type=\"text\" name=\"toUser\"/>");
+	else // got here form a user profile
+		session.setAttribute(Constants.session_sendMessageTo, name);
+%>
 <p>Select Message Type: <select name = "Type">
 	<option value = 1>Friend Request</option>
 	<option value = 2>Challenge</option>

@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*,quizWebsite.*, quizWebsite.Constants.*"%>
+<%@ page import="java.util.*,java.sql.Connection,quizWebsite.*, quizWebsite.Constants.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
-	User user = (User)session.getAttribute("session.currentUser");//quizWebsite.Constants.session_currentUser);
+	Connection con = (Connection) application.getAttribute("Connection"); 
 
+	User user = (User)session.getAttribute(quizWebsite.Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Announcement> announcements = user.getAnnouncements();
 	ArrayList<Message> messages = user.getUserMessages();
@@ -15,7 +16,7 @@
 	ArrayList<Activity> userActivity = user.getUserActivities();
 	List<Activity> friendsActivity = user.getFriendsActivity();
 	out.println("<title>Welcome " + name + "!</title>");
-
+	
 	out.println("</head>");
 	out.println("<body>");
 	out.println("<h1>Welcome " + name + "!</h1>");
@@ -31,7 +32,6 @@
 	out.println("<a href=newQuiz.jsp>Create a quiz</a>");
 
 	out.println("<h2>Announcements</h2>");
-
 	for (Announcement a : announcements) {
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
 		out.println("<p>" + a.body + "</p>");
@@ -47,9 +47,11 @@
 		out.println("<h3>"+temp.name()+" at " + a.time + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
 		out.println("<p>Score: " + a.score + "</p>");
+		Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+		out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
 		i++;
 	}
-
+	System.out.println("printing quizzes");
 	out.println("<h2>Global Recently Created Quizzes:</h2>");
 	ArrayList<Activity> createdQuizzes = UserManager.getActivityType(1);
 	for (Activity a : createdQuizzes) {
@@ -59,6 +61,9 @@
 		User temp = UserManager.getUser(a.user_id);
 		out.println("<h3>"+temp.name()+" at " + a.time + ":</h3>");
 		out.println("<p>" + a.description + "</p>");
+		Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+		out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
+
 		i++;
 	}
 
@@ -69,6 +74,9 @@
 			break;
 		if (a.type == 2) {
 			out.println("<h3>" + a.time + ":</h3>");
+			Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+			out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
+
 			out.println("<p>" + a.description + "</p>");
 			out.println("<p>Score: " + a.score + "</p>");
 			i++;
@@ -83,6 +91,10 @@
 		if (a.type == 1) {
 			out.println("<h3>" + a.time + ":</h3>");
 			out.println("<p>" + a.description + "</p>");
+			Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+			out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
+
+			Integer qKey = a.quizId;
 			i++;
 		}
 	}

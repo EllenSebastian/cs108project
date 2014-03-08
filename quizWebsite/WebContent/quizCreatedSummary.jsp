@@ -19,7 +19,7 @@
 	System.out.println("currentUser" + currentUser.user_id);
 	System.out.println("currentQuiz" + newQuiz.pKey);
 	quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser.user_id, time, 
-									quizWebsite.Activity.quiz_Created,0,newQuiz.pKey);
+									quizWebsite.Activity.quiz_Created,0,newQuiz.pKey,0 );
 	newActivity.addActivity();
 	out.println("added activity for User " + currentUser + ", quizCreated: " + newQuiz.pKey);
 

@@ -20,7 +20,7 @@ out.println("<title>"+  quiz.name + "	</title> </head>		<body>");
 out.println("<h1>Welcome to \"" + quiz.name + "\".</h1>");
 out.println("<h2>" + quiz.description + "</h2>");
 quizWebsite.User creator = quizWebsite.mysqlManager.retreiveUser(quiz.creator,con);
-out.println("Quiz created by <a href=userProfile.jsp?id=" + quiz.creator + ">" + creator.name() + "</a>");
+out.println("Quiz created by <a href=userProfile.jsp?uid=" + quiz.creator + ">" + creator.name() + "</a>");
 
 
 // set the current quiz

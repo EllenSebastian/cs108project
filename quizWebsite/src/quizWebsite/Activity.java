@@ -33,12 +33,13 @@ public class Activity {
 
 	// type can be 1 or 2
 	public Activity(int user_id,Timestamp time,int type, 
-			double score, int quizId){
+			double score, int quizId, int duration){
 		this.time = time;
 		this.type = type;
 		this.score = score;
 		this.quizId = quizId;
 		this.user_id = user_id;
+		this.duration = duration; 
 		switch (type) {
 			case 1:
 				description = "created a quiz";
@@ -51,6 +52,7 @@ public class Activity {
 		}
 	}
 
+	
 	public static class activityComparator implements Comparator<Activity> {
 	    @Override
 	    public int compare(Activity o1, Activity o2) {
@@ -65,11 +67,10 @@ public class Activity {
 	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
-			stmt.executeUpdate("INSERT into Activity VALUES (" 
-					+ (char) 34 + user_id + (char) 34 + "," + (char) 34
-					+ time + (char) 34 + "," + (char) 34 + type
-					+ (char) 34 + "," + score + "," + 
-					(char) 34 + quizId + (char) 34 + ")");
+			String query = "Insert into Activity values (" + user_id + ",\"" + time 
+					+ "\"," + type + "," + score + "," + quizId + "," + duration + ");";
+			System.out.println(" adding activity : " + query);
+			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,8 +89,9 @@ public class Activity {
 				int type = rs.getInt("type");
 				double score = rs.getDouble("score");
 				int quizId = rs.getInt("pKey");
+				int duration = rs.getInt("durationMS");
 				Activity temp = new Activity(user_id,time,type,score,
-						quizId);
+						quizId,duration);
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -108,8 +110,9 @@ public class Activity {
 				int user_id = rs.getInt("user_id");
 				double score = rs.getDouble("score");
 				int quizId = rs.getInt("pKey");
+				int duration = rs.getInt("durationMS");
 				Activity temp = new Activity(user_id,time,type,score,
-						quizId);
+							quizId,duration);
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -117,6 +120,6 @@ public class Activity {
 		}
 		return list;
 	}
-
+	
 
 }
