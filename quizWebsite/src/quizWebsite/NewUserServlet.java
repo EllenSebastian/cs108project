@@ -1,11 +1,14 @@
 package quizWebsite;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class NewUserServlet
@@ -33,10 +36,21 @@ public class NewUserServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(); 
 
 		String username = request.getParameter("username");
 		System.out.println("username : " + username);
-		UserManager.addUser(request.getParameter("username"),request.getParameter("password"),false);
+		
+		User u = UserManager.addUser(request.getParameter("username"),request.getParameter("password"),false);
+		if (u == null){
+			RequestDispatcher dispatcher = request.getRequestDispatcher("nameAlreadyTaken.jsp");
+			dispatcher.forward(request, response);
+		}
+		else{
+			session.setAttribute(Constants.session_currentUser,u);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
+			dispatcher.forward(request, response);
+			}
 	}
 
 }

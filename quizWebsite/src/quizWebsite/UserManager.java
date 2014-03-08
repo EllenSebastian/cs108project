@@ -86,6 +86,15 @@ public class UserManager {
 		password = hashPassword(password);
 
 		try {
+			java.sql.Statement st = db.createStatement();
+
+			String checkQuery = "select count(*) from User where name=\"" + name + "\";";
+			ResultSet rs = st.executeQuery(checkQuery);
+			rs.next(); 
+			Integer count = rs.getInt("count(*)"); 
+			if (count > 0){
+				return null; 
+			}
 			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO User (name, passwordHash, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			p.setString(1, name);
 			p.setString(2, password);
