@@ -42,18 +42,20 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 	protected void createNewQuiz(HttpServletRequest request){
 //		public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
 	//			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
+		System.out.println("new line");
 		String[] names =  request.getParameterValues("name");
-		Integer creator = (Integer) request.getSession().getAttribute(Constants.session_currentUser);
+		User creator = ((User) request.getSession().getAttribute(Constants.session_currentUser));
 		String immediateFeedback = (String) request.getParameter("immediateFeedback");
 		String practiceMode =  (String) request.getParameter("practiceMode");
 		String randomOrder = (String)  request.getParameter("randomOrder");
 		String multiplePages =  (String) request.getParameter("pages");
-
+		String[] description = request.getParameterValues("description");
 		DateFormat dateFormat = new SimpleDateFormat(Constants.dateFormat); 
 		Calendar cal = Calendar.getInstance();
 		String datetime = dateFormat.format(cal.getTime());
 		
-		Quiz q = new Quiz(names[0],"",creator,immediateFeedback != null, multiplePages.equals("multiplePages"), practiceMode != null, randomOrder != null, datetime, request.getServletContext()); 
+		Quiz q = new Quiz(names[0],description[0],"",creator.user_id,immediateFeedback != null, 
+				multiplePages.equals("multiplePages"), practiceMode != null, randomOrder != null, datetime, request.getServletContext()); 
 		String url = "quizIntro.jsp?id=" + q.pKey;
 		q.url = url; 
 		int success = mysqlManager.addToDatabase(q, (Connection) request.getServletContext().getAttribute(Constants.context_Connection));

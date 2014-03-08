@@ -15,7 +15,7 @@ public class Constants {
 	public static final String session_previousFeedback = "session.previousFeedback";
 	public static final String session_currentQuestionIndex= "session.currentQuestionIndex";
 	public static final String session_quizQuestions= "session.quizQuestions";
-	
+
 	
 	// quiz creation stuff	
 	public static final String session_newQuiz = "session.newQuiz"; // Quiz

@@ -27,7 +27,7 @@ public class Activity {
 	public int quizId;
 	public int user_id;
 	public String description;
-
+	public Integer duration; 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
 
@@ -73,6 +73,7 @@ public class Activity {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		// TODO check if they get more acheivements
 	}
 
     

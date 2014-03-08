@@ -14,11 +14,12 @@
 
 	java.util.Date date= new java.util.Date();
 	java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
-	Integer currentUser = (Integer) session.getAttribute(quizWebsite.Constants.session_currentUser);
+	quizWebsite.User currentUser = (quizWebsite.User) session.getAttribute(quizWebsite.Constants.session_currentUser);
 
-	System.out.println("currentUser" + currentUser);
+	System.out.println("currentUser" + currentUser.user_id);
 	System.out.println("currentQuiz" + newQuiz.pKey);
-	quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser, time, quizWebsite.Activity.quiz_Created,0,newQuiz.pKey);
+	quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser.user_id, time, 
+									quizWebsite.Activity.quiz_Created,0,newQuiz.pKey);
 	newActivity.addActivity();
 	out.println("added activity for User " + currentUser + ", quizCreated: " + newQuiz.pKey);
 

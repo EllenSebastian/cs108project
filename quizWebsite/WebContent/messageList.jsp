@@ -12,7 +12,7 @@
 <h1>All Messages</h1>
 <%
 	User user = (User) session
-			.getAttribute(Constants.session_currentUser);
+			.getAttribute("session.currentUser");//Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Message> messages = user.getUserMessages();
 	out.println("<a href=messageSend.jsp?id=>Send Message</a>");

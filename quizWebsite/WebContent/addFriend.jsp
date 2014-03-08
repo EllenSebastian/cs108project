@@ -11,7 +11,7 @@
 <%
 	int id = Integer.parseInt(request.getParameter("id"));
 	User user = (User) session
-			.getAttribute(Constants.session_currentUser);
+			.getAttribute("session.currentUser");//Constants.session_currentUser);
 	user.addFriend(id);
 %>
 <h1>Friend Added!</h1>

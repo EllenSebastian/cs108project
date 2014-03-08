@@ -22,6 +22,7 @@ CREATE TABLE User (
 CREATE TABLE Quizzes (
 	pKey INT primary key,
 	name text,
+	description text, 
 	url text,
 	creator text,
 	immediateFeedback BOOLEAN, 
@@ -46,20 +47,15 @@ CREATE TABLE Message (
 	challengeURL text
 );
 
-CREATE TABLE QuizzesTaken(
-	username text, 
-	quizKey INT, # pKey for quiz
-	score FLOAT,
-	whenTaken DATETIME,
-	duration FLOAT
-);
 
 CREATE TABLE Activity(
 	user_id int,
 	time DATETIME,
 	type int,
 	score float,
-    pKey INT
+	 pKey INT, 
+	 durationMS INT
+	 
 );
 
 Create TABLE Achievment (
