@@ -10,6 +10,7 @@
 </title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 
 <%
 session.setAttribute("newQuiz",true);
@@ -17,6 +18,8 @@ session.setAttribute("newQuiz",true);
 <h1>Choose your quiz options </h1>
 <form action ="ChooseQuestionTypeServlet" method = "post">
 Quiz name: <input type="text" name="name"><br>
+Quiz description: <input type="text" name="description"><br>
+
 Should the questions all be one one page or separate pages?<br>
 <input type="radio" name="pages" value="multiplePages">One question per page<br>
 <input type="radio" name="pages" value="onePage">All questions on one page<br>

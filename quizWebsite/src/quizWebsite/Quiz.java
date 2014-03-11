@@ -21,9 +21,10 @@ public class Quiz {
 	public boolean practiceMode;
 	public boolean randomOrder;
 	public String whenCreated; 
+	public String description; 
 	public String immediateFeedbackString, multiplePagesString, practiceModeString, randomOrderString; 
 	public Quiz() {}
-	public Quiz(String name, String url, Integer creator, boolean immediateFeedback,boolean multiplePages,
+	public Quiz(String name, String url, String description, Integer creator, boolean immediateFeedback,boolean multiplePages,
 			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
 		// insert into db
 		pKey = mysqlManager.getNextQuizKey((Connection)context.getAttribute(Constants.context_Connection));
@@ -35,7 +36,7 @@ public class Quiz {
 		this.practiceMode = practiceMode;
 		this.randomOrder = randomOrder;
 		this.whenCreated = whenCreated;
-		
+		this.description = description;
 		immediateFeedbackString = "FALSE";
 		multiplePagesString = "FALSE";
 		practiceModeString = "FALSE";

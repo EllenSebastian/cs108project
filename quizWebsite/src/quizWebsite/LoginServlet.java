@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		HttpSession session = request.getSession(); 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -49,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
 			dispatcher.forward(request, response);
 		}else{
-			RequestDispatcher dispatcher = request.getRequestDispatcher("loginPage.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("incorrectLogin.html");
 			dispatcher.forward(request, response);
 		}
 	}

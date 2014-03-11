@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class MsgSendServlet
@@ -17,34 +18,52 @@ import javax.servlet.http.HttpServletResponse;
 public class MsgSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public MsgSendServlet() {
-        // TODO Auto-generated constructor stub
-    }
-
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * Default constructor.
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public MsgSendServlet() {
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = (User)request.getSession().getAttribute(Constants.session_currentUser);
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(); 
+		User user = (User) request.getSession().getAttribute(
+				Constants.session_currentUser);
 		int type = Integer.parseInt(request.getParameter("Type"));
-		String body = request.getParameter("Body");
+		String body = request.getParameter("body");
 		int quizId = Integer.parseInt(request.getParameter("quizID"));
-		String toUser = request.getParameter("toUser");
-		Message msg = new Message(type, false, body, quizId, 
-				user.name(), toUser, new Timestamp(System.currentTimeMillis()));
 		
-		msg.sendMessage();
-		RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
+		// from a user profile
+		String toUser = (String) session.getAttribute(Constants.session_sendMessageTo);
+		
+		// from messageSend.jsp
+		if (toUser == null)
+			toUser = request.getParameter("toUser");
+		User temp = UserManager.searchExact(toUser);
+		System.out.println(toUser);
+		if (temp != null) {
+			System.out.println("found user");
+			int toId = temp.user_id;
+			Message msg = new Message(type, false, body, quizId, user.user_id,
+					toId, new Timestamp(System.currentTimeMillis()));
+			msg.sendMessage();
+		}
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("userPage.jsp");
 		dispatcher.forward(request, response);
 	}
 

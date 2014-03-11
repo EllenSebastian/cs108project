@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class User {
 
-	int user_id;
+	public int user_id;
 	private String name;
 	private String password;
 	private boolean isAdmin;
@@ -38,7 +38,7 @@ public class User {
 		return isAdmin;
 	}
 	
-	public Announcement[] getAnnouncements(){
+	public ArrayList<Announcement> getAnnouncements(){
 		return Announcement.getAnnouncements();
 	}
 
@@ -54,6 +54,14 @@ public class User {
 	
 	public ArrayList<Integer> getUserFriends(){
 		return Friends.getFriends(user_id);
+	}
+	
+	public void addFriend(int to_id){
+		Friends.addFriend(user_id, to_id);
+	}
+	
+	public void removeFriend(int to_id){
+		Friends.removeFriend(user_id, to_id);
 	}
 	
 	public List<Activity> getFriendsActivity() {

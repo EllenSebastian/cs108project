@@ -2,8 +2,8 @@ package quizWebsite;
 
 public class Constants {
 	// user stuff
-	public static final String session_currentUser = "session.currentUser"; // Integer (id for user)
-
+	public static final String session_currentUser = "session.currentUser"; // User
+	public static final String session_sendMessageTo = "session.sendMessageTo"; // User
 	// quiz taking stuff
 	public static final String session_previousAnswer = "session.previousAnswer";
 	public static final String session_questionHTML = "session.currentQuestionHTML";
@@ -15,7 +15,7 @@ public class Constants {
 	public static final String session_previousFeedback = "session.previousFeedback";
 	public static final String session_currentQuestionIndex= "session.currentQuestionIndex";
 	public static final String session_quizQuestions= "session.quizQuestions";
-	
+
 	
 	// quiz creation stuff	
 	public static final String session_newQuiz = "session.newQuiz"; // Quiz

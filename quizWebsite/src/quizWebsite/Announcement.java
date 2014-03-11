@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 
 public class Announcement {
@@ -17,7 +18,7 @@ public class Announcement {
 	
 	private static Connection connection = myDBinfo.getConnection();
 	
-	public static void newAnnouncement(int user_id, String subject, String body) {
+	public static void sendAnnouncement(int user_id, String subject, String body) {
 		try {
 			PreparedStatement p = connection.prepareStatement("INSERT INTO Announcement (user_id, time, subject,body) VALUES (?, ?, ?, ?)");
 			p.setInt(1, user_id);
@@ -28,22 +29,13 @@ public class Announcement {
 		} catch (SQLException e) { }
 	}
 	
-	public static void main(String args[]){
-		newAnnouncement(21,"cs108","project is done");
-	}
-	
-	public Announcement(int announcement_id) {
+
+	public Announcement(int announcement_id,int user_id,Timestamp time,String subject,String body) {
 		this.announcement_id = announcement_id;
-		
-		try {
-			ResultSet r = connection.prepareStatement("SELECT * FROM Announcement WHERE announcement_id = " + announcement_id).executeQuery();
-			if(!r.next()) throw new RuntimeException("Invalid announcement id!");
-			
-			user_id = r.getInt("user_id");
-			time = r.getTimestamp("posted");
-			subject = r.getString("subject");
-			body = r.getString("body");
-		} catch (SQLException e) { }
+		this.user_id = user_id;
+		this.time = time;
+		this.subject = subject;
+		this.body = body;		
 	}
 	
 	public static void deleteAnnouncement(int announcement_id) {
@@ -52,21 +44,24 @@ public class Announcement {
 		} catch (SQLException e) { }
 	}
 	
-	public static Announcement[] getAnnouncements() {
+	public static void main(String args[]){
+		getAnnouncements();
+	}
+	
+	public static ArrayList<Announcement> getAnnouncements() {
 		try {
-			ResultSet r = connection.prepareStatement("SELECT announcement_id FROM Announcement ORDER BY time DESC").executeQuery();
-			
-			r.last();
-			int size = r.getRow();
-			r.beforeFirst();
-			
-			Announcement[] result = new Announcement[size];
-			for(int i = 0; i < size; i++) {
-				r.next();
-				result[i] = new Announcement(r.getInt("announcement_id"));
-				//System.out.println(r.getInt("announcement_id"));
+			ResultSet r = connection.prepareStatement("SELECT * FROM Announcement ORDER BY time DESC").executeQuery();		
+			ArrayList<Announcement> result = new ArrayList<Announcement>();
+			while(r.next()){
+				int announcement_id = r.getInt("announcement_id");
+				int user_id = r.getInt("user_id");
+				Timestamp time = r.getTimestamp("time");
+				String subject = r.getString("subject");
+				String body = r.getString("body");
+				Announcement ancmt = new Announcement(announcement_id,user_id,time,subject,body);
+				result.add(ancmt);
 			}
-			
+			System.out.println("size:"+result.size());
 			return result;
 		} catch (SQLException e) { return null; }
 	}

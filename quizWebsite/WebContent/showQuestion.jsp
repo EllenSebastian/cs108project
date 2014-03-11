@@ -34,6 +34,7 @@ else{ // last question
 	out.print("<input type=\"submit\" value = \"Go to next question\"/> </form>");
 }*/
 
-%>
+%><a href=userPage.jsp>Home</a>
+
 </body>
 </html>

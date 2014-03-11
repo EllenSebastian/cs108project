@@ -90,6 +90,15 @@ public class UserManager {
 		password = hashPassword(password);
 
 		try {
+			java.sql.Statement st = db.createStatement();
+
+			String checkQuery = "select count(*) from User where name=\"" + name + "\";";
+			ResultSet rs = st.executeQuery(checkQuery);
+			rs.next(); 
+			Integer count = rs.getInt("count(*)"); 
+			if (count > 0){
+				return null; 
+			}
 			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO User (name, passwordHash, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			p.setString(1, name);
 			p.setString(2, password);
@@ -174,23 +183,40 @@ public class UserManager {
 		}		
 	}
 	
+
 	// return a User object with exact match for the name
 	public static User searchExact(String name) {
 		try {
-			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name = ?");
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE name =?");
 			p.setString(1,name);
-			ResultSet result = p.executeQuery();		
-			User u = getUser(result.getInt("user_id"));			
-			return u;
+			ResultSet result = p.executeQuery();	
+			if(result.next()) {
+				User u = getUser(result.getInt("user_id"));
+				System.out.println(u.name());
+				return u;
+			}		
+			else return null;
 		} catch (SQLException e) {
 			return null;
 		}
 		
 	}
 
+	public static ArrayList<Activity> getActivityType(int type) {
+		return Activity.getActivityType(type);
+	}
+
+
 	public static void removeUser(int id) {
 		try {
 			db.prepareStatement("DELETE FROM User WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Activity WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Achievement WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Friend WHERE user1 = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Friend WHERE user2 = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Announcement WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Message WHERE user_id = " +id).executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

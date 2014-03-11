@@ -28,18 +28,18 @@ public class SearchUsersServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String name = request.getParameter("user");
+		request.getSession().setAttribute("userSearch", name);
+		RequestDispatcher dispatch = 
+			 request.getRequestDispatcher("showUsers.jsp"); 
+			 dispatch.forward(request, response); 
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("user");
-		request.getSession().setAttribute("userSearch", name);
-		RequestDispatcher dispatch = 
-			 request.getRequestDispatcher("showUsers.jsp"); 
-			 dispatch.forward(request, response); 
+		
 	}
 
 }

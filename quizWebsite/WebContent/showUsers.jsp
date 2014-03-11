@@ -8,6 +8,7 @@
 <title>Friends List</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 <h1>All Friends</h1>
 <%
 	String searchName = (String)session.getAttribute("userSearch");
@@ -15,8 +16,9 @@
 	for (User u : users) {
 		String userName = u.name();
 		out.println("<h4>"+userName+"</h4>");
-		out.println("<a href=messageSend.jsp?id="+userName+">Add Friend</a>");
+		out.println("<a href=userProfile.jsp?uid="+u.user_id+">" + userName + "</a>");
 	}
 %>
+
 </body>
 </html>

@@ -24,21 +24,22 @@ public class Activity {
 	public Timestamp time;
 	public int type;
 	public double score;
-	int quizId;
-	int user_id;
+	public int quizId;
+	public int user_id;
 	public String description;
-
+	public Integer duration; 
 	private static Statement stmt;
 	private static Connection connection = myDBinfo.getConnection();
 
 	// type can be 1 or 2
 	public Activity(int user_id,Timestamp time,int type, 
-			double score, int quizId){
+			double score, int quizId, int duration){
 		this.time = time;
 		this.type = type;
 		this.score = score;
 		this.quizId = quizId;
 		this.user_id = user_id;
+		this.duration = duration; 
 		switch (type) {
 			case 1:
 				description = "created a quiz";
@@ -51,6 +52,7 @@ public class Activity {
 		}
 	}
 
+	
 	public static class activityComparator implements Comparator<Activity> {
 	    @Override
 	    public int compare(Activity o1, Activity o2) {
@@ -65,14 +67,39 @@ public class Activity {
 	public void addActivity() {
 		try {
 			stmt = connection.createStatement();
-			stmt.executeUpdate("INSERT into Activity VALUES (" 
-					+ (char) 34 + user_id + (char) 34 + "," + (char) 34
-					+ time + (char) 34 + "," + (char) 34 + type
-					+ (char) 34 + "," + score + "," + 
-					(char) 34 + quizId + (char) 34 + ")");
+			String query = "Insert into Activity values (" + user_id + ",\"" + time 
+					+ "\"," + type + "," + score + "," + quizId + "," + duration + ");";
+			System.out.println(" adding activity : " + query);
+			stmt.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		ArrayList<Activity> checkAch = getActivity(user_id);
+		int takenCt = 0;
+		int createCt = 0;
+		for(Activity a:checkAch){
+			if(type == 1 && a.type == 1)
+				createCt++;
+			else if(type == 0 && a.type == 0)
+				takenCt++;
+		}
+		if (createCt == 1){
+			Achievement ach = new Achievement(user_id, 1, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (createCt == 5){
+			Achievement ach = new Achievement(user_id, 2, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (createCt == 10){
+			Achievement ach = new Achievement(user_id, 3, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (takenCt == 10){
+			Achievement ach = new Achievement(user_id, 4, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+			
 	}
 
     
@@ -87,8 +114,9 @@ public class Activity {
 				int type = rs.getInt("type");
 				double score = rs.getDouble("score");
 				int quizId = rs.getInt("pKey");
+				int duration = rs.getInt("durationMS");
 				Activity temp = new Activity(user_id,time,type,score,
-						quizId);
+						quizId,duration);
 				list.add(temp);
 			}
 		} catch (SQLException e) {
@@ -96,6 +124,41 @@ public class Activity {
 		}
 		return list;
 	}
-
+	
+	public static ArrayList<Activity> getActivityType(int type) {
+		ArrayList<Activity> list = new ArrayList<Activity>();
+		ResultSet rs;
+		try {
+			rs = connection.prepareStatement("SELECT * FROM Activity WHERE type = " + type + " ORDER BY time DESC").executeQuery();	
+			while (rs.next()) {
+				Timestamp time = rs.getTimestamp("time");
+				int user_id = rs.getInt("user_id");
+				double score = rs.getDouble("score");
+				int quizId = rs.getInt("pKey");
+				int duration = rs.getInt("durationMS");
+				Activity temp = new Activity(user_id,time,type,score,
+							quizId,duration);
+				list.add(temp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static int numQuizzesTaken() {
+		try {
+			ResultSet result = connection.prepareStatement("SELECT COUNT(*) FROM User Where type = 2").executeQuery();	
+			int numTaken = 0;			
+			if (result.next()) {
+				numTaken += result.getInt(1);
+			}
+			//System.out.println(numUsers);
+			return numTaken;
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
+	
 
 }

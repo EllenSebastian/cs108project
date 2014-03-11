@@ -1,0 +1,15 @@
+data/askForQuestion.jsp.i
+data/quizIntro.jsp.i
+data/welcomePage.jsp.i
+data/newQuiz.jsp.i
+data/CreateQuestion.jsp.i
+data/tempCreateQuiz.jsp.i
+data/loginPage.jsp.i
+data/quizCreatedSummary.jsp.i
+data/showQuestion.jsp.i
+data/tempTakeQuiz.jsp.i
+data/META-INF/MANIFEST.MF.i
+data/quizTakenSummary.jsp.i
+data/META-INF/quizSummary.jsp.i
+data/META-INF/quizResults.jsp.i
+data/META-INF/.DS_Store.i

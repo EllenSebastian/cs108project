@@ -8,10 +8,11 @@
 <title>Friends List</title>
 </head>
 <body>
+<a href=userPage.jsp>Home</a>
 <h1>All Friends</h1>
 <ul>
 <%
-	User user = (User)session.getAttribute(Constants.session_currentUser);
+	User user = (User)session.getAttribute("session.currentUser");//Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Integer> friends = user.getUserFriends();
 	for (Integer f : friends) {

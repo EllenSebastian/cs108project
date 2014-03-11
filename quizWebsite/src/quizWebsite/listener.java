@@ -44,6 +44,7 @@ public class listener implements HttpSessionListener, ServletContextListener {
         	java.sql.Statement stmt = con.createStatement();
         	stmt.executeQuery("USE " + myDBinfo.MYSQL_DATABASE_NAME);
              context.setAttribute(Constants.context_Connection, con);
+             System.out.println("testing");
             
     	}catch (Exception e){
         	e.printStackTrace();
