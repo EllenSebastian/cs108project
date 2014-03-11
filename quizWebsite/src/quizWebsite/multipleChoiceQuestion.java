@@ -50,6 +50,8 @@ public class multipleChoiceQuestion extends Question {
 	@Override
 	public String getFeedback(HttpServletRequest request) {
 		String userAnswer = (String) request.getParameter("" + pKey + "answer");
+		userAnswer = userAnswer.substring(userAnswer.indexOf("_")+1);
+
 		if (scoreAnswer(request) == 1){
 			return "Your answer of " + userAnswer + " was correct. You received 1 point.";
 		}

@@ -15,6 +15,8 @@ public class Constants {
 	public static final String session_previousFeedback = "session.previousFeedback";
 	public static final String session_currentQuestionIndex= "session.currentQuestionIndex";
 	public static final String session_quizQuestions= "session.quizQuestions";
+	public static final String session_previousFeedbackObj = "session.previousFeedbackObj"; // Feedback object
+	public static final String session_allFeedbackObjs = "session.allFeedbackObjs"; // ArraList<Feedback>
 
 	
 	// quiz creation stuff	
@@ -27,5 +29,4 @@ public class Constants {
 	// acheivements, activities
 	public static final String dateFormat = "yyyy:MM:dd HH:mm:ss";
 	public static final String context_Connection = "Connection";
-
 }

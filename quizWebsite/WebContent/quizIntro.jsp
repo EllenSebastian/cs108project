@@ -16,7 +16,7 @@ quizWebsite.User currentUser = (quizWebsite.User) session.getAttribute(quizWebsi
 quizWebsite.Quiz quiz =  quizWebsite.mysqlManager.retreiveQuiz(Integer.parseInt(id),con);
 session.setAttribute(quizWebsite.Constants.session_currentQuiz, quiz);
 
-
+System.out.println("Quiz : " + quiz);
 User user = (User)session.getAttribute(quizWebsite.Constants.session_currentUser);
 
 if(user.isAdmin()){
@@ -41,7 +41,9 @@ session.setAttribute(quizWebsite.Constants.session_previousAnswer,null);
 session.setAttribute(quizWebsite.Constants.session_currentQuestionIndex,-1);
 session.setAttribute(quizWebsite.Constants.session_currentScore,0);
 session.setAttribute(quizWebsite.Constants.session_currentQuestion,null);
-session.setAttribute(quizWebsite.Constants.session_previousFeedback,null);
+session.setAttribute(quizWebsite.Constants.session_previousFeedbackObj,null);
+session.setAttribute(quizWebsite.Constants.session_allFeedbackObjs,null);
+
 session.setAttribute(quizWebsite.Constants.session_allFeedback,null);
 session.setAttribute(quizWebsite.Constants.session_lastQuestionBool,false);
 // link to the first question

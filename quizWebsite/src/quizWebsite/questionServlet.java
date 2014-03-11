@@ -40,18 +40,32 @@ public class questionServlet extends HttpServlet {
 	 * score the previous question and add its 
 	 */
 	void scorePreviousAnswer(HttpSession session, HttpServletRequest request){
+		Integer previousQuestionIndex = (Integer) session.getAttribute(Constants.session_currentQuestionIndex);
 
 		Integer score = (Integer) session.getAttribute(Constants.session_currentScore);
 		Question prevQuestion = (Question) session.getAttribute(Constants.session_currentQuestion);
-		if (prevQuestion != null) score += prevQuestion.scoreAnswer(request); 
+		String allFeedback = (String) session.getAttribute(Constants.session_allFeedback);
 
+		if (prevQuestion != null) {
+			Integer newScore = prevQuestion.scoreAnswer(request);
+			String feedbackString = prevQuestion.getFeedback(request);
+			if (allFeedback != null) allFeedback += "<br><br> " + feedbackString;
+			else if (prevQuestion != null) allFeedback = "<br><br> " + feedbackString;
+			else allFeedback = "";
+			score += newScore; 
+			Feedback feedback = new Feedback(prevQuestion.displayQuestion(),feedbackString,newScore,previousQuestionIndex);
+			session.setAttribute(Constants.session_previousFeedbackObj,feedback);
+			ArrayList<Feedback> allFeedbacks = (ArrayList<Feedback>) session.getAttribute(Constants.session_allFeedbackObjs);
+			if (allFeedbacks == null) {
+				allFeedbacks = new ArrayList<Feedback>(); 
+			}
+			allFeedbacks.add(feedback);
+			session.setAttribute(Constants.session_allFeedbackObjs,allFeedbacks);
+		}
 		if (((Quiz) session.getAttribute(Constants.session_currentQuiz)).immediateFeedback){
 			if (prevQuestion != null) session.setAttribute(Constants.session_previousFeedback, prevQuestion.getFeedback(request));
 		}
-		String allFeedback = (String) session.getAttribute(Constants.session_allFeedback);
-		if (allFeedback != null) allFeedback += "<br><br> " + prevQuestion.getFeedback(request);
-		else if (prevQuestion != null) allFeedback = "<br><br> " + prevQuestion.getFeedback(request);
-		else allFeedback = "";
+
 		session.setAttribute(Constants.session_allFeedback, allFeedback);
 		session.setAttribute(Constants.session_currentScore,score);
 	}
@@ -71,19 +85,31 @@ public class questionServlet extends HttpServlet {
 		Vector<Integer> quizQuestions = (Vector<Integer>) session.getAttribute(Constants.session_quizQuestions); // need to initialize this
 
 		if (alreadyAnswered){
+			// forward to feedback.jsp
 			Integer score = 0; 
-			String feedback = "";
-			int i = 1; 
+			int i = 0; 
+			ArrayList<Feedback> allFeedbacks = new ArrayList<Feedback>(); 
+
 			for (Integer questionI : quizQuestions){
 				Question question = mysqlManager.getQuestion(request,session,questionI,
 						(java.sql.Connection)(request.getServletContext().getAttribute(Constants.context_Connection)));
 				score += question.scoreAnswer(request);
-				feedback += "<br>Question " + i + ":<br> " + question.getFeedback(request);
 				i++;
+				Integer newScore = question.scoreAnswer(request);
+				String feedbackString = question.getFeedback(request);
+				score += newScore; 
+				Feedback feedback = new Feedback(question.displayQuestion(),feedbackString,newScore,i);
+				session.setAttribute(Constants.session_previousFeedbackObj,feedback);
+				if (allFeedbacks == null) {
+					allFeedbacks = new ArrayList<Feedback>(); 
+				}
+				allFeedbacks.add(feedback);
+			
 			}
+			session.setAttribute(Constants.session_allFeedbackObjs,allFeedbacks);
 
-			session.setAttribute(Constants.session_allFeedback, feedback);
 			session.setAttribute(Constants.session_currentScore,score);
+			session.setAttribute(Constants.session_lastQuestionBool, false);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("quizTakenSummary.jsp");
 			dispatcher.forward(request, response);
 		}else{
@@ -120,7 +146,7 @@ public class questionServlet extends HttpServlet {
 			form += "<form action=\"quizTakenSummary.jsp\" method=\"post\">";
 			form += "<input type=\"submit\" value=\"Finish quiz\">";
 			form += "</form>";
-			session.setAttribute(Constants.session_lastQuestionBool, true);
+			//session.setAttribute(Constants.session_lastQuestionBool, true);
 		}
 		else{
 			form +="<form action=\"questionServlet\" method=\"post\">";
@@ -135,7 +161,7 @@ public class questionServlet extends HttpServlet {
 
 			form += "<input type=\"submit\" value=\"Next question\">";
 			form += "</form>";
-			session.setAttribute(Constants.session_lastQuestionBool, false);
+			//session.setAttribute(Constants.session_lastQuestionBool, false);
 		}
 		session.setAttribute(Constants.session_questionHTML,form);
 	}
@@ -145,7 +171,6 @@ public class questionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("questionservlet post called");
 		Quiz currentQuiz = (Quiz) request.getSession().getAttribute(Constants.session_currentQuiz);
 		if (currentQuiz.multiplePages){
 			multiplePageQuiz(request,response);
@@ -155,8 +180,6 @@ public class questionServlet extends HttpServlet {
 		else{
 			onePageQuiz(request,response);
 		}
-		// get rid of showQuestion.jsp completely if this works. 
-		System.out.println("forwarding to showQuestion.jsp");
 
 	}
 }

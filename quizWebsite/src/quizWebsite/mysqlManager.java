@@ -157,6 +157,24 @@ public class mysqlManager {
 		  return null; 
 		}
 
+	// return number of quizzes deleted; e.g. 1 if ok, 0 if not
+	// also deletes questions corresponding to this quiz. 
+	public static Integer deleteQuiz(int pKey, java.sql.Connection connection){
+		 try {
+				java.sql.Statement st = connection.createStatement();
+				String query = "delete from Quizzes where pKey = " + pKey + ";";
+				System.out.println("Query : " + query);
+				Integer deleted= st.executeUpdate(query);
+				query = "delete from Questions where quizKey = " + pKey + ";";
+				Integer questionsDeleted = st.executeUpdate(query);
+				query = "delete from Activity where pKey = " + pKey + ";";
+				Integer activityDeleted = st.executeUpdate(query);
+				return deleted; 
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 	
+		return 0; 
+	}
 	
 	public static User retreiveUser(int user_id, java.sql.Connection connection){
 		
