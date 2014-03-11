@@ -36,6 +36,10 @@
 		out.println("<h3>" + a.time + " " + a.subject + ":</h3>");
 		out.println("<p>" + a.body + "</p>");
 	}
+	if(user.isAdmin()){
+		out.println("<a href = createAnnouncement.html>Create Announcement</a>");
+		out.println("<a href = statistics.jsp>Check Statistics</a>");
+	}
 
 	out.println("<h2>Global Recently Taken Quizzes:</h2>");
 	ArrayList<Activity> takenQuizzes = UserManager.getActivityType(2);

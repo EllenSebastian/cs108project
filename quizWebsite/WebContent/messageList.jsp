@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*,quizWebsite.*"%>
+<%@ page import="java.util.*,quizWebsite.*, java.sql.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,6 +11,7 @@
 <a href=userPage.jsp>Home</a>
 <h1>All Messages</h1>
 <%
+	Connection con = (Connection) application.getAttribute("Connection"); 
 	User user = (User) session
 			.getAttribute("session.currentUser");//Constants.session_currentUser);
 	String name = user.name();
@@ -28,6 +29,10 @@
 		out.println("<p>" + m.body + "</p>");
 		if (m.type == 1) {
 			out.println("<p><a href=addFriend.jsp?id="+m.fromUser+">Add Friend</a></p>");
+		}
+		if(m.type == 2){
+			Quiz q = mysqlManager.retreiveQuiz(m.quizID,con);
+			out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
 		}
 	}
 %>

@@ -317,4 +317,15 @@ public class mysqlManager {
 		}
 		return "";
 	}
+	
+	public static void clearQuizHistory(int qid, Connection con){
+		try{
+			java.sql.Statement 	st = con.createStatement();
+			ResultSet rs= st.executeQuery("DELETE FROM Activity WHERE quizId = " +qid
+					+" AND type = 2 ");
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="quizWebsite.Quiz.*,java.sql.Connection, java.util.Vector, java.util.Collections"%>
+<%@ page import="quizWebsite.*,java.sql.Connection, java.util.Vector, java.util.Collections"%>
 
 <html>
 <head>
@@ -15,6 +15,14 @@ Integer qid = Integer.parseInt(id);
 quizWebsite.User currentUser = (quizWebsite.User) session.getAttribute(quizWebsite.Constants.session_currentUser);
 quizWebsite.Quiz quiz =  quizWebsite.mysqlManager.retreiveQuiz(Integer.parseInt(id),con);
 session.setAttribute(quizWebsite.Constants.session_currentQuiz, quiz);
+
+
+User user = (User)session.getAttribute(quizWebsite.Constants.session_currentUser);
+
+if(user.isAdmin()){
+	out.println("<p><a href=quizClear.jsp?id="+qid+">Clear History</a></p>");
+	out.println("<p><a href=quizDelete.jsp?id="+qid+">Delete Quiz</a></p>");
+}
 
 out.println("<title>"+  quiz.name + "	</title> </head>		<body>");
 out.println("<h1>Welcome to \"" + quiz.name + "\".</h1>");

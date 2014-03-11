@@ -205,6 +205,13 @@ public class UserManager {
 	public static void removeUser(int id) {
 		try {
 			db.prepareStatement("DELETE FROM User WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Activity WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Achievement WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Friend WHERE user1 = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Friend WHERE user2 = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Announcement WHERE user_id = " +id).executeUpdate();
+			db.prepareStatement("DELETE FROM Message WHERE user_id = " +id).executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -74,7 +74,32 @@ public class Activity {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// TODO check if they get more acheivements
+		ArrayList<Activity> checkAch = getActivity(user_id);
+		int takenCt = 0;
+		int createCt = 0;
+		for(Activity a:checkAch){
+			if(type == 1 && a.type == 1)
+				createCt++;
+			else if(type == 0 && a.type == 0)
+				takenCt++;
+		}
+		if (createCt == 1){
+			Achievement ach = new Achievement(user_id, 1, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (createCt == 5){
+			Achievement ach = new Achievement(user_id, 2, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (createCt == 10){
+			Achievement ach = new Achievement(user_id, 3, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+		if (takenCt == 10){
+			Achievement ach = new Achievement(user_id, 4, new Timestamp(System.currentTimeMillis()));
+			ach.addAchievement();
+		}
+			
 	}
 
     
@@ -119,6 +144,20 @@ public class Activity {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public static int numQuizzesTaken() {
+		try {
+			ResultSet result = connection.prepareStatement("SELECT COUNT(*) FROM User Where type = 2").executeQuery();	
+			int numTaken = 0;			
+			if (result.next()) {
+				numTaken += result.getInt(1);
+			}
+			//System.out.println(numUsers);
+			return numTaken;
+		} catch (SQLException e) {
+			return 0;
+		}
 	}
 	
 

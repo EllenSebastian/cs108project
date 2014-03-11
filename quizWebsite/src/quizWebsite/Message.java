@@ -20,7 +20,7 @@ public class Message{
 	public int type;
 	public String alert;
 	public String body;
-	int quizID;
+	public int quizID;
 	public int fromUser;
 	int toUser;
 	
@@ -42,7 +42,7 @@ public class Message{
 			alert = "you get a friend request";
 			break;
 		case 2:
-			alert = "you get a chellenge";
+			alert = "you get a challenge";
 			break;
 		case 3:
 			alert = "you get a note";

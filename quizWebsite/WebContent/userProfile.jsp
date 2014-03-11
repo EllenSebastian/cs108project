@@ -13,11 +13,17 @@
 	User user = UserManager.getUser(Integer.parseInt(uid));
 	ArrayList<Achievement> achievements = user.getUserAchievements();
 	ArrayList<Activity> userActivity = user.getUserActivities();
+	User currUser = (User)session.getAttribute(quizWebsite.Constants.session_currentUser);
 	out.println("<title>" + user.name() + "</title>");
 
 	out.println("</head>");
 	out.println("<body>");
 	out.println("<a href=userPage.jsp>Home</a>");
+	if(currUser.isAdmin()){
+		if(!user.isAdmin())
+			out.println("<p><a href=userPromoted.jsp?id="+user.user_id+">Promote User</a></p>");
+		out.println("<p><a href=userRemoved.jsp?id="+user.user_id+">Delete User</a></p>");
+	}
 	out.println("<h1>" + user.name() + "</h1>");
 
 
