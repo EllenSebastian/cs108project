@@ -22,7 +22,7 @@
 		out.println("<title>Welcome!</title></head><body><h1>Welcome!</h1>");
 	
 	else 
-		out.println("<title>Welcome" + name + "!</title></head><body><h1>Welcome" + name + "!</h1>");
+		out.println("<title>Welcome " + name + "!</title></head><body><h1>Welcome " + name + "!</h1>");
 	
 
 	out.println("<form action='SearchUsersServlet' method='get'>");
@@ -33,6 +33,8 @@
 		out.println("<br><a href=messageSend.jsp?id=>Send Message</a>");
 		out.println("<br><a href=friendsList.jsp?id=>Friends List</a>");
 		out.println("<br><a href=newQuiz.jsp>Create a quiz</a>");
+		out.println("<br><a href=logOut.jsp>Log Out</a>");
+
 	}
 	out.println("<br><a href=searchQuiz.jsp>Take a quiz</a>");
 

@@ -13,6 +13,8 @@
 			.getAttribute("Connection");
 	int id = Integer.parseInt(request.getParameter("id"));
 	UserManager.promoteUser(id);
+	mysqlManager.deleteQuiz(id,con);
+
 %>
 <h1>Quiz Deleted!</h1>
 <a href=userPage.jsp>Home</a>
