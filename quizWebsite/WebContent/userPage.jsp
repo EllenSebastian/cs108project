@@ -25,8 +25,8 @@
 		out.println("<title>Welcome " + name + "!</title></head><body><h1>Welcome " + name + "!</h1>");
 	
 
-	out.println("<form action='SearchUsersServlet' method='get'>");
-	out.println("<p>User Search: <input type='text' name='user' />");
+	out.println("<form action='SearchUsersServlet' method='post'>");
+	out.println("<p>User Search: <input type='text' name='userSearch' />");
 	out.println("<input type='submit' value = 'Search'/></p>");
 	out.println("</form>");
 	if (!user.equals(Constants.UNREGISTERED_USER)){		

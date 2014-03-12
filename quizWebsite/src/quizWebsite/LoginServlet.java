@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,8 +48,23 @@ public class LoginServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 		}
 		else{
-		User u = UserManager.checkUser(username,password);
+			User u = UserManager.checkUser(username,password);
+
 		if (u != null){
+			Cookie c; 
+			String checked = request.getParameter("remember me");
+			if(checked != null && checked.equals("remember me")){
+				String key = u.setCookieKey();
+				c = new Cookie("user_key",key);
+				c.setMaxAge(365 * 86400);
+			}
+			else{
+				c = new Cookie("user_key", "");
+				c.setMaxAge(0);
+			}
+			c.setHttpOnly(true);
+			c.setPath("/");
+			response.addCookie(c);
 			session.setAttribute(Constants.session_currentUser,u);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
 			dispatcher.forward(request, response);

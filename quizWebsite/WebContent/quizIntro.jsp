@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <%
-
+System.out.println("reached quiz intro");
 Connection con = (Connection) application.getAttribute("Connection"); 
 String id = request.getParameter("id");
 Integer qid = Integer.parseInt(id);

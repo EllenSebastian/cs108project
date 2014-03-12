@@ -235,4 +235,5 @@ public class User {
 	//c.setHttpOnly(true);
 	//c.setPath("/");
 	//response.addCookie(c);
+	// redirect to userPage if already logged in 
 }
