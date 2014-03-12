@@ -17,7 +17,7 @@ public class User {
 	public int user_id;
 	private String name;
 	private String password;
-	private boolean isAdmin;
+	public boolean isAdmin;
 
 	private static Connection connection = myDBinfo.getConnection();
 		

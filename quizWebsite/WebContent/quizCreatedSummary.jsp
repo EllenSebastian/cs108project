@@ -14,6 +14,7 @@
 
 	java.util.Date date= new java.util.Date();
 	java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
+	
 	quizWebsite.User currentUser = (quizWebsite.User) session.getAttribute(quizWebsite.Constants.session_currentUser);
 
 	System.out.println("currentUser" + currentUser.user_id);

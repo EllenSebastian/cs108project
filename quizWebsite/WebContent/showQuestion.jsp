@@ -24,17 +24,11 @@ if (previousFeedback != null){
 
 out.println(questionHTML);
 System.out.println(questionHTML);
-/*if (lastQuestion){
-	// forward to showQuestion.jsp
-	out.println("<form action=\"QuizResultsServlet\" method=\"post\">"); // call doPost in questionServlet
-	out.print("<input type=\"submit\" value = \"Finish Quiz\"/> </form>");
-}
-else{ // last question
-	out.println("<form action=\"questionServlet\" method=\"post\">");// go to QuizResults
-	out.print("<input type=\"submit\" value = \"Go to next question\"/> </form>");
-}*/
 
-%><a href=userPage.jsp>Home</a>
+%><br><a href=userPage.jsp>Home</a>
+<br>
 
+<form action=FlagQuizServlet method="post">
+<input type="submit" value="Mark this quiz as inappropariate"></form>
 </body>
 </html>

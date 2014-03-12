@@ -175,7 +175,31 @@ public class mysqlManager {
 			} 	
 		return 0; 
 	}
-	
+	public static ArrayList<User> retreiveAllUsers(java.sql.Connection connection){
+		String query = "select * from User;";
+		ArrayList<User> users = new ArrayList(); 
+		try{
+			java.sql.Statement st = connection.createStatement();
+			System.out.println("Query : " + query);
+			ResultSet rs= st.executeQuery(query);
+			while(rs.next()){
+				User user = new User(
+			          rs.getInt("user_id"),
+			          rs.getString("name"), 					           	
+			          rs.getString("passwordHash"),
+					  rs.getInt("isAdmin") == 1 ? true : false
+					 );
+				if (user.name().equals("huanghai")){
+					System.out.println("should be admin");
+				}
+				users.add(user);
+			}
+			return users; 
+			}catch (SQLException e) {
+			e.printStackTrace();
+		} 	
+		return null; 
+	}
 	public static User retreiveUser(int user_id, java.sql.Connection connection){
 		
 		String query = "select * from User where user_id =" + user_id + ";";

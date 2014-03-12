@@ -51,7 +51,6 @@ public class Message{
 			alert =" ";
 	}
 }
-	
 	public void markasRead() {
 		try {
 			PreparedStatement ps = connection.prepareStatement("UPDATE Message SET checked = ? WHERE fromUser = ? and toUser = ? and time = ?");
@@ -107,6 +106,6 @@ public class Message{
 			ps.setInt(6,toUser);
 			ps.setTimestamp(7,time);
 			ps.executeUpdate();
-		} catch (SQLException e) { }
+		} catch (SQLException e) {e.printStackTrace(); }
   }
 }

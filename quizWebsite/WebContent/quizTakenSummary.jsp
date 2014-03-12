@@ -35,6 +35,10 @@ for (Feedback f : feedbacks){
 
 
 %><a href=userPage.jsp>Home</a>
+<br>
 
+<form action=FlagQuizServlet method="post">
+<input type="submit" value="Mark this quiz as inappropariate"></form>
+<br>
 </body>
 </html>

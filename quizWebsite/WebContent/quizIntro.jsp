@@ -69,8 +69,10 @@ out.println("<br>Lowest score: " + quizWebsite.mysqlManager.quizMax(qid,con));
 out.println("<form action=\"questionServlet\" method=\"post\">"); // call doPost in questionServlet
 out.print("<input type=\"submit\" value = \"Go to Question 1\"/> </form>");
 
-%>
+%><br>
 <a href=userPage.jsp>Home</a>
-
+<br>
+<form action=FlagQuizServlet method="post">
+<input type="submit" value="Mark this quiz as inappropariate"></form>
 </body>
 </html>
