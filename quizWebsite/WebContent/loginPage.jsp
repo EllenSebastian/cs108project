@@ -21,8 +21,7 @@ username: <input type="text" name="username" >
 password: <input type="text" name="password">
 <input type="submit" value="Create User"> </form>
 
-<form action=LoginServlet method="post">
-<input type = "submit" value="Continue as a nonregistered user">
+
 </form>
 </body>
 </html>

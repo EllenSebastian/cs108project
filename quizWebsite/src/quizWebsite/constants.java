@@ -4,7 +4,10 @@ public class Constants {
 	// user stuff
 	public static final String session_currentUser = "session.currentUser"; // User
 	public static final String session_sendMessageTo = "session.sendMessageTo"; // User
-	public static final User UNREGISTERED_USER = new User(888888,"UNREGISTERED_USER","UNREGISTERD_USER",false);
+	public static final User UNREGISTERED_USER = new User(888888,"UNREGISTERED_USER","UNREGISTERD_USER",false,null);
+// TODO change null if unregistered user needs cookies. 
+	
+	
 	// quiz taking stuff
 	public static final String session_previousAnswer = "session.previousAnswer";
 	public static final String session_questionHTML = "session.currentQuestionHTML";

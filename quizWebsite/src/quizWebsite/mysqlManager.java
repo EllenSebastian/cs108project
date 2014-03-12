@@ -187,7 +187,9 @@ public class mysqlManager {
 			          rs.getInt("user_id"),
 			          rs.getString("name"), 					           	
 			          rs.getString("passwordHash"),
-					  rs.getInt("isAdmin") == 1 ? true : false
+					  rs.getInt("isAdmin") == 1 ? true : false,
+					  rs.getString("cookieKey")
+
 					 );
 				if (user.name().equals("huanghai")){
 					System.out.println("should be admin");
@@ -212,8 +214,9 @@ public class mysqlManager {
 			          rs.getInt("user_id"),
 			          rs.getString("name"), 					           	
 			          rs.getString("passwordHash"),
-					  rs.getInt("isAdmin") == 1 ? true : false
-					 );
+					  rs.getInt("isAdmin") == 1 ? true : false,
+					  rs.getString("cookieKey")
+					);
 			return user; 
 		}catch (SQLException e) {
 			e.printStackTrace();

@@ -13,11 +13,8 @@ public class UserManager {
 
 	private static Connection db = myDBinfo.getConnection();
 
-	  
-	public static void main(String args[]){
-		if(checkUser("hai","1234") != null){
-			System.out.println("it's working");
-		}
+	public static ArrayList<Activity> getActivityType(int type) {
+		return Activity.getActivityType(type);
 	}
 	
 	// retrieve the user information from db and create a user object
@@ -31,13 +28,33 @@ public class UserManager {
 					          r.getInt("user_id"),
 					          r.getString("name"), 					           	
 					          r.getString("passwordHash"),
-							  r.getInt("isAdmin") == 1 ? true : false
+							  r.getInt("isAdmin") == 1 ? true : false,
+						      r.getString("cookieKey")
 							 );
 			//System.out.println(user.user_id);
 			//System.out.println(user.name);
 			//System.out.println(user.password);
 			//System.out.println(user.isAdmin);
 			return user;
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
+	public static User getUserByCookie(String key) {
+		ResultSet r;
+		try {
+			PreparedStatement p = db.prepareStatement("SELECT * FROM User WHERE cookiekey = ?");
+			p.setString(1, key);
+			r = p.executeQuery();			
+			if(!r.next()) return null;
+			User u = new User(r.getInt("user_id"), 
+							  r.getString("name"), 
+							  r.getString("passwordHash"), 
+							  r.getBoolean("isAdmin"),
+							  r.getString("cookiekey"));
+
+			return u;
 		} catch (SQLException e) {
 			return null;
 		}
@@ -90,15 +107,6 @@ public class UserManager {
 		password = hashPassword(password);
 
 		try {
-			java.sql.Statement st = db.createStatement();
-
-			String checkQuery = "select count(*) from User where name=\"" + name + "\";";
-			ResultSet rs = st.executeQuery(checkQuery);
-			rs.next(); 
-			Integer count = rs.getInt("count(*)"); 
-			if (count > 0){
-				return null; 
-			}
 			PreparedStatement p = db.prepareStatement("INSERT IGNORE INTO User (name, passwordHash, isAdmin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			p.setString(1, name);
 			p.setString(2, password);
@@ -134,7 +142,7 @@ public class UserManager {
 	// make a user admin 
 	public static void promoteUser(int id) {
 		try {
-			db.prepareStatement("UPDATE User SET isAdmin = 1 WHERE user_id = " + id).executeUpdate();
+			db.prepareStatement("UPDATE User SET isAdmin = true WHERE user_id = " + id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -143,7 +151,7 @@ public class UserManager {
 	// make a user non-admin	
 	public static void demoteUser(int id){
 		try {
-			db.prepareStatement("UPDATE User SET isAdmin = 0 WHERE user_id = " + id).executeUpdate();
+			db.prepareStatement("UPDATE User SET isAdmin = false WHERE user_id = " + id).executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -174,7 +182,7 @@ public class UserManager {
 			ResultSet result = p.executeQuery();
 			while(result.next()) {
 				User u = getUser(result.getInt("user_id"));
-				//System.out.println(result.getInt("user_id"));
+				System.out.println(u.name());
 				results.add(u);
 			}
 			return results;
@@ -183,7 +191,11 @@ public class UserManager {
 		}		
 	}
 	
-
+	public static void main(String args[]){
+		User u = searchExact("will");
+		if(u != null) System.out.println(u.name());
+	}
+	
 	// return a User object with exact match for the name
 	public static User searchExact(String name) {
 		try {
@@ -202,21 +214,9 @@ public class UserManager {
 		
 	}
 
-	public static ArrayList<Activity> getActivityType(int type) {
-		return Activity.getActivityType(type);
-	}
-
-
 	public static void removeUser(int id) {
 		try {
 			db.prepareStatement("DELETE FROM User WHERE user_id = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Activity WHERE user_id = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Achievement WHERE user_id = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Friend WHERE user1 = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Friend WHERE user2 = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Announcement WHERE user_id = " +id).executeUpdate();
-			db.prepareStatement("DELETE FROM Message WHERE user_id = " +id).executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
