@@ -39,6 +39,13 @@ CREATE TABLE Questions(
 	questionData text # encrypted and interpreted by question subclass
 );
 
+CREATE TABLE Review(
+       user_id INT,
+       pKey INT, 
+       review text, 
+       rating INT,
+       time DATETIME
+);
 CREATE TABLE Message (
 	fromUser text,
 	toUser text,

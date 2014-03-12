@@ -30,13 +30,17 @@ out.println("<h2>Your score was: " + score);
 for (Feedback f : feedbacks){
 	out.println(f.toString());
 }
-	
 
-%><a href=userPage.jsp>Home</a>
+%>
+<a href=userPage.jsp>Home</a>
 <br>
 
 <form action=FlagQuizServlet method="post">
 <input type="submit" value="Mark this quiz as inappropariate"></form>
+<br>
+<%
+out.println("<p><a href=ReviewQuiz.jsp?quizID=" + currentQuiz.pKey + ">Review This Quiz");
+%>
 <br>
 </body>
 </html>
