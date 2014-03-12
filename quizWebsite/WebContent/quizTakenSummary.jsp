@@ -5,6 +5,11 @@
 
 <html>
 <head>
+<style>
+* {
+ font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Quiz completed</title>
 </head>

@@ -5,12 +5,18 @@
 
 <html>
 <head>
+
+<style>
+* {
+ font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login</title>
 </head>
 
 <body>
-
+<h1> Welcome to QuizMaster!</h1>
 <form action=LoginServlet method="post">
 <br>Username: <input type="text" name ="username">
 <br>Password: <input type="text" name ="password">
