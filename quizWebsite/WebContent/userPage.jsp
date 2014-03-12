@@ -7,10 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%
 	Connection con = (Connection) application.getAttribute("Connection"); 
-	// test deleteQuiz
-	// TODO remove the test
-	//Integer del =	mysqlManager.deleteQuiz(39,con);
-	//System.out.println(del);
+
 	User user = (User)session.getAttribute(quizWebsite.Constants.session_currentUser);
 	String name = user.name();
 	ArrayList<Announcement> announcements = user.getAnnouncements();

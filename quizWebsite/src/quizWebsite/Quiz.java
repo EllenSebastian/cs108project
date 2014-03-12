@@ -47,6 +47,9 @@ public class Quiz {
 		if (randomOrder) randomOrderString = "TRUE";
 		
 	}
+	public Boolean equals(Quiz q2){
+		return q2.pKey == this.pKey;
+	}
 	
 }
 

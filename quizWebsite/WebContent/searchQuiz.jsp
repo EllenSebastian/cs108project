@@ -9,7 +9,9 @@
 <body>
 <% 
 	out.println("<form action='SearchQuizzesServlet' method='get'>");
-	out.println("<p>Quiz Search: <input type='text' name='quizSearch' />");
+	out.println("<p>Search by name: <input type='text' name='quizSearch' />");
+	out.println("<p>Search by tags (comma-separated)<input type='text' name='tagSearch' />");
+
 	out.println("<input type='submit' value = 'Search'/></p>");
 	out.println("</form>");
 	out.println("<a href=allQuizzes.jsp>see all quizzes</a>");

@@ -10,25 +10,12 @@
 </head>
 <body>
 <%
+
 	System.out.println("reached showQuizzes.jsp");
-	String searchName = (String)session.getAttribute("quizSearch");
 	Connection con = (Connection) application.getAttribute("Connection");
 //	ArrayList<Quiz> quizzes = quizWebsite.mysqlManager.searchForQuiz(searchName,(Connection) application.getAttribute("Connection"));
-		ArrayList<Quiz> quizzes = new ArrayList<Quiz>();
+	ArrayList<Quiz> quizzes = (ArrayList<Quiz>) session.getAttribute("quizSearchResults");
 	
-	try {
-		PreparedStatement p = con.prepareStatement("SELECT * FROM Quizzes WHERE name LIKE ? ORDER BY whenCreated");
-		p.setString(1, "%" + searchName + "%");
-		System.out.println("Connected to db");
-		ResultSet result = p.executeQuery();
-		while(result.next()) {
-			Quiz q = mysqlManager.retreiveQuiz(result.getInt("pKey"),con);
-			//System.out.println(result.getInt("user_id"));
-			quizzes.add(q);
-		}
-	}catch (SQLException e) {
-		e.printStackTrace(); 	
-	}
 	System.out.println("found " + quizzes.size() + " quizzes matching your query: <br>");
 	for (Quiz q : quizzes) {
 		out.println("<h4>"+q.name+"</h4>");
