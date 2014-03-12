@@ -19,6 +19,7 @@ session.setAttribute("newQuiz",true);
 <form action ="ChooseQuestionTypeServlet" method = "post">
 Quiz name: <input type="text" name="name"><br>
 Quiz description: <input type="text" name="description"><br>
+Tags (comma-separated): <input type="text" name="tags"><br>
 
 Should the questions all be one one page or separate pages?<br>
 <input type="radio" name="pages" value="multiplePages">One question per page<br>

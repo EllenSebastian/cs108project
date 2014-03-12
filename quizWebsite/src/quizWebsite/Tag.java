@@ -13,7 +13,7 @@ public class Tag {
 	public static ArrayList<String> getTags(int quiz_id){
 		ArrayList<String> results = new ArrayList<String>();
 		try{
-			PreparedStatement p = connection.prepareStatement("select * from Tag where pKey = ?");
+			PreparedStatement p = connection.prepareStatement("select * from Tag where quizKey = ?");
 			p.setInt(1, quiz_id);
 			ResultSet r = p.executeQuery();
 			while(r.next()){
@@ -34,7 +34,7 @@ public class Tag {
 			p.setString(1, tag);
 			ResultSet r = p.executeQuery();
 			while(r.next()){
-				Integer quiz_id = r.getInt("pKey");
+				Integer quiz_id = r.getInt("quizKey");
 				results.add(quiz_id);
 			}
 			return results;
@@ -43,7 +43,17 @@ public class Tag {
 			return null;
 		}
 	}
-	
-	
-
+	public static int addTag(int quizKey, String tag){
+		try{
+			PreparedStatement p = connection.prepareStatement("insert into Tag values( ?, ? )");
+			p.setInt(1, quizKey);
+			p.setString(2, tag);
+			Integer changed = p.executeUpdate();
+			return changed; 
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 0;
+		}		
+	}
 }

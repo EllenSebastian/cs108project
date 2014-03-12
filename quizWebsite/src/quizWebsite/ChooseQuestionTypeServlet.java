@@ -40,24 +40,33 @@ public class ChooseQuestionTypeServlet extends HttpServlet {
 	}
 
 	protected void createNewQuiz(HttpServletRequest request){
-//		public Quiz(String name, String url, String creator, boolean immediateFeedback,boolean multiplePages,
-	//			boolean practiceMode,boolean randomOrder, String whenCreated, ServletContext context){
 		System.out.println("new line");
-		String[] names =  request.getParameterValues("name");
+		String names =  request.getParameterValues("name")[0];
+		String description = request.getParameterValues("description")[0];
+		String tag = request.getParameterValues("tags")[0];
+		
 		User creator = ((User) request.getSession().getAttribute(Constants.session_currentUser));
 		String immediateFeedback = (String) request.getParameter("immediateFeedback");
 		String practiceMode =  (String) request.getParameter("practiceMode");
 		String randomOrder = (String)  request.getParameter("randomOrder");
 		String multiplePages =  (String) request.getParameter("pages");
-		String[] description = request.getParameterValues("description");
 		DateFormat dateFormat = new SimpleDateFormat(Constants.dateFormat); 
 		Calendar cal = Calendar.getInstance();
 		String datetime = dateFormat.format(cal.getTime());
 		
-		Quiz q = new Quiz(names[0],description[0],"",creator.user_id,immediateFeedback != null, 
+		Quiz q = new Quiz(names,description,"",creator.user_id,immediateFeedback != null, 
 				multiplePages.equals("multiplePages"), practiceMode != null, randomOrder != null, datetime, request.getServletContext()); 
 		String url = "quizIntro.jsp?id=" + q.pKey;
 		q.url = url; 
+		
+		if (tag != null && !tag.equals("")){
+			tag = tag.replaceAll("\\s+",""); // remove whitespace
+			String[] tags = tag.split(",");
+			for (String t : tags){
+				Tag.addTag(q.pKey, t);
+			}
+		}
+		
 		int success = mysqlManager.addToDatabase(q, (Connection) request.getServletContext().getAttribute(Constants.context_Connection));
 		request.getSession().setAttribute(Constants.session_newQuiz,q);
 		System.out.println(success);

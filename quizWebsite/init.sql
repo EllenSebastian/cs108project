@@ -38,7 +38,10 @@ CREATE TABLE Questions(
 	type text, 
 	questionData text # encrypted and interpreted by question subclass
 );
-
+CREATE TABLE Tag(
+       quizKey INT, 
+       tag text
+);
 CREATE TABLE Review(
        user_id INT,
        pKey INT, 
