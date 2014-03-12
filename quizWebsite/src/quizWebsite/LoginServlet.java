@@ -40,18 +40,22 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession(); 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println(username);
-		System.out.println(password);
+		if (username == null && password == null){
+			// they clicked the "nonreisted user" button
+			session.setAttribute(Constants.session_currentUser,Constants.UNREGISTERED_USER);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
+			dispatcher.forward(request, response);
+		}
+		else{
 		User u = UserManager.checkUser(username,password);
-		System.out.println("test");
 		if (u != null){
-			System.out.println("test");
 			session.setAttribute(Constants.session_currentUser,u);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("userPage.jsp");
 			dispatcher.forward(request, response);
 		}else{
 			RequestDispatcher dispatcher = request.getRequestDispatcher("incorrectLogin.html");
 			dispatcher.forward(request, response);
+		}
 		}
 	}
 

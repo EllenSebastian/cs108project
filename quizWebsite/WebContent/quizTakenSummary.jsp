@@ -17,22 +17,20 @@ String feedback = (String) session.getAttribute(quizWebsite.Constants.session_al
 ArrayList<Feedback> feedbacks = (ArrayList<Feedback>) session.getAttribute(quizWebsite.Constants.session_allFeedbackObjs);
 
 Integer score = (Integer) session.getAttribute(quizWebsite.Constants.session_currentScore);
-java.util.Date date= new java.util.Date();
-java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
-System.out.println("currentUser" + currentUser);
-System.out.println("currentQuiz" + currentQuiz.pKey);
-// TODO measure time 
-quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser.user_id, time, quizWebsite.Activity.quiz_Taken,score,currentQuiz.pKey,0);
-newActivity.addActivity();
-out.println("<h1>Thanks for taking the quiz \"" + currentQuiz.name + "\".</h1>");
+
+if (!currentUser.equals(Constants.UNREGISTERED_USER)){
+	java.util.Date date= new java.util.Date();
+	java.sql.Timestamp time = new java.sql.Timestamp(date.getTime());
+
+	quizWebsite.Activity newActivity = new quizWebsite.Activity(currentUser.user_id, time, quizWebsite.Activity.quiz_Taken,score,currentQuiz.pKey,0);
+	newActivity.addActivity();
+}
+	out.println("<h1>Thanks for taking the quiz \"" + currentQuiz.name + "\".</h1>");
 out.println("<h2>Your score was: " + score);
 for (Feedback f : feedbacks){
 	out.println(f.toString());
 }
-		
-		//out.println(feedback);
-//out.println("added activity for User " + currentUser + ", quizTaken, score:  " + score + " on quiz: " + currentQuiz.pKey);
-
+	
 
 %><a href=userPage.jsp>Home</a>
 <br>

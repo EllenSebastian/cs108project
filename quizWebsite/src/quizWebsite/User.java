@@ -17,11 +17,10 @@ public class User {
 	public int user_id;
 	private String name;
 	private String password;
-	public boolean isAdmin;
+	private boolean isAdmin;
 
 	private static Connection connection = myDBinfo.getConnection();
 		
-    
 	// id refer to the key of this particular user in database
 	public User(int user_id,String name,String password,boolean isAdmin){
 		this.user_id = user_id;
@@ -30,6 +29,15 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 	
+	public Boolean equals(User u){
+		return (u.uid() == this.user_id && this.name == u.name() && this.password == u.password() && this.isAdmin == u.isAdmin());
+	}
+	public int uid(){
+		return user_id;
+	}
+	public String password(){
+		return password; 
+	}
 	public String name(){
 		return name;
 	}

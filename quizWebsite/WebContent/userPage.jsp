@@ -18,21 +18,23 @@
 	ArrayList<Achievement> achievements = user.getUserAchievements();
 	ArrayList<Activity> userActivity = user.getUserActivities();
 	List<Activity> friendsActivity = user.getFriendsActivity();
-	out.println("<title>Welcome " + name + "!</title>");
+	if (user.equals(Constants.UNREGISTERED_USER)) 
+		out.println("<title>Welcome!</title></head><body><h1>Welcome!</h1>");
 	
-	out.println("</head>");
-	out.println("<body>");
-	out.println("<h1>Welcome " + name + "!</h1>");
+	else 
+		out.println("<title>Welcome" + name + "!</title></head><body><h1>Welcome" + name + "!</h1>");
+	
 
 	out.println("<form action='SearchUsersServlet' method='get'>");
 	out.println("<p>User Search: <input type='text' name='user' />");
 	out.println("<input type='submit' value = 'Search'/></p>");
 	out.println("</form>");
-
-	out.println("<a href=messageSend.jsp?id=>Send Message</a>");
-	out.println("<a href=friendsList.jsp?id=>Friends List</a>");
-	out.println("<a href=searchQuiz.jsp>Take a quiz</a>");
-	out.println("<a href=newQuiz.jsp>Create a quiz</a>");
+	if (!user.equals(Constants.UNREGISTERED_USER)){		
+		out.println("<br><a href=messageSend.jsp?id=>Send Message</a>");
+		out.println("<br><a href=friendsList.jsp?id=>Friends List</a>");
+		out.println("<br><a href=newQuiz.jsp>Create a quiz</a>");
+	}
+	out.println("<br><a href=searchQuiz.jsp>Take a quiz</a>");
 
 	out.println("<h2>Announcements</h2>");
 	for (Announcement a : announcements) {
@@ -58,7 +60,6 @@
 		out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
 		i++;
 	}
-	System.out.println("printing quizzes");
 	out.println("<h2>Global Recently Created Quizzes:</h2>");
 	ArrayList<Activity> createdQuizzes = UserManager.getActivityType(1);
 	for (Activity a : createdQuizzes) {
@@ -73,82 +74,83 @@
 
 		i++;
 	}
+	if (!user.equals(Constants.UNREGISTERED_USER)){
+		out.println("<h2>Your Recently Taken Quizzes:</h2>");
+		for (Activity a : userActivity) {
+			int i = 0;
+			if (i >= 5)
+				break;
+			if (a.type == 2) {
+				out.println("<h3>" + a.time + ":</h3>");
+				Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+				out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");		
 
-	out.println("<h2>Your Recently Taken Quizzes:</h2>");
-	for (Activity a : userActivity) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		if (a.type == 2) {
-			out.println("<h3>" + a.time + ":</h3>");
-			Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
-			out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
+				out.println("<p>" + a.description + "</p>");
+				out.println("<p>Score: " + a.score + "</p>");
+				i++;
+			}
+		}
+	
+		out.println("<h2>Your Recently Created Quizzes:</h2>");
+		for (Activity a : userActivity) {
+			int i = 0;
+			if (i >= 5)
+				break;
+			if (a.type == 1) {
+				out.println("<h3>" + a.time + ":</h3>");
+				out.println("<p>" + a.description + "</p>");
+				Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
+				out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
 
+				Integer qKey = a.quizId;
+				i++;
+			}
+		}	
+
+		out.println("<h2>Achievements:</h2>");
+		for (Achievement a : achievements) {
+			int i = 0;
+			if (i >= 5)
+				break;
+			out.println("<h3>" + a.time + " " + a.title + ":</h3>");
 			out.println("<p>" + a.description + "</p>");
-			out.println("<p>Score: " + a.score + "</p>");
 			i++;
 		}
-	}
+		out.println("<a href=achievementsList.jsp>see all achievements...</a>");
 
-	out.println("<h2>Your Recently Created Quizzes:</h2>");
-	for (Activity a : userActivity) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		if (a.type == 1) {
+		out.println("<h2>Recently Received Messages:</h2>");
+		for (Message m : messages) {
+			int i = 0;
+			if (i >= 5)
+				break;
+			User temp = UserManager.getUser(m.fromUser);
+			if (!m.checked) {
+				out.println("<h3>From " + temp.name() + " at " + m.time
+						+ ":</h3>");
+				out.println("<p>" + m.alert + "</p>");
+				i++;
+			}
+		}
+		out.println("<a href=messageList.jsp>see all messages...</a>");
+
+		out.println("<h2>Recent Friend Activity:</h2>");
+		for (Activity a : friendsActivity) {
+			int i = 0;
+			if (i >= 5)
+				break;
+				User temp = UserManager.getUser(a.user_id);
+			String nm = temp.name();
+			out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
+					+ nm + ":</a></p>");
+			out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
+					+ a.quizId + ":</a></p>");
 			out.println("<h3>" + a.time + ":</h3>");
 			out.println("<p>" + a.description + "</p>");
-			Quiz q = mysqlManager.retreiveQuiz(a.quizId,con);
-			out.println("<a href=quizIntro?id=" + q.pKey + ">" + q.name + "</a>");
-
-			Integer qKey = a.quizId;
+			if (a.type == 2) {
+					out.println("<p>Score: " + a.score + "</p>");
+			}
 			i++;
 		}
-	}
-
-	out.println("<h2>Achievements:</h2>");
-	for (Achievement a : achievements) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		out.println("<h3>" + a.time + " " + a.title + ":</h3>");
-		out.println("<p>" + a.description + "</p>");
-		i++;
-	}
-	out.println("<a href=achievementsList.jsp>see all achievements...</a>");
-
-	out.println("<h2>Recently Received Messages:</h2>");
-	for (Message m : messages) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		User temp = UserManager.getUser(m.fromUser);
-		if (!m.checked) {
-			out.println("<h3>From " + temp.name() + " at " + m.time
-					+ ":</h3>");
-			out.println("<p>" + m.alert + "</p>");
-			i++;
-		}
-	}
-	out.println("<a href=messageList.jsp>see all messages...</a>");
-
-	out.println("<h2>Recent Friend Activity:</h2>");
-	for (Activity a : friendsActivity) {
-		int i = 0;
-		if (i >= 5)
-			break;
-		User temp = UserManager.getUser(a.user_id);
-		String nm = temp.name();
-		out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
-				+ nm + ":</a></p>");
-		out.println("<p><a href=friendPage.jsp?id=" + a.user_id + ">"
-				+ a.quizId + ":</a></p>");
-		out.println("<h3>" + a.time + ":</h3>");
-		out.println("<p>" + a.description + "</p>");
-		if (a.type == 2) {
-			out.println("<p>Score: " + a.score + "</p>");
-		}
-		i++;
 	}
 %>
 

@@ -47,17 +47,19 @@ session.setAttribute(quizWebsite.Constants.session_allFeedbackObjs,null);
 session.setAttribute(quizWebsite.Constants.session_allFeedback,null);
 session.setAttribute(quizWebsite.Constants.session_lastQuestionBool,false);
 // link to the first question
-
-out.println(" Your past performance");
-String userQuizHistory = quizWebsite.mysqlManager.quizHistory(currentUser.user_id,
+if (!user.equals(Constants.UNREGISTERED_USER)){
+	out.println(" Your past performance");
+	String userQuizHistory = quizWebsite.mysqlManager.quizHistory(currentUser.user_id,
 		qid,null,null,con);
+
+	out.println("<br><h3>your history on this quiz: </h3><br>" + userQuizHistory + "<br><br>");
+}
+
 String allTopPerformers = quizWebsite.mysqlManager.quizHistory(null,qid,null,5,con);
 String pastDayPerformers = quizWebsite.mysqlManager.quizHistory(null,qid,24,null,con);
 
-out.println("<br><h3>your history on this quiz: </h3><br>" + userQuizHistory + "<br><br>");
-
 out.println("<h3>All-time top performers:</h3> <br>" + allTopPerformers + "<br><br>");
-out.println("<h3>your history on this quiz: </h3><br>" + pastDayPerformers + "<br><br>");
+out.println("<h3>Top performers today: </h3><br>" + pastDayPerformers + "<br><br>");
 out.println("<h3> Summary statistics for this quiz: <h3>");
 out.println("<br>Number of times taken: " + quizWebsite.mysqlManager.timesQuizTaken(qid,con));
 Float qa = quizWebsite.mysqlManager.quizAverage(qid,con);

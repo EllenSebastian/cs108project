@@ -4,6 +4,7 @@ public class Constants {
 	// user stuff
 	public static final String session_currentUser = "session.currentUser"; // User
 	public static final String session_sendMessageTo = "session.sendMessageTo"; // User
+	public static final User UNREGISTERED_USER = new User(888888,"UNREGISTERED_USER","UNREGISTERD_USER",false);
 	// quiz taking stuff
 	public static final String session_previousAnswer = "session.previousAnswer";
 	public static final String session_questionHTML = "session.currentQuestionHTML";
@@ -17,7 +18,7 @@ public class Constants {
 	public static final String session_quizQuestions= "session.quizQuestions";
 	public static final String session_previousFeedbackObj = "session.previousFeedbackObj"; // Feedback object
 	public static final String session_allFeedbackObjs = "session.allFeedbackObjs"; // ArraList<Feedback>
-
+	
 	
 	// quiz creation stuff	
 	public static final String session_newQuiz = "session.newQuiz"; // Quiz
